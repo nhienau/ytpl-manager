@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { createPortal } from "react-dom";
 import {
   cloneElement,
@@ -10,9 +10,21 @@ import {
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import Overlay from "./Overlay";
 
-const SidebarOverlay = styled(Overlay)`
+const StyledOverlay = styled(Overlay)`
   @media (min-width: 50rem) {
-    display: none;
+    ${(props) =>
+      props.$viewport === "small" &&
+      css`
+        display: none;
+      `}
+  }
+
+  @media (max-width: calc(50rem - 1px)) {
+    ${(props) =>
+      props.$viewport === "large" &&
+      css`
+        display: none;
+      `}
   }
 `;
 
@@ -39,7 +51,8 @@ function Open({ children, opens: opensWindowName }) {
   });
 }
 
-function Window({ children, name }) {
+// viewport: small, large, all
+function Window({ children, name, $viewport = "all" }) {
   const { openName, close } = useContext(TopLevelContext);
   const ref = useRef();
   useOutsideClick(ref, close);
@@ -47,9 +60,9 @@ function Window({ children, name }) {
   if (name !== openName) return null;
 
   return createPortal(
-    <SidebarOverlay>
+    <StyledOverlay $viewport={$viewport}>
       <div ref={ref}>{cloneElement(children, { onClose: close })}</div>
-    </SidebarOverlay>,
+    </StyledOverlay>,
     document.body
   );
 }

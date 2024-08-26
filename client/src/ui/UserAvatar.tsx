@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useChannelInfo } from "../features/authentication/useChannelInfo";
+import Avatar from "./Avatar";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -13,17 +14,6 @@ const StyledUserAvatar = styled.div`
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-`;
-
-const Avatar = styled.img`
-  display: block;
-  width: 2.5rem;
-  height: 2.5rem;
-  aspect-ratio: 1;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-  outline: 2px solid var(--color-grey-100);
 `;
 
 function UserAvatar() {

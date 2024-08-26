@@ -1,13 +1,16 @@
 import styled, { css } from "styled-components";
 import { useSidebar } from "../context/SidebarContext";
-import SidebarContent from "./SidebarContent";
-import SidebarHead from "./SidebarHead";
 import ButtonSidebar from "./ButtonSidebar";
+import SidebarHead from "./SidebarHead";
+import SidebarMain from "./SidebarMain";
 
 const sidebar = css`
   visibility: visible;
   width: 240px;
   border-right: 1px solid var(--color-neutral-300);
+
+  display: flex;
+  flex-direction: column;
 `;
 
 const sidebarHidden = css`
@@ -34,7 +37,7 @@ function Sidebar() {
       <SidebarHead>
         <ButtonSidebar onClick={toggleSidebar} />
       </SidebarHead>
-      <SidebarContent />
+      <SidebarMain />
     </StyledSidebar>
   );
 }

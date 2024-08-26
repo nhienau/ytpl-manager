@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import { useEffect } from "react";
+import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import FullPage from "./FullPage";
 import Spinner from "./Spinner";
 
