@@ -12,6 +12,8 @@ import Menus from "./Menus";
 import Modal from "./Modal";
 import SidebarMobile from "./SidebarMobile";
 import TopLevel from "./TopLevel";
+import UserInfo from "./UserInfo";
+import Divider from "./Divider";
 
 const StyledHeader = styled.header`
   background-color: var(--color-neutral-100);
@@ -58,9 +60,13 @@ const StyledButtonUser = styled(Menus.Toggle)`
   }
 `;
 
-const StyledList = styled(Menus.List)`
-  width: calc(240px - 1rem);
+const UserInfoContainer = styled.div`
   padding: 0.25rem;
+`;
+
+const StyledList = styled(Menus.List)`
+  width: 17rem;
+  padding: 0.375rem;
   background-color: #fff;
   box-shadow: var(--shadow-lg);
   border-radius: 0.5rem;
@@ -97,6 +103,12 @@ function AppHeader() {
             </StyledButtonUser>
 
             <StyledList id="profile">
+              <UserInfoContainer>
+                <UserInfo avatarSize={2.625} />
+              </UserInfoContainer>
+
+              <Divider />
+
               <TopLevel.Open opens="settings">
                 <Menus.Button icon={<HiOutlineCog8Tooth />}>
                   Settings

@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const Avatar = styled.img`
   display: block;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: ${(props) => props.$avatarSize || 2.25}rem;
+  height: ${(props) => props.$avatarSize || 2.25}rem;
   aspect-ratio: 1;
   object-fit: cover;
   object-position: center;
