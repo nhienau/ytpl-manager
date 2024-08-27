@@ -25,6 +25,15 @@ router.get("/info", async (req, res) => {
   );
   const data = await channelInfo.json();
 
+  if (!data.items) {
+    res.status(404).json({
+      error: {
+        message: "No channel was found",
+      },
+    });
+    return;
+  }
+
   res.status(200).json(data);
 });
 

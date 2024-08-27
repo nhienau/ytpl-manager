@@ -1,4 +1,8 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
@@ -12,6 +16,8 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import AuthLayout from "./ui/AuthLayout";
 import { SidebarProvider } from "./context/SidebarContext";
+import { handleError } from "./utils/error";
+import RouteFallback from "./ui/RouteFallback";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +28,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
     ],
+    errorElement: <RouteFallback />,
   },
   {
     element: <AuthLayout />,
@@ -40,10 +47,12 @@ const router = createBrowserRouter([
         ],
       },
     ],
+    errorElement: <RouteFallback />,
   },
   {
     path: "/login/redirect",
     element: <Redirect />,
+    errorElement: <RouteFallback />,
   },
   {
     element: (
@@ -57,6 +66,7 @@ const router = createBrowserRouter([
         element: <MainApp />,
       },
     ],
+    errorElement: <RouteFallback />,
   },
 ]);
 
@@ -66,6 +76,9 @@ const queryClient = new QueryClient({
       staleTime: 60 * 1000,
     },
   },
+  queryCache: new QueryCache({
+    onError: handleError,
+  }),
 });
 
 function App() {

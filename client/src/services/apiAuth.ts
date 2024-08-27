@@ -1,19 +1,20 @@
 export async function getLoggedInChannelInfo() {
-  try {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/info`,
-      {
-        credentials: "include",
-      }
-    );
-    const data = await res.json();
-    if (data.error) {
-      return null;
+  const res = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/api/youtube/info`,
+    {
+      credentials: "include",
     }
-    return data;
-  } catch (e) {
+  );
+  const data = await res.json();
+  if (res.status === 403) {
     return null;
+  } else if (res.status === 404) {
+    await logout();
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
   }
+  return data;
 }
 
 export async function logout() {
