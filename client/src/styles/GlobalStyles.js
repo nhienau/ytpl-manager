@@ -50,10 +50,14 @@ const GlobalStyles = createGlobalStyle`
     --image-opacity: 90%;
   }
 }
-
+        
 @font-face {
-  font-family: 'Geist';
-  src: local('Geist');
+  font-family: "Geist";
+  src: url("fonts/Geist/variable-ttf/GeistVF.ttf") format("truetype"),
+    url("fonts/Geist/variable-woff/GeistVF.woff") format("woff"),
+    url("fonts/Geist/variable-woff/GeistVF.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
 }
 
 *,
