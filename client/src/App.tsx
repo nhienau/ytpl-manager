@@ -4,7 +4,12 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import MainApp from "./pages/MainApp";
@@ -18,57 +23,36 @@ import AuthLayout from "./ui/AuthLayout";
 import { SidebarProvider } from "./context/SidebarContext";
 import { handleError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
+import PageNotFound from "./pages/PageNotFound";
 
-const router = createBrowserRouter([
-  {
-    element: <MainLayout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-    ],
-    errorElement: <RouteFallback />,
-  },
-  {
-    element: <AuthLayout />,
-    children: [
-      {
-        path: "/login/google",
-        element: <GoogleSignIn />,
-      },
-      {
-        element: <MainLayout />,
-        children: [
-          {
-            path: "/login",
-            element: <Login />,
-          },
-        ],
-      },
-    ],
-    errorElement: <RouteFallback />,
-  },
-  {
-    path: "/login/redirect",
-    element: <Redirect />,
-    errorElement: <RouteFallback />,
-  },
-  {
-    element: (
-      <ProtectedRoute>
-        <AppLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "/app",
-        element: <MainApp />,
-      },
-    ],
-    errorElement: <RouteFallback />,
-  },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route errorElement={<RouteFallback />}>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+        <Route element={<AuthLayout />}>
+          <Route element={<MainLayout />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route path="/login/google" element={<GoogleSignIn />} />
+        </Route>
+        <Route path="/login/redirect" element={<Redirect />} />
+        <Route
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/app" element={<MainApp />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
+    </>
+  )
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {

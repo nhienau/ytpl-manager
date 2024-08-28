@@ -1,23 +1,16 @@
 import { useRouteError } from "react-router-dom";
-import styled from "styled-components";
-
-const StyledRouteFallback = styled.div``;
+import Error from "./Error";
 
 function RouteFallback() {
   const error = useRouteError();
 
   // This causes full page reload
-  function handleBack() {
+  function handleBack(e) {
+    e.preventDefault();
     window.location.replace("/");
   }
 
-  return (
-    <StyledRouteFallback>
-      <h1>Something went wrong...</h1>
-      <p>{error.message}</p>
-      <button onClick={handleBack}>Back to home page</button>
-    </StyledRouteFallback>
-  );
+  return <Error message={error.message} onClick={handleBack} />;
 }
 
 export default RouteFallback;
