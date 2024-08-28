@@ -10,6 +10,9 @@ export function useChannelInfo() {
     queryKey: ["channel"],
     queryFn: getLoggedInChannelInfo,
     staleTime: Infinity,
+    retry: false,
+    refetchOnMount: false,
+    throwOnError: true,
   });
   return {
     isLoading,

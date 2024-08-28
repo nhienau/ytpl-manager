@@ -1,18 +1,38 @@
 import { createContext, useContext, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { getDropdownListPosition } from "../utils/dropdown";
+
+const variations = {
+  dropup: css`
+    bottom: ${(props) => props.$position.y}px;
+    margin-bottom: 0.25rem;
+  `,
+  dropdown: css`
+    top: ${(props) => props.$position.y}px;
+    margin-top: 0.25rem;
+  `,
+};
+
+const alignments = {
+  left: css`
+    left: ${(props) => props.$position.x}px;
+  `,
+  right: css`
+    right: ${(props) => props.$position.x}px;
+  `,
+};
 
 const Menu = styled.div``;
 
 const StyledList = styled.ul`
   position: fixed;
 
-  left: ${(props) => props.$position.x}px;
-  bottom: ${(props) => props.$position.y}px;
+  ${(props) => variations[props.$position.variation]}
+  ${(props) => alignments[props.$position.alignment]}
 
   z-index: 1001;
-  /* border: 1px solid black; */
 `;
 
 const StyledButton = styled.button`
@@ -21,6 +41,29 @@ const StyledButton = styled.button`
   background: none;
   border: none;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+
+  & span {
+    font-size: 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  & svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--color-neutral-300);
+  }
 `;
 
 const MenusContext = createContext(null);
@@ -41,16 +84,20 @@ function Menus({ children }) {
   );
 }
 
-function Toggle({ id, className, children }) {
+function Toggle({
+  id,
+  className,
+  children,
+  variation = "dropdown",
+  alignment = "left",
+}) {
   const { openId, close, open, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
     e.stopPropagation();
     const rect = e.target.closest("button").getBoundingClientRect();
-    setPosition({
-      x: rect.x,
-      y: rect.height + 8,
-    });
+    const dropdownPos = getDropdownListPosition(rect, variation, alignment);
+    setPosition(dropdownPos);
 
     openId === "" || openId !== id ? open(id) : close();
   }

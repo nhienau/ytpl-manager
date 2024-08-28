@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useChannelInfo } from "../features/authentication/useChannelInfo";
-import UserAvatar from "./UserAvatar";
+import UserInfo from "./UserInfo";
 import { useLogout } from "../features/authentication/useLogout";
 
 const StyledNav = styled.nav`
@@ -48,7 +48,7 @@ function Navigation() {
         <StyledButtonGroup>
           {isAuthenticated ? (
             <>
-              <UserAvatar />
+              <UserInfo />
               <StyledListItem>
                 <StyledNavLink to="/app">Go to app</StyledNavLink>
               </StyledListItem>

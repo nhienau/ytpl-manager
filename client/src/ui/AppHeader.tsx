@@ -1,10 +1,19 @@
 import styled from "styled-components";
-import { useSidebar } from "../context/SidebarContext";
-import TopLevel from "./TopLevel";
-import SidebarMobile from "./SidebarMobile";
+import {
+  HiOutlineArrowRightOnRectangle,
+  HiOutlineCog8Tooth,
+} from "react-icons/hi2";
+import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import { useLogout } from "../features/authentication/useLogout";
-import Modal from "./Modal";
+import { useSidebar } from "../context/SidebarContext";
+import Avatar from "./Avatar";
 import ButtonSidebar from "./ButtonSidebar";
+import Menus from "./Menus";
+import Modal from "./Modal";
+import SidebarMobile from "./SidebarMobile";
+import TopLevel from "./TopLevel";
+import UserInfo from "./UserInfo";
+import Divider from "./Divider";
 
 const StyledHeader = styled.header`
   background-color: var(--color-neutral-100);
@@ -36,28 +45,86 @@ const StyledButtonSidebarMobile = styled(ButtonSidebar)`
   }
 `;
 
+const StyledButtonUserContainer = styled(Menus.Menu)`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledButtonUser = styled(Menus.Toggle)`
+  background: none;
+  border: none;
+  display: none;
+
+  @media (min-width: 50rem) {
+    display: inline-block;
+  }
+`;
+
+const UserInfoContainer = styled.div`
+  padding: 0.25rem;
+`;
+
+const StyledList = styled(Menus.List)`
+  width: 17rem;
+  padding: 0.375rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-lg);
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-neutral-300);
+`;
+
 function AppHeader() {
   const { isOpen, toggleSidebar } = useSidebar();
   const { logout, isPending: isLoggingOut } = useLogout();
 
+  const { channel } = useChannelInfo();
+  const { thumbnails } = channel.items[0].snippet;
+  const avatarUrl = thumbnails.default.url;
+
   return (
     <StyledHeader $isOpen={isOpen}>
+      <StyledButtonSidebar onClick={toggleSidebar} $isOpen={isOpen} />
       <TopLevel>
-        <StyledButtonSidebar onClick={toggleSidebar} $isOpen={isOpen} />
-
         <TopLevel.Open opens="sidebar">
           <StyledButtonSidebarMobile />
         </TopLevel.Open>
 
-        <TopLevel.Window name="sidebar">
+        <TopLevel.Window name="sidebar" $viewport="small">
           <SidebarMobile />
         </TopLevel.Window>
 
         <TopLevel.Window name="settings">
           <Modal />
         </TopLevel.Window>
+        <Menus>
+          <StyledButtonUserContainer>
+            <StyledButtonUser id="profile" alignment="right">
+              <Avatar src={avatarUrl} alt={`Avatar of ${name}`} />
+            </StyledButtonUser>
+
+            <StyledList id="profile">
+              <UserInfoContainer>
+                <UserInfo avatarSize={2.625} />
+              </UserInfoContainer>
+
+              <Divider />
+
+              <TopLevel.Open opens="settings">
+                <Menus.Button icon={<HiOutlineCog8Tooth />}>
+                  Settings
+                </Menus.Button>
+              </TopLevel.Open>
+
+              <Menus.Button
+                icon={<HiOutlineArrowRightOnRectangle />}
+                onClick={logout}
+              >
+                Log out
+              </Menus.Button>
+            </StyledList>
+          </StyledButtonUserContainer>
+        </Menus>
       </TopLevel>
-      <button onClick={logout}>Log out</button>
     </StyledHeader>
   );
 }
