@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import UserInfo from "./UserInfo";
 import { useLogout } from "../features/authentication/useLogout";
+import SpinnerMini from "./SpinnerMini";
 
 const StyledNav = styled.nav`
   padding: 0.75rem;
@@ -22,6 +23,8 @@ const StyledButtonGroup = styled.div`
 
 const StyledListItem = styled.li`
   padding: 0.5rem;
+  display: flex;
+  align-items: center;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -36,7 +39,7 @@ const StyledNavLink = styled(NavLink)`
 
 function Navigation() {
   // isLoading
-  const { channel, isAuthenticated } = useChannelInfo();
+  const { isLoading: isLoadingChannelInfo, isAuthenticated } = useChannelInfo();
   const { logout, isPending } = useLogout();
 
   return (
@@ -46,7 +49,11 @@ function Navigation() {
           <StyledNavLink to="/">Home</StyledNavLink>
         </StyledListItem>
         <StyledButtonGroup>
-          {isAuthenticated ? (
+          {isLoadingChannelInfo ? (
+            <StyledListItem>
+              <SpinnerMini $size={1.75} />
+            </StyledListItem>
+          ) : isAuthenticated ? (
             <>
               <UserInfo />
               <StyledListItem>
