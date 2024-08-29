@@ -28,7 +28,8 @@ router.get("/info", async (req, res) => {
   if (!data.items) {
     res.status(404).json({
       error: {
-        message: "No channel was found",
+        message:
+          "No channels found in this account. You can try logging in with a different account.",
       },
     });
     return;
