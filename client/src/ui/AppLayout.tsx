@@ -17,7 +17,7 @@ const StyledMainContent = styled.div`
 
 const StyledMain = styled.main`
   background-color: var(--color-neutral-200);
-  overflow: scroll;
+  overflow: auto;
   flex-grow: 1;
 `;
 
