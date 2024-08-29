@@ -21,7 +21,7 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import AuthLayout from "./ui/AuthLayout";
 import { SidebarProvider } from "./context/SidebarContext";
-import { handleError } from "./utils/error";
+import { handleQueryError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
 
@@ -61,7 +61,7 @@ const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: handleError,
+    onError: handleQueryError,
   }),
 });
 
