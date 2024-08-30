@@ -21,7 +21,7 @@ const StyledSidebarMobile = styled.aside`
 
 function SidebarMobile({ onClose }) {
   return (
-    <StyledSidebarMobile id="dropdown-user">
+    <StyledSidebarMobile data-dropdown-id="user">
       <SidebarHead>
         <ButtonSidebar onClick={onClose} />
       </SidebarHead>

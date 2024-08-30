@@ -71,13 +71,22 @@ const MenusContext = createContext(null);
 function Menus({ children }) {
   const [openId, setOpenId] = useState("");
   const [position, setPosition] = useState(null);
+  const [eventTarget, setEventTarget] = useState(null);
 
   const close = () => setOpenId("");
   const open = setOpenId;
 
   return (
     <MenusContext.Provider
-      value={{ openId, close, open, position, setPosition }}
+      value={{
+        openId,
+        close,
+        open,
+        position,
+        setPosition,
+        eventTarget,
+        setEventTarget,
+      }}
     >
       {children}
     </MenusContext.Provider>
@@ -91,13 +100,15 @@ function Toggle({
   variation = "dropdown",
   alignment = "left",
 }) {
-  const { openId, close, open, setPosition } = useContext(MenusContext);
+  const { openId, close, open, setPosition, setEventTarget } =
+    useContext(MenusContext);
 
   function handleClick(e) {
     e.stopPropagation();
     const rect = e.target.closest("button").getBoundingClientRect();
     const dropdownPos = getDropdownListPosition(rect, variation, alignment);
     setPosition(dropdownPos);
+    setEventTarget(e.target.closest("button"));
 
     openId === "" || openId !== id ? open(id) : close();
   }
@@ -110,9 +121,13 @@ function Toggle({
 }
 
 function List({ id, children, domNodeId, className }) {
-  const { openId, position, close } = useContext(MenusContext);
+  const { openId, position, close, eventTarget } = useContext(MenusContext);
   const ref = useRef();
   useOutsideClick(ref, close, false);
+
+  const domNode = domNodeId
+    ? eventTarget?.closest(`[data-dropdown-id=${domNodeId}]`)
+    : document.body;
 
   if (openId !== id) return null;
 
@@ -120,7 +135,7 @@ function List({ id, children, domNodeId, className }) {
     <StyledList ref={ref} $position={position} className={className}>
       {children}
     </StyledList>,
-    domNodeId ? document.querySelector(`#${domNodeId}`) : document.body
+    domNode
   );
 }
 

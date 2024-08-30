@@ -62,7 +62,7 @@ function SidebarFooter() {
             <HiEllipsisVertical />
           </StyledToggle>
 
-          <StyledList id="profile" domNodeId="dropdown-user">
+          <StyledList id="profile" domNodeId="user">
             <UserInfoContainer>
               <UserInfo customUrlSize={0.875} />
             </UserInfoContainer>

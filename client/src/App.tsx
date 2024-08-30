@@ -24,6 +24,7 @@ import { SidebarProvider } from "./context/SidebarContext";
 import { handleQueryError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
+import Playlist from "./pages/Playlist";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
           }
         >
           <Route path="/app" element={<MainApp />} />
+          <Route path="/app/playlist/:playlistId" element={<Playlist />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Route>
