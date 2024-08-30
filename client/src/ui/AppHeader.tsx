@@ -97,12 +97,12 @@ function AppHeader() {
           <Modal />
         </TopLevel.Window>
         <Menus>
-          <StyledButtonUserContainer>
+          <StyledButtonUserContainer data-dropdown-id="profile">
             <StyledButtonUser id="profile" alignment="right">
               <Avatar src={avatarUrl} alt={`Avatar of ${name}`} />
             </StyledButtonUser>
 
-            <StyledList id="profile">
+            <StyledList id="profile" domNodeId="profile">
               <UserInfoContainer>
                 <UserInfo avatarSize={2.625} />
               </UserInfoContainer>

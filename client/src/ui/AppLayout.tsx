@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { PlaylistProvider } from "../context/PlaylistContext";
 import Sidebar from "./Sidebar";
 import AppHeader from "./AppHeader";
 
@@ -23,15 +24,17 @@ const StyledMain = styled.main`
 
 function AppLayout() {
   return (
-    <StyledAppLayout>
-      <Sidebar />
-      <StyledMainContent>
-        <AppHeader />
-        <StyledMain>
-          <Outlet />
-        </StyledMain>
-      </StyledMainContent>
-    </StyledAppLayout>
+    <PlaylistProvider>
+      <StyledAppLayout>
+        <Sidebar />
+        <StyledMainContent>
+          <AppHeader />
+          <StyledMain>
+            <Outlet />
+          </StyledMain>
+        </StyledMainContent>
+      </StyledAppLayout>
+    </PlaylistProvider>
   );
 }
 

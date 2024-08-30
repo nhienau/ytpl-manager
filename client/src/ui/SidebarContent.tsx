@@ -1,5 +1,16 @@
+import PlaylistList from "../features/playlist/PlaylistList";
+import ListOperation from "./ListOperation";
+import Menus from "./Menus";
+
 function SidebarContent() {
-  return <div>Sidebar content goes here</div>;
+  return (
+    <div>
+      <Menus>
+        <ListOperation />
+        <PlaylistList />
+      </Menus>
+    </div>
+  );
 }
 
 export default SidebarContent;
