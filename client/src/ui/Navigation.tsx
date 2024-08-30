@@ -1,9 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { useChannelInfo } from "../features/authentication/useChannelInfo";
-import UserInfo from "./UserInfo";
-import { useLogout } from "../features/authentication/useLogout";
-import SpinnerMini from "./SpinnerMini";
+import ButtonLogin from "./ButtonLogin";
 
 const StyledNav = styled.nav`
   padding: 0.75rem;
@@ -38,10 +35,6 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function Navigation() {
-  // isLoading
-  const { isLoading: isLoadingChannelInfo, isAuthenticated } = useChannelInfo();
-  const { logout, isPending } = useLogout();
-
   return (
     <StyledNav>
       <StyledList>
@@ -49,28 +42,10 @@ function Navigation() {
           <StyledNavLink to="/">Home</StyledNavLink>
         </StyledListItem>
         <StyledButtonGroup>
-          {isLoadingChannelInfo ? (
-            <StyledListItem>
-              <SpinnerMini $size={1.75} />
-            </StyledListItem>
-          ) : isAuthenticated ? (
-            <>
-              <UserInfo />
-              <StyledListItem>
-                <StyledNavLink to="/app">Go to app</StyledNavLink>
-              </StyledListItem>
-              <StyledListItem>
-                <button onClick={logout}>Log out</button>
-              </StyledListItem>
-            </>
-          ) : (
-            <StyledListItem>
-              <StyledNavLink to="/login">Login</StyledNavLink>
-            </StyledListItem>
-          )}
           <StyledListItem>
             <button>Dark mode</button>
           </StyledListItem>
+          <ButtonLogin />
         </StyledButtonGroup>
       </StyledList>
     </StyledNav>
