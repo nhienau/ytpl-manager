@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { HiOutlineArrowPath } from "react-icons/hi2";
 import PlaylistItem from "./PlaylistItem";
+import { usePlaylist } from "../../context/PlaylistContext";
+import { usePlaylists } from "./usePlaylists";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 // Sample data
 const result = {
@@ -19,7 +22,7 @@ const result = {
       snippet: {
         publishedAt: "2024-05-13T18:52:39Z",
         channelId: "",
-        title: "test",
+        title: "Watch later 2",
         description: "",
         thumbnails: {},
         channelTitle: "",
@@ -33,7 +36,7 @@ const result = {
       snippet: {
         publishedAt: "2024-01-21T10:18:39Z",
         channelId: "",
-        title: "test",
+        title: "linux",
         description: "",
         thumbnails: {},
         channelTitle: "",
@@ -47,7 +50,7 @@ const result = {
       snippet: {
         publishedAt: "2023-12-16T02:59:52Z",
         channelId: "",
-        title: "test",
+        title: "Vids to eat to",
         description: "",
         thumbnails: {},
         channelTitle: "",
@@ -61,7 +64,7 @@ const result = {
       snippet: {
         publishedAt: "2023-09-09T07:54:28Z",
         channelId: "",
-        title: "test",
+        title: "ssstest",
         description: "",
         thumbnails: {},
         channelTitle: "",
@@ -75,7 +78,7 @@ const result = {
       snippet: {
         publishedAt: "2023-09-09T07:22:55Z",
         channelId: "",
-        title: "test",
+        title: "atest",
         description: "",
         thumbnails: {},
         channelTitle: "",
@@ -148,6 +151,8 @@ const StyledListItem = styled.li`
 `;
 
 function PlaylistList() {
+  const { isLoading, playlists } = usePlaylists();
+
   return (
     <>
       <Box>
@@ -157,13 +162,17 @@ function PlaylistList() {
         </Button>
       </Box>
       <StyledNav>
-        <StyledList>
-          {result.items.map((item) => (
-            <StyledListItem key={item.id}>
-              <PlaylistItem id={item.id} title={item.snippet.title} />
-            </StyledListItem>
-          ))}
-        </StyledList>
+        {isLoading ? (
+          <SpinnerMini />
+        ) : (
+          <StyledList>
+            {playlists.items.map((item) => (
+              <StyledListItem key={item.id}>
+                <PlaylistItem id={item.id} title={item.snippet.title} />
+              </StyledListItem>
+            ))}
+          </StyledList>
+        )}
       </StyledNav>
     </>
   );
