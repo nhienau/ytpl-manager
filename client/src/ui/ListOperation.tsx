@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import PlaylistSort from "./PlaylistSort";
+import { usePlaylistOperations } from "../context/PlaylistOperationsContext";
 
 const StyledListOperation = styled.div`
   margin-bottom: 1.5rem;
@@ -25,10 +26,17 @@ const Input = styled.input`
 `;
 
 function ListOperation() {
+  const { query, setQuery } = usePlaylistOperations();
+
   return (
     <StyledListOperation>
       <InputBox>
-        <Input type="text" placeholder="Search" />
+        <Input
+          type="text"
+          placeholder="Search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
       </InputBox>
       <Box data-dropdown-id="playlist-sort">
         <PlaylistSort />

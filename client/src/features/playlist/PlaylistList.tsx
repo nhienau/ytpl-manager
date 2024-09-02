@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { HiOutlineArrowPath } from "react-icons/hi2";
+import styled, { css } from "styled-components";
 import PlaylistItem from "./PlaylistItem";
-import { usePlaylist } from "../../context/PlaylistContext";
+import { usePlaylistOperations } from "../../context/PlaylistOperationsContext";
 import { usePlaylists } from "./usePlaylists";
 import SpinnerMini from "../../ui/SpinnerMini";
+import { filterAndSortPlaylists } from "../../utils/playlist";
 
 // Sample data
 const result = {
@@ -90,48 +90,13 @@ const result = {
 
 const StyledNav = styled.nav`
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
-`;
 
-const Box = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 0.5rem;
-`;
-
-const Span = styled.span`
-  padding-left: 0.5rem;
-  font-weight: 500;
-`;
-
-const Button = styled.button`
-  text-align: left;
-  background: none;
-  border: none;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem;
-  border-radius: 0.5rem;
-
-  & span {
-    font-size: 0.875rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  & svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    background-color: var(--color-neutral-300);
-  }
+  ${(props) =>
+    props.$isLoading &&
+    css`
+      display: flex;
+      justify-content: center;
+    `}
 `;
 
 const StyledList = styled.ul`
@@ -152,30 +117,32 @@ const StyledListItem = styled.li`
 
 function PlaylistList() {
   const { isLoading, playlists } = usePlaylists();
+  const { sortCriteria, query } = usePlaylistOperations();
 
-  return (
-    <>
-      <Box>
-        <Span>Your playlists</Span>
-        <Button>
-          <HiOutlineArrowPath />
-        </Button>
-      </Box>
-      <StyledNav>
-        {isLoading ? (
-          <SpinnerMini />
-        ) : (
-          <StyledList>
-            {playlists.items.map((item) => (
-              <StyledListItem key={item.id}>
-                <PlaylistItem id={item.id} title={item.snippet.title} />
-              </StyledListItem>
-            ))}
-          </StyledList>
-        )}
+  if (isLoading) {
+    return (
+      <StyledNav $isLoading={true}>
+        <SpinnerMini />
       </StyledNav>
-    </>
-  );
+    );
+  } else {
+    const results = filterAndSortPlaylists(
+      playlists.items,
+      query,
+      sortCriteria
+    );
+    return (
+      <StyledNav>
+        <StyledList>
+          {results.map((item) => (
+            <StyledListItem key={item.id}>
+              <PlaylistItem id={item.id} title={item.snippet.title} />
+            </StyledListItem>
+          ))}
+        </StyledList>
+      </StyledNav>
+    );
+  }
 }
 
 export default PlaylistList;

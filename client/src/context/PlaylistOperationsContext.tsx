@@ -16,11 +16,11 @@ function PlaylistProvider({ children }) {
   );
 }
 
-function usePlaylist() {
+function usePlaylistOperations() {
   const context = useContext(PlaylistContext);
   if (context === undefined)
     throw new Error("PlaylistContext was used outside of PlaylistProvider");
   return context;
 }
 
-export { PlaylistProvider, usePlaylist };
+export { PlaylistProvider, usePlaylistOperations };

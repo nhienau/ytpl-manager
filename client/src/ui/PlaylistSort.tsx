@@ -1,6 +1,6 @@
 import { MdOutlineSort } from "react-icons/md";
 import styled from "styled-components";
-import { usePlaylist } from "../context/PlaylistContext";
+import { usePlaylistOperations } from "../context/PlaylistOperationsContext";
 import { PLAYLIST_SORT_CRITERIAS } from "../utils/constants";
 import Criteria from "./Criteria";
 import Menus from "./Menus";
@@ -53,7 +53,7 @@ const Span = styled.span`
 `;
 
 function PlaylistSort() {
-  const { sortCriteria } = usePlaylist();
+  const { sortCriteria } = usePlaylistOperations();
 
   return (
     <Menus.Menu>
