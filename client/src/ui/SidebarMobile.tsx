@@ -9,7 +9,7 @@ const StyledSidebarMobile = styled.aside`
   top: 0;
   left: 0;
   background-color: var(--color-neutral-100);
-  width: 240px;
+  width: 256px;
   height: 100vh;
   display: flex;
   flex-direction: column;
