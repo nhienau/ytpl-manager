@@ -37,10 +37,10 @@ const Span = styled.span`
 `;
 
 function PlaylistList() {
-  const { isLoading, playlists } = usePlaylists();
+  const { isLoading, playlists, isFetching } = usePlaylists();
   const { sortCriteria, query } = usePlaylistOperations();
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <StyledNav $isLoading={true}>
         <SpinnerMini />

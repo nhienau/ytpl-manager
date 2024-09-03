@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { HiOutlineArrowPath } from "react-icons/hi2";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePlaylists } from "../features/playlist/usePlaylists";
 
 const Box = styled.div`
   display: flex;
@@ -41,13 +43,24 @@ const Button = styled.button`
   &:hover {
     background-color: var(--color-neutral-300);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 function PlaylistHeading() {
+  const { isFetching } = usePlaylists();
+  const queryClient = useQueryClient();
+
+  function handleReload() {
+    queryClient.invalidateQueries({ queryKey: ["playlists"] });
+  }
+
   return (
     <Box>
       <Span>Your playlists</Span>
-      <Button>
+      <Button onClick={handleReload} disabled={isFetching}>
         <HiOutlineArrowPath />
       </Button>
     </Box>
