@@ -1,6 +1,8 @@
 import { PLAYLIST_SORT_CRITERIAS } from "./constants";
 
 export function filterAndSortPlaylists(playlists, query, sortCriteria) {
+  if (playlists.length === 0) return playlists;
+
   const filteredResults = playlists.filter((item) =>
     item.snippet.title.toLowerCase().includes(query.toLowerCase())
   );
