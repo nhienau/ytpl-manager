@@ -7,19 +7,19 @@ export const GOOGLE_OAUTH_SCOPE = [
 ];
 export const PLAYLIST_SORT_CRITERIAS = [
   {
+    value: "date-desc",
+    label: "Date published (latest first)",
+  },
+  {
+    value: "date-asc",
+    label: "Date published (earlier first)",
+  },
+  {
     value: "name-asc",
     label: "Name (A-Z)",
   },
   {
     value: "name-desc",
     label: "Name (Z-A)",
-  },
-  {
-    value: "date-latest",
-    label: "Date published (latest first)",
-  },
-  {
-    value: "date-earlier",
-    label: "Date published (earlier first)",
   },
 ];

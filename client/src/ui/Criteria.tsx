@@ -1,6 +1,6 @@
 import { HiOutlineCheck } from "react-icons/hi2";
 import styled, { css } from "styled-components";
-import { usePlaylist } from "../context/PlaylistContext";
+import { usePlaylistOperations } from "../context/PlaylistOperationsContext";
 import Menus from "./Menus";
 
 const Button = styled(Menus.Button)`
@@ -18,7 +18,7 @@ const Button = styled(Menus.Button)`
 `;
 
 function Criteria({ criteria }) {
-  const { sortCriteria, setSortCriteria } = usePlaylist();
+  const { sortCriteria, setSortCriteria } = usePlaylistOperations();
 
   const isSelected = criteria.value === sortCriteria.value;
 

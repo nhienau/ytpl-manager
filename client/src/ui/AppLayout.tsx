@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
-import { PlaylistProvider } from "../context/PlaylistContext";
+import { PlaylistProvider } from "../context/PlaylistOperationsContext";
 import Sidebar from "./Sidebar";
 import AppHeader from "./AppHeader";
 

@@ -6,6 +6,7 @@ const SidebarHead = styled.div`
   padding: 0.5rem;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 `;
 
 export default SidebarHead;

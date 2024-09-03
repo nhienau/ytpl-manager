@@ -30,11 +30,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route errorElement={<RouteFallback />}>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-        </Route>
         <Route element={<AuthLayout />}>
           <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
           </Route>
           <Route path="/login/google" element={<GoogleSignIn />} />

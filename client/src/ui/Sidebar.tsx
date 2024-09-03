@@ -6,7 +6,7 @@ import SidebarMain from "./SidebarMain";
 
 const sidebar = css`
   visibility: visible;
-  width: 240px;
+  width: 256px;
   border-right: 1px solid var(--color-neutral-300);
 
   display: flex;
@@ -16,6 +16,7 @@ const sidebar = css`
 const sidebarHidden = css`
   width: 0;
   visibility: hidden;
+  overflow: hidden;
 `;
 
 const StyledSidebar = styled.aside`
