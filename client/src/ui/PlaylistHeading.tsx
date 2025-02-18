@@ -50,7 +50,7 @@ const Button = styled.button`
 `;
 
 function PlaylistHeading() {
-  const { isFetching } = usePlaylists();
+  const { isPending } = usePlaylists();
   const queryClient = useQueryClient();
 
   function handleReload() {
@@ -60,7 +60,7 @@ function PlaylistHeading() {
   return (
     <Box>
       <Span>Your playlists</Span>
-      <Button onClick={handleReload} disabled={isFetching}>
+      <Button onClick={handleReload} disabled={isPending}>
         <HiOutlineArrowPath />
       </Button>
     </Box>

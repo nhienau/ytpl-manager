@@ -4,9 +4,9 @@ import FullPage from "./FullPage";
 import Spinner from "./Spinner";
 
 function AuthLayout() {
-  const { channel, isLoading } = useChannelInfo();
+  const { data: channel, isPending } = useChannelInfo();
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <FullPage>
         <Spinner />

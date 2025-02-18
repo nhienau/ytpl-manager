@@ -4,7 +4,7 @@ export function filterAndSortPlaylists(playlists, query, sortCriteria) {
   if (playlists.length === 0) return playlists;
 
   const filteredResults = playlists.filter((item) =>
-    item.snippet.title.toLowerCase().includes(query.toLowerCase())
+    item.title.toLowerCase().includes(query.toLowerCase())
   );
 
   const sortByRaw = sortCriteria.value || PLAYLIST_SORT_CRITERIAS[0].value;
@@ -15,15 +15,13 @@ export function filterAndSortPlaylists(playlists, query, sortCriteria) {
   if (field === "name") {
     sortedResults = filteredResults.sort(
       (a, b) =>
-        a.snippet.title
-          .toLowerCase()
-          .localeCompare(b.snippet.title.toLowerCase()) * multiplier
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()) * multiplier
     );
   } else {
     sortedResults = filteredResults.toSorted(
       (a, b) =>
-        (new Date(a.snippet.publishedAt).getTime() -
-          new Date(b.snippet.publishedAt).getTime()) *
+        (new Date(a.publishedAt).getTime() -
+          new Date(b.publishedAt).getTime()) *
         multiplier
     );
   }

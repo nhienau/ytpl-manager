@@ -7,18 +7,18 @@ import Spinner from "./Spinner";
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
 
-  const { isLoading, isFetching, isAuthenticated } = useChannelInfo();
+  const { isPending, isAuthenticated } = useChannelInfo();
 
   useEffect(
     function () {
-      if (!isAuthenticated && !isLoading && !isFetching) {
+      if (!isAuthenticated && !isPending) {
         navigate("/login");
       }
     },
-    [isAuthenticated, isLoading, isFetching, navigate]
+    [isAuthenticated, isPending, navigate]
   );
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <FullPage>
         <Spinner />
