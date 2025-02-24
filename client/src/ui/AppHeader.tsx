@@ -24,6 +24,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
+  flex-shrink: 0;
 
   @media (min-width: 50rem) {
     justify-content: ${(props) =>

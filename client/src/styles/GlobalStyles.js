@@ -72,7 +72,9 @@ const GlobalStyles = createGlobalStyle`
 }
 
 body {
-  font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  /* font-family: Geist, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: var(--color-neutral-50);
   color: var(--color-neutral-800);

@@ -18,8 +18,21 @@ const StyledMainContent = styled.div`
 
 const StyledMain = styled.main`
   background-color: var(--color-neutral-200);
+  padding: 2.5rem 4rem 3rem;
   overflow: auto;
   flex-grow: 1;
+`;
+
+const Container = styled.div`
+  max-width: 120rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+  height: 100%;
+  max-height: 70rem;
+
+  container-type: inline-size;
 `;
 
 function AppLayout() {
@@ -30,7 +43,9 @@ function AppLayout() {
         <StyledMainContent>
           <AppHeader />
           <StyledMain>
-            <Outlet />
+            <Container>
+              <Outlet />
+            </Container>
           </StyledMain>
         </StyledMainContent>
       </StyledAppLayout>

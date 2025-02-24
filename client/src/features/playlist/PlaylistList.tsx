@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
-import PlaylistItem from "./PlaylistItem";
 import { usePlaylistOperations } from "../../context/PlaylistOperationsContext";
 import { usePlaylists } from "./usePlaylists";
 import SpinnerMini from "../../ui/SpinnerMini";
 import { filterAndSortPlaylists } from "../../utils/playlist";
 import { Navigate } from "react-router-dom";
+import PlaylistRow from "./PlaylistRow";
 
 const StyledNav = styled.nav`
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
@@ -67,7 +67,7 @@ function PlaylistList() {
       <StyledList>
         {results.map((item) => (
           <StyledListItem key={item.id}>
-            <PlaylistItem id={item.id} title={item.title} />
+            <PlaylistRow id={item.id} title={item.title} />
           </StyledListItem>
         ))}
       </StyledList>
