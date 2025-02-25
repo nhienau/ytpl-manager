@@ -12,7 +12,7 @@ const Button = styled(Menus.Button)`
     ${(props) =>
       props.$isSelected &&
       css`
-        font-weight: 500;
+        font-weight: 600;
       `}
   }
 `;
