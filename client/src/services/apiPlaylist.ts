@@ -38,7 +38,6 @@ export async function getPlaylistItems(playlistId, pageToken) {
       );
       error.status = res.status;
       error.data = data;
-      console.log(error.data);
       throw error;
     }
     return data;
