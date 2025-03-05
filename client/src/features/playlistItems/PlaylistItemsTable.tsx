@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PlaylistItemsContainer from "./PlaylistItemsContainer";
 import PlaylistItemsPagination from "./PlaylistItemsPagination";
+import PlaylistTitle from "./PlaylistTitle";
 
 const Table = styled.div`
   display: flex;
@@ -9,16 +10,10 @@ const Table = styled.div`
   background-color: var(--color-neutral-100);
 `;
 
-const PlaylistName = styled.div`
-  padding: 1rem;
-`;
-
 function PlaylistItemsTable() {
   return (
     <Table>
-      <PlaylistName>
-        <span>playlist name</span>
-      </PlaylistName>
+      <PlaylistTitle />
       <PlaylistItemsContainer />
       <PlaylistItemsPagination />
     </Table>

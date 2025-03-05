@@ -1,3 +1,5 @@
+const { getPlaylistItems, getPlaylistInfo } = require("../services/playlist");
+
 const router = require("express").Router();
 
 router.get("/info", async (req, res) => {
@@ -102,60 +104,18 @@ router.get("/playlist/:id", async (req, res) => {
   }
   const playlistId = req.params.id;
   const { pageToken } = req.query;
-  const params = {
-    part: "snippet,contentDetails",
-    maxResults: 50,
-    playlistId,
-    ...(pageToken && { pageToken }),
-  };
 
-  const strParams = new URLSearchParams(params).toString();
-  const response = await fetch(
-    `https://www.googleapis.com/youtube/v3/playlistItems?${strParams}`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
-  let data = await response.json();
+  const [infoResponse, itemsResponse] = await Promise.allSettled([
+    getPlaylistInfo(playlistId, accessToken),
+    getPlaylistItems(playlistId, pageToken, accessToken),
+  ]);
 
-  if (data?.error?.errors[0].reason === "invalidPageToken") {
-    // If page token is invalid, refetch items without page token
-    delete params.pageToken;
-    const strParams = new URLSearchParams(params).toString();
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?${strParams}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    data = await response.json();
-  }
-
-  if (data?.error) {
-    res.status(data.error.code).json(data.error);
+  if (!itemsResponse.value.success) {
+    res.status(itemsResponse.value.code).json(itemsResponse.value);
     return;
   }
 
-  const { items, prevPageToken, nextPageToken } = data;
-
-  const results = items.map((playlist) => {
-    const { id, snippet, contentDetails } = playlist;
-    return {
-      id,
-      ...snippet,
-      ...contentDetails,
-    };
-  });
-
-  res.status(200).json({
-    data: results,
-    prevPageToken,
-    nextPageToken,
-  });
+  res.status(200).json({ ...infoResponse.value.data, ...itemsResponse.value });
 });
 
 module.exports = router;

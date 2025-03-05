@@ -10,11 +10,8 @@ export function usePlaylistItems() {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["playlist", playlistId, pageToken],
     queryFn: () => getPlaylistItems(playlistId, pageToken),
-    retry: (failureCount: number, error: Error) => {
-      if (error.status === 401) return false;
-      // Retry other errors up to 3 times
-      return failureCount < 2;
-    },
+    retry: false,
+    refetchOnWindowFocus: false,
     throwOnError: false,
   });
   return { isPending, isError, data, error };
