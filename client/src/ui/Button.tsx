@@ -25,7 +25,7 @@ const Button = styled.button`
     flex-shrink: 0;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-neutral-300);
   }
 

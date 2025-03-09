@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
+import { useCheckboxes } from "../../context/CheckboxesContext";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -24,12 +25,22 @@ const StyledInfo = styled.div`
   gap: 0.25rem;
 `;
 
-const Title = styled.span`
+const Title = styled.a`
   font-weight: 700;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const Channel = styled.a`
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Metadata = styled.span`
@@ -40,6 +51,14 @@ const Metadata = styled.span`
 `;
 
 function PlaylistItemRow({ playlistItem }) {
+  const { id } = playlistItem;
+  const { checked, add, remove } = useCheckboxes();
+
+  function handleChange(e) {
+    const checked = e.target.checked;
+    checked ? add(playlistItem) : remove(playlistItem);
+  }
+
   const {
     title,
     thumbnails,
@@ -50,14 +69,31 @@ function PlaylistItemRow({ playlistItem }) {
   } = playlistItem;
   return (
     <StyledPlaylistItemRow>
+      <input
+        type="checkbox"
+        checked={checked.findIndex((el) => el.id === id) !== -1}
+        onChange={handleChange}
+      />
       <StyledThumbnail
         src={thumbnails?.medium?.url || thumbnails?.default?.url}
         alt={title}
       />
       <StyledInfo>
-        <Title>{title}</Title>
+        <Title
+          href={`https://youtu.be/${videoId}`}
+          target="_blank"
+          title={title}
+        >
+          {title}
+        </Title>
         <Metadata>
-          <span>{videoOwnerChannelTitle}</span>
+          <Channel
+            href={`https://www.youtube.com/channel/${videoOwnerChannelId}`}
+            target="_blank"
+            title={videoOwnerChannelTitle}
+          >
+            {videoOwnerChannelTitle}
+          </Channel>
           {videoPublishedAt && (
             <>
               <span>•</span>
