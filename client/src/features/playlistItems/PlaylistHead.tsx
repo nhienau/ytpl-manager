@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 import { useCheckboxes } from "../../context/CheckboxesContext";
 import { usePlaylistItems } from "./usePlaylistItems";
+import ButtonReloadPlaylist from "./ButtonReloadPlaylist";
 
 const StyledPlaylistHead = styled.div`
   padding: 1rem 0.75rem;
@@ -53,7 +54,7 @@ function PlaylistHead() {
         ) : (
           <>
             <Title>{data?.title}</Title>
-            <Button>Reload</Button>
+            <ButtonReloadPlaylist />
             <Button>Show more</Button>
           </>
         )}
