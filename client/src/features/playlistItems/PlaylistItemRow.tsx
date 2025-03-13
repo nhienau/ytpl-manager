@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
 import { useCheckboxes } from "../../context/CheckboxesContext";
+import { HiOutlineEyeSlash, HiOutlineGlobeAlt } from "react-icons/hi2";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -38,6 +39,11 @@ const Title = styled.a`
 `;
 
 const Channel = styled.a`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+
   &:hover {
     text-decoration: underline;
   }
@@ -46,8 +52,15 @@ const Channel = styled.a`
 const Metadata = styled.span`
   font-size: 0.75rem;
   display: flex;
-  gap: 0.25rem;
+  align-items: center;
+  flex-wrap: wrap;
   color: var(--color-neutral-600);
+
+  & svg {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
 `;
 
 function PlaylistItemRow({ playlistItem }) {
@@ -66,7 +79,14 @@ function PlaylistItemRow({ playlistItem }) {
     videoOwnerChannelTitle,
     videoOwnerChannelId,
     videoPublishedAt,
+    status: { privacyStatus },
   } = playlistItem;
+
+  const statusIcon = {
+    public: <HiOutlineGlobeAlt title="Public" />,
+    unlisted: <HiOutlineEyeSlash title="Unlisted" />,
+  };
+
   return (
     <StyledPlaylistItemRow>
       <input
@@ -87,17 +107,25 @@ function PlaylistItemRow({ playlistItem }) {
           {title}
         </Title>
         <Metadata>
-          <Channel
-            href={`https://www.youtube.com/channel/${videoOwnerChannelId}`}
-            target="_blank"
-            title={videoOwnerChannelTitle}
-          >
-            {videoOwnerChannelTitle}
-          </Channel>
+          {videoOwnerChannelId && (
+            <Channel
+              href={`https://www.youtube.com/channel/${videoOwnerChannelId}`}
+              target="_blank"
+              title={videoOwnerChannelTitle}
+            >
+              {videoOwnerChannelTitle}
+            </Channel>
+          )}
           {videoPublishedAt && (
             <>
-              <span>•</span>
+              <span aria-hidden={true}>&nbsp;•&nbsp;</span>
               <span>{formatDate(videoPublishedAt)}</span>
+            </>
+          )}
+          {statusIcon[privacyStatus] && (
+            <>
+              <span aria-hidden={true}>&nbsp;•&nbsp;</span>
+              {statusIcon[privacyStatus]}
             </>
           )}
         </Metadata>

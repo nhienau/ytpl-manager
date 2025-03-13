@@ -67,7 +67,7 @@ function PlaylistList() {
       <StyledList>
         {results.map((item) => (
           <StyledListItem key={item.id}>
-            <PlaylistRow id={item.id} title={item.title} />
+            <PlaylistRow playlist={item} />
           </StyledListItem>
         ))}
       </StyledList>

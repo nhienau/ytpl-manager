@@ -1,6 +1,6 @@
 async function getPlaylistInfo(playlistId, accessToken) {
   const params = {
-    part: "snippet",
+    part: "snippet,status",
     id: playlistId,
   };
   const strParams = new URLSearchParams(params).toString();
@@ -40,7 +40,7 @@ async function getPlaylistInfo(playlistId, accessToken) {
 
 async function getPlaylistItems(playlistId, pageToken = "", accessToken) {
   const params = {
-    part: "snippet,contentDetails",
+    part: "snippet,contentDetails,status",
     maxResults: 50,
     playlistId,
     ...(pageToken && { pageToken }),
@@ -79,7 +79,7 @@ async function getPlaylistItems(playlistId, pageToken = "", accessToken) {
   const { items, prevPageToken, nextPageToken } = data;
 
   const results = items.map((playlist) => {
-    const { id, snippet, contentDetails } = playlist;
+    const { id, snippet, contentDetails, status } = playlist;
     const {
       publishedAt,
       title,
@@ -92,6 +92,7 @@ async function getPlaylistItems(playlistId, pageToken = "", accessToken) {
     return {
       id,
       publishedAt,
+      status,
       title,
       thumbnails,
       videoOwnerChannelTitle,

@@ -51,7 +51,7 @@ router.get("/playlist/list", async (req, res) => {
     return;
   }
   const params = {
-    part: "snippet",
+    part: "snippet,status",
     mine: true,
     maxResults: 50,
   };
@@ -79,11 +79,12 @@ router.get("/playlist/list", async (req, res) => {
   } while (pageToken !== "");
 
   results = results.map((playlist) => {
-    const { id, snippet } = playlist;
+    const { id, snippet, status } = playlist;
     const { publishedAt, title, thumbnails } = snippet;
     return {
       id,
       publishedAt,
+      status,
       title,
       thumbnails,
     };
