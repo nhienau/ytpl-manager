@@ -1,14 +1,9 @@
 import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
 import { useCheckboxes } from "../../context/CheckboxesContext";
-import {
-  HiOutlineCheck,
-  HiOutlineEyeSlash,
-  HiOutlineGlobeAlt,
-} from "react-icons/hi2";
-import { useQueue } from "../../context/QueueContext";
+import { HiOutlineEyeSlash, HiOutlineGlobeAlt } from "react-icons/hi2";
 
-const StyledPlaylistItemRow = styled.div`
+const StyledQueueItem = styled.div`
   display: flex;
   gap: 0.625rem;
   padding: 0.75rem;
@@ -68,15 +63,7 @@ const Metadata = styled.span`
   }
 `;
 
-const Actions = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-function PlaylistItemRow({ playlistItem }) {
+function QueueItem({ playlistItem }) {
   const {
     id,
     title,
@@ -88,11 +75,6 @@ function PlaylistItemRow({ playlistItem }) {
     status: { privacyStatus },
   } = playlistItem;
   const { checked, add, remove } = useCheckboxes();
-  const { queue } = useQueue();
-  const isInQueue = queue.some((item) => item.id === id);
-
-  const isWatchableVideo =
-    privacyStatus === "public" || privacyStatus === "unlisted";
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
@@ -105,12 +87,11 @@ function PlaylistItemRow({ playlistItem }) {
   }
 
   return (
-    <StyledPlaylistItemRow>
+    <StyledQueueItem>
       <input
         type="checkbox"
         checked={checked.findIndex((el) => el.id === id) !== -1}
         onChange={handleChange}
-        disabled={!isWatchableVideo || isInQueue}
       />
       <StyledThumbnail
         src={thumbnails?.medium?.url || thumbnails?.default?.url}
@@ -148,11 +129,8 @@ function PlaylistItemRow({ playlistItem }) {
           )}
         </Metadata>
       </StyledInfo>
-      <Actions>
-        {isInQueue && <HiOutlineCheck title="Added to queue" />}
-      </Actions>
-    </StyledPlaylistItemRow>
+    </StyledQueueItem>
   );
 }
 
-export default PlaylistItemRow;
+export default QueueItem;

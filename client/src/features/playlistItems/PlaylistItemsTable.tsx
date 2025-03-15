@@ -51,7 +51,13 @@ function PlaylistItemsTable() {
         </Box>
       )}
       {!isPending && !isError && (
-        <CheckboxesProvider allElements={data?.data}>
+        <CheckboxesProvider
+          allElements={data?.data.filter(
+            (item) =>
+              item.status.privacyStatus === "public" ||
+              item.status.privacyStatus === "unlisted"
+          )}
+        >
           <PlaylistHead />
           <PlaylistItemsContainer />
         </CheckboxesProvider>

@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import Button from "../../ui/Button";
 import { useCheckboxes } from "../../context/CheckboxesContext";
-import { usePlaylistItems } from "./usePlaylistItems";
-import ButtonReloadPlaylist from "./ButtonReloadPlaylist";
+import Button from "../../ui/Button";
 import { useQueue } from "../../context/QueueContext";
 
-const StyledPlaylistHead = styled.div`
+const StyledQueueHead = styled.div`
   padding: 1rem 0.75rem;
   display: flex;
   justify-content: space-between;
@@ -19,17 +17,8 @@ const Box = styled.div`
   gap: 0.5rem;
 `;
 
-const Title = styled.span`
-  font-weight: 700;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-`;
-
-function PlaylistHead() {
-  const { data } = usePlaylistItems();
-  const { add } = useQueue();
+function QueueHead() {
+  const { remove } = useQueue();
   const { selectAll, clearAll, checked } = useCheckboxes();
 
   function handleChange(e) {
@@ -37,13 +26,13 @@ function PlaylistHead() {
     checked ? selectAll() : clearAll();
   }
 
-  function handleAddToQueue() {
-    add(checked);
+  function handleRemove() {
+    remove(checked);
     clearAll();
   }
 
   return (
-    <StyledPlaylistHead>
+    <StyledQueueHead>
       <Box>
         <input
           type="checkbox"
@@ -55,15 +44,10 @@ function PlaylistHead() {
             <span>
               {checked.length} video{checked.length === 1 ? "" : "s"} selected
             </span>
-            <Button onClick={handleAddToQueue}>Add to queue</Button>
-            <Button>Delete</Button>
+            <Button onClick={handleRemove}>Remove from queue</Button>
           </>
         ) : (
-          <>
-            <Title>{data?.title}</Title>
-            <ButtonReloadPlaylist />
-            <Button>Show more</Button>
-          </>
+          <span>Your queue</span>
         )}
       </Box>
       <Box>
@@ -72,8 +56,8 @@ function PlaylistHead() {
           Deselect all
         </Button>
       </Box>
-    </StyledPlaylistHead>
+    </StyledQueueHead>
   );
 }
 
-export default PlaylistHead;
+export default QueueHead;
