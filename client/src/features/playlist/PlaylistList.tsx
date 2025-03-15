@@ -1,9 +1,10 @@
 import styled, { css } from "styled-components";
-import PlaylistItem from "./PlaylistItem";
 import { usePlaylistOperations } from "../../context/PlaylistOperationsContext";
 import { usePlaylists } from "./usePlaylists";
 import SpinnerMini from "../../ui/SpinnerMini";
 import { filterAndSortPlaylists } from "../../utils/playlist";
+import { Navigate } from "react-router-dom";
+import PlaylistRow from "./PlaylistRow";
 
 const StyledNav = styled.nav`
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
@@ -37,10 +38,10 @@ const Span = styled.span`
 `;
 
 function PlaylistList() {
-  const { isLoading, playlists, isFetching } = usePlaylists();
+  const { isPending, data, isError, error } = usePlaylists();
   const { sortCriteria, query } = usePlaylistOperations();
 
-  if (isLoading || isFetching) {
+  if (isPending) {
     return (
       <StyledNav $isLoading={true}>
         <SpinnerMini />
@@ -48,21 +49,25 @@ function PlaylistList() {
     );
   }
 
-  const results = filterAndSortPlaylists(playlists.items, query, sortCriteria);
-  if (results.length === 0) {
+  if (isError && error?.status === 401) {
+    return <Navigate to="/test" />;
+  }
+
+  if (data.length === 0) {
     return (
       <StyledNav>
         <Span>No playlists found</Span>
       </StyledNav>
     );
   }
+  const results = filterAndSortPlaylists(data, query, sortCriteria);
 
   return (
     <StyledNav>
       <StyledList>
         {results.map((item) => (
           <StyledListItem key={item.id}>
-            <PlaylistItem id={item.id} title={item.snippet.title} />
+            <PlaylistRow playlist={item} />
           </StyledListItem>
         ))}
       </StyledList>

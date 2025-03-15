@@ -24,7 +24,6 @@ import { SidebarProvider } from "./context/SidebarContext";
 import { handleQueryError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
-import Playlist from "./pages/Playlist";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,7 +45,7 @@ const router = createBrowserRouter(
           }
         >
           <Route path="/app" element={<MainApp />} />
-          <Route path="/app/playlist/:playlistId" element={<Playlist />} />
+          <Route path="/app/playlist/:playlistId" element={<MainApp />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Route>
@@ -57,7 +56,7 @@ const router = createBrowserRouter(
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,
+      staleTime: 10 * 60 * 1000,
     },
   },
   queryCache: new QueryCache({
@@ -71,7 +70,17 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
-        <RouterProvider router={router} />
+        <RouterProvider
+          router={router}
+          future={{
+            v7_fetcherPersist: true,
+            v7_normalizeFormMethod: true,
+            v7_partialHydration: true,
+            v7_relativeSplatPath: true,
+            v7_skipActionErrorRevalidation: true,
+            v7_startTransition: true,
+          }}
+        />
       </QueryClientProvider>
     </SidebarProvider>
   );

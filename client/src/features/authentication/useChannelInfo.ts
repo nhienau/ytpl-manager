@@ -2,11 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getLoggedInChannelInfo } from "../../services/apiAuth";
 
 export function useChannelInfo() {
-  const {
-    isLoading,
-    data: channel,
-    isFetching,
-  } = useQuery({
+  const { isPending, isError, data, error } = useQuery({
     queryKey: ["channel"],
     queryFn: getLoggedInChannelInfo,
     staleTime: Infinity,
@@ -15,9 +11,10 @@ export function useChannelInfo() {
     throwOnError: true,
   });
   return {
-    isLoading,
-    channel,
-    isFetching,
-    isAuthenticated: channel !== undefined && channel !== null,
+    isPending,
+    isError,
+    data,
+    error,
+    isAuthenticated: data !== undefined && data !== null,
   };
 }

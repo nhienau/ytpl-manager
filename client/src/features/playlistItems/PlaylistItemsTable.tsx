@@ -1,0 +1,70 @@
+import styled from "styled-components";
+import { Navigate } from "react-router-dom";
+import { CheckboxesProvider } from "../../context/CheckboxesContext";
+import PlaylistHead from "./PlaylistHead";
+import PlaylistItemsContainer from "./PlaylistItemsContainer";
+import PlaylistItemsPagination from "./PlaylistItemsPagination";
+import Spinner from "../../ui/Spinner";
+import { usePlaylistItems } from "./usePlaylistItems";
+
+const Table = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  background-color: var(--color-neutral-100);
+`;
+
+const Box = styled.div`
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+function PlaylistItemsTable() {
+  const { isPending, data, isError, error } = usePlaylistItems();
+
+  if (isError) {
+    if (error.status === 401) {
+      return <Navigate to="/test" />;
+    } else if (
+      error.status === 404 &&
+      error.data?.errors[0]?.reason === "playlistNotFound"
+    ) {
+      return (
+        <Table>
+          <Box>
+            <span>Playlist not found</span>
+          </Box>
+        </Table>
+      );
+    } else {
+      throw new Error(error);
+    }
+  }
+
+  return (
+    <Table>
+      {isPending && (
+        <Box>
+          <Spinner />
+        </Box>
+      )}
+      {!isPending && !isError && (
+        <CheckboxesProvider
+          allElements={data?.data.filter(
+            (item) =>
+              item.status.privacyStatus === "public" ||
+              item.status.privacyStatus === "unlisted"
+          )}
+        >
+          <PlaylistHead />
+          <PlaylistItemsContainer />
+        </CheckboxesProvider>
+      )}
+      <PlaylistItemsPagination />
+    </Table>
+  );
+}
+
+export default PlaylistItemsTable;

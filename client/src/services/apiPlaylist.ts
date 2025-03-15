@@ -9,8 +9,36 @@ export async function getPlaylists() {
       }
     );
     const data = await res.json();
-    if (res.status === 403) {
-      return null;
+    if (!res.ok) {
+      const error = new Error(data.error.message || "API error");
+      error.status = res.status;
+      error.data = data;
+      throw error;
+    }
+    return data;
+  } catch (e) {
+    handleApiException(e);
+  }
+}
+
+export async function getPlaylistItems(playlistId, pageToken) {
+  try {
+    const res = await fetch(
+      `${
+        import.meta.env.VITE_API_BASE_URL
+      }/api/youtube/playlist/${playlistId}?pageToken=${pageToken}`,
+      {
+        credentials: "include",
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      const error = new Error(
+        data.error?.message || data.message || "API error"
+      );
+      error.status = res.status;
+      error.data = data;
+      throw error;
     }
     return data;
   } catch (e) {

@@ -9,7 +9,7 @@ export async function getLoggedInChannelInfo() {
       }
     );
     const data = await res.json();
-    if (res.status === 403) {
+    if (res.status === 401) {
       return null;
     } else if (res.status === 404) {
       await logout();

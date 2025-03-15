@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { getDropdownListPosition } from "../utils/dropdown";
+import Button from "./Button";
 
 const variations = {
   dropup: css`
@@ -35,35 +36,10 @@ const StyledList = styled.ul`
   z-index: 1001;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  border-radius: 0.5rem;
-
-  & span {
-    font-size: 0.875rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  & svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-  }
-
-  &:hover {
-    background-color: var(--color-neutral-300);
-  }
 `;
 
 const MenusContext = createContext(null);
@@ -139,7 +115,7 @@ function List({ id, children, domNodeId, className }) {
   );
 }
 
-function Button({ children, className, icon, onClick }) {
+function MenuButton({ children, className, icon, onClick }) {
   const { close } = useContext(MenusContext);
 
   function handleClick() {
@@ -160,6 +136,6 @@ function Button({ children, className, icon, onClick }) {
 Menus.Menu = Menu;
 Menus.Toggle = Toggle;
 Menus.List = List;
-Menus.Button = Button;
+Menus.Button = MenuButton;
 
 export default Menus;

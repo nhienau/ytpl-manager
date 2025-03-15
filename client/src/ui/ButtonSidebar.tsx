@@ -9,7 +9,6 @@ const StyledButtonSidebar = styled.button`
   align-items: center;
   padding: 0.375rem;
   border-radius: 0.5rem;
-  transition: all 0.3s;
   flex-shrink: 0;
 
   &:hover {

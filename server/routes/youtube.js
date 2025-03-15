@@ -1,9 +1,11 @@
+const { getPlaylistItems, getPlaylistInfo } = require("../services/playlist");
+
 const router = require("express").Router();
 
 router.get("/info", async (req, res) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
-    res.status(403).json({
+    res.status(401).json({
       error: {
         message: "Unauthorized",
       },
@@ -14,16 +16,16 @@ router.get("/info", async (req, res) => {
     part: "snippet",
     mine: true,
   };
-  const strParams = new URLSearchParams(params).toString();
-  const channelInfo = await fetch(
-    `https://www.googleapis.com/youtube/v3/channels?${strParams}`,
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/channels?${queryString}`,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     }
   );
-  const data = await channelInfo.json();
+  const data = await response.json();
 
   if (!data.items) {
     res.status(404).json({
@@ -34,14 +36,14 @@ router.get("/info", async (req, res) => {
     });
     return;
   }
-
-  res.status(200).json(data);
+  const { id, snippet: channel } = data.items[0];
+  res.status(200).json({ id, ...channel });
 });
 
 router.get("/playlist/list", async (req, res) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
-    res.status(403).json({
+    res.status(401).json({
       error: {
         message: "Unauthorized",
       },
@@ -49,7 +51,7 @@ router.get("/playlist/list", async (req, res) => {
     return;
   }
   const params = {
-    part: "snippet",
+    part: "snippet,status",
     mine: true,
     maxResults: 50,
   };
@@ -76,9 +78,45 @@ router.get("/playlist/list", async (req, res) => {
     }
   } while (pageToken !== "");
 
-  res.status(200).json({
-    items: results,
+  results = results.map((playlist) => {
+    const { id, snippet, status } = playlist;
+    const { publishedAt, title, thumbnails } = snippet;
+    return {
+      id,
+      publishedAt,
+      status,
+      title,
+      thumbnails,
+    };
   });
+
+  res.status(200).json(results);
+});
+
+router.get("/playlist/:id", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  if (!accessToken) {
+    res.status(401).json({
+      error: {
+        message: "Unauthorized",
+      },
+    });
+    return;
+  }
+  const playlistId = req.params.id;
+  const { pageToken } = req.query;
+
+  const [infoResponse, itemsResponse] = await Promise.allSettled([
+    getPlaylistInfo(playlistId, accessToken),
+    getPlaylistItems(playlistId, pageToken, accessToken),
+  ]);
+
+  if (!itemsResponse.value.success) {
+    res.status(itemsResponse.value.code).json(itemsResponse.value);
+    return;
+  }
+
+  res.status(200).json({ ...infoResponse.value.data, ...itemsResponse.value });
 });
 
 module.exports = router;

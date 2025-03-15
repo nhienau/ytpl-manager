@@ -32,8 +32,8 @@ function UserInfo({
   customUrlSize = 1,
   displayCustomUrl = true,
 }) {
-  const { channel } = useChannelInfo();
-  const { title: name, customUrl, thumbnails } = channel.items[0].snippet;
+  const { data: channel } = useChannelInfo();
+  const { title: name, customUrl, thumbnails } = channel;
   const avatarUrl = thumbnails.default.url;
   return (
     <StyledUserInfo

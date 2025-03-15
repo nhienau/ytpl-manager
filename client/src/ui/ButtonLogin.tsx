@@ -20,9 +20,9 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function ButtonLogin() {
-  const { isLoading, isAuthenticated } = useChannelInfo();
+  const { isPending, isAuthenticated } = useChannelInfo();
 
-  if (isLoading)
+  if (isPending)
     return (
       <StyledListItem>
         <SpinnerMini $size={1.75} />

@@ -24,6 +24,7 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
+  flex-shrink: 0;
 
   @media (min-width: 50rem) {
     justify-content: ${(props) =>
@@ -77,9 +78,8 @@ function AppHeader() {
   const { isOpen, toggleSidebar } = useSidebar();
   const { logout, isPending: isLoggingOut } = useLogout();
 
-  const { channel } = useChannelInfo();
-  const { thumbnails } = channel.items[0].snippet;
-  const avatarUrl = thumbnails.default.url;
+  const { data: channel } = useChannelInfo();
+  const avatarUrl = channel.thumbnails.default.url;
 
   return (
     <StyledHeader $isOpen={isOpen}>

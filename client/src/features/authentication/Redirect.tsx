@@ -4,9 +4,9 @@ import FullPage from "../../ui/FullPage";
 import Spinner from "../../ui/Spinner";
 
 function RedirectVerification() {
-  const { isLoading, channel } = useChannelInfo();
+  const { isPending, data: channel } = useChannelInfo();
 
-  if (isLoading)
+  if (isPending)
     return (
       <FullPage>
         <Spinner />
@@ -14,7 +14,7 @@ function RedirectVerification() {
     );
 
   if (channel) return <Navigate to="/app" replace={true} />;
-  if (!isLoading && !channel) return <Navigate to="/login" replace={true} />;
+  if (!isPending && !channel) return <Navigate to="/login" replace={true} />;
 }
 
 export default RedirectVerification;
