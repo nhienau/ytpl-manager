@@ -2,7 +2,6 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import GetStarted from "../ui/GetStarted";
 import PlaylistItemsTable from "../features/playlistItems/PlaylistItemsTable";
-import { QueueProvider } from "../context/QueueContext";
 import QueueTable from "../features/queue/QueueTable";
 
 const Container = styled.div`
@@ -23,10 +22,8 @@ function MainApp() {
 
   return (
     <Container>
-      <QueueProvider>
-        {hasPlaylist ? <PlaylistItemsTable /> : <GetStarted />}
-        <QueueTable />
-      </QueueProvider>
+      {hasPlaylist ? <PlaylistItemsTable /> : <GetStarted />}
+      <QueueTable />
     </Container>
   );
 }

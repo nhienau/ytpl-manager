@@ -61,13 +61,27 @@ function Window({ children, name, $viewport = "all" }) {
 
   return createPortal(
     <StyledOverlay $viewport={$viewport}>
-      <div ref={ref}>{cloneElement(children, { onClose: close })}</div>
+      <div ref={ref}>{children}</div>
     </StyledOverlay>,
     document.body
   );
 }
 
+function Close({ children }) {
+  const { close } = useContext(TopLevelContext);
+
+  return cloneElement(children, { onClick: close });
+}
+
+function useTopLevel() {
+  const context = useContext(TopLevelContext);
+  if (context === undefined)
+    throw new Error("TopLevelContext was used outside of TopLevelProvider");
+  return context;
+}
+
 TopLevel.Open = Open;
 TopLevel.Window = Window;
+TopLevel.Close = Close;
 
-export default TopLevel;
+export { TopLevel, useTopLevel };

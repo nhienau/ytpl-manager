@@ -24,6 +24,8 @@ import { SidebarProvider } from "./context/SidebarContext";
 import { handleQueryError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
+import Operations from "./pages/Operations";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,6 +48,7 @@ const router = createBrowserRouter(
         >
           <Route path="/app" element={<MainApp />} />
           <Route path="/app/playlist/:playlistId" element={<MainApp />} />
+          <Route path="/app/operations" element={<Operations />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Route>
@@ -79,6 +82,17 @@ function App() {
             v7_relativeSplatPath: true,
             v7_skipActionErrorRevalidation: true,
             v7_startTransition: true,
+          }}
+        />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 5000,
+            },
           }}
         />
       </QueryClientProvider>

@@ -11,7 +11,7 @@ import ButtonSidebar from "./ButtonSidebar";
 import Menus from "./Menus";
 import Modal from "./Modal";
 import SidebarMobile from "./SidebarMobile";
-import TopLevel from "./TopLevel";
+import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
 import Divider from "./Divider";
 

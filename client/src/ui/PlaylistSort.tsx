@@ -52,7 +52,7 @@ const Span = styled.span`
   font-weight: 600;
 `;
 
-function PlaylistSort() {
+function PlaylistSort({ nodeId }) {
   const { sortCriteria } = usePlaylistOperations();
 
   return (
@@ -62,7 +62,7 @@ function PlaylistSort() {
         <span>{sortCriteria.label}</span>
       </SortToggle>
 
-      <StyledList id="sort" domNodeId="playlist-sort">
+      <StyledList id="sort" domNodeId={nodeId}>
         <Span>Sort by</Span>
         {PLAYLIST_SORT_CRITERIAS.map((criteria) => (
           <Criteria criteria={criteria} key={criteria.value} />

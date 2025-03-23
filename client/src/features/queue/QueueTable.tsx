@@ -3,6 +3,7 @@ import QueueHead from "./QueueHead";
 import QueueList from "./QueueList";
 import { CheckboxesProvider } from "../../context/CheckboxesContext";
 import { useQueue } from "../../context/QueueContext";
+import QueueActions from "./QueueActions";
 
 const StyledQueueTable = styled.div`
   display: flex;
@@ -38,6 +39,7 @@ function QueueTable() {
       <CheckboxesProvider allElements={queue}>
         <QueueHead />
         <QueueList />
+        <QueueActions />
       </CheckboxesProvider>
     </StyledQueueTable>
   );

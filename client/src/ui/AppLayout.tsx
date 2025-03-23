@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { PlaylistProvider } from "../context/PlaylistOperationsContext";
 import Sidebar from "./Sidebar";
 import AppHeader from "./AppHeader";
+import { QueueProvider } from "../context/QueueContext";
+import { VideoOperationsProvider } from "../context/VideoOperationsContext";
+import { WorkerProvider } from "../context/WorkerContext";
 
 const StyledAppLayout = styled.div`
   height: 100vh;
@@ -44,7 +47,13 @@ function AppLayout() {
           <AppHeader />
           <StyledMain>
             <Container>
-              <Outlet />
+              <WorkerProvider>
+                <VideoOperationsProvider>
+                  <QueueProvider>
+                    <Outlet />
+                  </QueueProvider>
+                </VideoOperationsProvider>
+              </WorkerProvider>
             </Container>
           </StyledMain>
         </StyledMainContent>

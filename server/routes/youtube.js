@@ -119,4 +119,10 @@ router.get("/playlist/:id", async (req, res) => {
   res.status(200).json({ ...infoResponse.value.data, ...itemsResponse.value });
 });
 
+router.get("/test", (req, res) => {
+  res.status(200).json({
+    success: true,
+  });
+});
+
 module.exports = router;
