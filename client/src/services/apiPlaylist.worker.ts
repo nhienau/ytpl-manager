@@ -1,6 +1,6 @@
 export default () => {
   async function fakeTask(data) {
-    await new Promise((res) => setTimeout(res, 2000));
+    await new Promise((res) => setTimeout(res, 5000));
     return { ...data, success: true };
   }
   self.addEventListener("message", async (e) => {

@@ -33,6 +33,7 @@ function ButtonSave({ playlistItems }) {
         playlist,
         video: item,
         status: "pending",
+        action: "add",
       }))
     );
     add(items);

@@ -1,7 +1,9 @@
+import OperationsTable from "../features/operations/OperationsTable";
+
 function Operations() {
   return (
     <div>
-      <p>Operation page</p>
+      <OperationsTable />
     </div>
   );
 }

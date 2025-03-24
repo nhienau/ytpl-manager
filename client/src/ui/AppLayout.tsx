@@ -31,7 +31,7 @@ const Container = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 2rem;
   height: 100%;
   max-height: 70rem;
 
