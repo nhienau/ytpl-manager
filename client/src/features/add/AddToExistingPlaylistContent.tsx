@@ -4,6 +4,14 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import PlaylistRow from "./PlaylistRow";
 import { CheckboxesProvider } from "../../context/CheckboxesContext";
 import ButtonSave from "./ButtonSave";
+import { useState } from "react";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: auto;
+`;
 
 const Box = styled.div`
   ${(props) =>
@@ -17,8 +25,16 @@ const Box = styled.div`
         `}
 `;
 
+const Option = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
 function AddToExistingPlaylistContent({ playlistItems }) {
   const { isPending, data } = usePlaylists();
+  const [deleteFromInitialPlaylist, setDeleteFromInitialPlaylist] =
+    useState(false);
 
   if (isPending) {
     return (
@@ -36,16 +52,29 @@ function AddToExistingPlaylistContent({ playlistItems }) {
   }
 
   return (
-    <>
+    <Container>
       <CheckboxesProvider allElements={data}>
         <Box>
           {data.map((playlist) => (
             <PlaylistRow key={playlist.id} playlist={playlist} />
           ))}
         </Box>
-        <ButtonSave playlistItems={playlistItems} />
+        <Option>
+          <input
+            type="checkbox"
+            value={deleteFromInitialPlaylist}
+            onChange={(e) => setDeleteFromInitialPlaylist(e.target.checked)}
+            id="delete"
+            name="delete"
+          />
+          <label htmlFor="delete">Delete from initial playlist</label>
+        </Option>
+        <ButtonSave
+          playlistItems={playlistItems}
+          deleteFromInitialPlaylist={deleteFromInitialPlaylist}
+        />
       </CheckboxesProvider>
-    </>
+    </Container>
   );
 }
 

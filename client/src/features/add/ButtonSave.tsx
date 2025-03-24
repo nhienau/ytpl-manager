@@ -12,7 +12,7 @@ const Box = styled.div`
   align-items: center;
 `;
 
-function ButtonSave({ playlistItems }) {
+function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
   const { checked } = useCheckboxes();
   const { add, update } = useVideoOperations();
   const { close } = useTopLevel();
@@ -36,15 +36,35 @@ function ButtonSave({ playlistItems }) {
         action: "add",
       }))
     );
-    add(items);
+    let itemsToDelete = [];
+    if (deleteFromInitialPlaylist) {
+      itemsToDelete = playlistItems.map((item) => ({
+        id: crypto.randomUUID(),
+        video: item,
+        status: "pending",
+        action: "delete",
+      }));
+    }
+
+    add([...items, ...itemsToDelete]);
 
     worker.onmessage = (e) => {
       const { id, status } = e.data;
       update(id, { status });
     };
 
-    worker.postMessage(items);
-    toast.success("Start processing");
+    worker.postMessage({
+      config: {
+        apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
+      },
+      items: [...items, ...itemsToDelete],
+    });
+
+    toast.success(
+      `Adding ${playlistItems.length} video${
+        playlistItems.length !== 1 ? "s" : ""
+      } to selected playlists. You can check them out at the Operations tab.`
+    );
     close();
   }
 

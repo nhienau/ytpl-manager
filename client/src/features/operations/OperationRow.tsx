@@ -16,19 +16,19 @@ const Cell = styled.td`
     color: green;
   }
 
-  & svg.remove {
+  & svg.delete {
     color: red;
   }
 `;
 
 function OperationRow({ operation }) {
-  const { playlist, video, status, action } = operation;
+  const { playlist = {}, video, status, action } = operation;
 
   return (
     <tr>
       <Cell className="medium">
         {action === "add" && <HiOutlinePlus title="Add" className="add" />}
-        {action === "remove" && <HiXMark title="Remove" className="remove" />}
+        {action === "delete" && <HiXMark title="Delete" className="delete" />}
         <span title={playlist.title}>{playlist.title}</span>
       </Cell>
       <td>

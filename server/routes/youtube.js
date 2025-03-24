@@ -119,10 +119,103 @@ router.get("/playlist/:id", async (req, res) => {
   res.status(200).json({ ...infoResponse.value.data, ...itemsResponse.value });
 });
 
-router.get("/test", (req, res) => {
-  res.status(200).json({
-    success: true,
-  });
+router.post("/playlist/add", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  if (!accessToken) {
+    res.status(401).json({
+      error: {
+        message: "Unauthorized",
+      },
+    });
+    return;
+  }
+
+  const params = {
+    part: "snippet",
+  };
+
+  const requestBody = req.body;
+
+  if (!requestBody.snippet?.playlistId || !requestBody.snippet?.resourceId) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Missing paramaters: snippet.playlistId or snippet.resourceId",
+      },
+    });
+    return;
+  }
+
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlistItems?${queryString}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(req.body),
+    }
+  );
+  const data = await response.json();
+
+  if (data?.error) {
+    res.status(data?.error?.code).json({
+      success: false,
+      error: data?.error,
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+    });
+  }
+});
+
+router.delete("/playlist/delete", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  if (!accessToken) {
+    res.status(401).json({
+      error: {
+        message: "Unauthorized",
+      },
+    });
+    return;
+  }
+
+  if (!req.query.id) {
+    res.status(400).json({
+      error: {
+        message: "Missing parameter: id",
+      },
+    });
+    return;
+  }
+
+  const params = {
+    id: req.query.id,
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlistItems?${queryString}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const data = await response.json();
+    res.status(data?.error?.code).json({
+      success: false,
+      error: data?.error,
+    });
+  } else {
+    res.status(204).send();
+  }
 });
 
 module.exports = router;
