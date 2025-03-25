@@ -5,6 +5,7 @@ import { useVideoOperations } from "../../context/VideoOperationsContext";
 import { useTopLevel } from "../../ui/TopLevel";
 import toast from "react-hot-toast";
 import { useWorker } from "../../context/WorkerContext";
+import { useQueue } from "../../context/QueueContext";
 
 const Box = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
   const { add, update } = useVideoOperations();
   const { close } = useTopLevel();
   const worker = useWorker();
+  const { remove } = useQueue();
 
   function handleSave() {
     if (checked.length === 0) return;
@@ -44,6 +46,8 @@ function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
         status: "pending",
         action: "delete",
       }));
+
+      remove(playlistItems);
     }
 
     add([...items, ...itemsToDelete]);
