@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
 import { useCheckboxes } from "../../context/CheckboxesContext";
 import { HiOutlineEyeSlash, HiOutlineGlobeAlt } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const StyledQueueItem = styled.div`
   display: flex;
@@ -63,6 +64,19 @@ const Metadata = styled.span`
   }
 `;
 
+const PlaylistTitle = styled.span`
+  font-size: 0.75rem;
+  color: var(--color-neutral-600);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+
+  & a:hover {
+    text-decoration: underline;
+  }
+`;
+
 function QueueItem({ playlistItem }) {
   const {
     id,
@@ -73,6 +87,7 @@ function QueueItem({ playlistItem }) {
     videoOwnerChannelId,
     videoPublishedAt,
     status: { privacyStatus },
+    playlist: { id: playlistId, title: playlistTitle },
   } = playlistItem;
   const { checked, add, remove } = useCheckboxes();
 
@@ -128,6 +143,12 @@ function QueueItem({ playlistItem }) {
             </>
           )}
         </Metadata>
+        <PlaylistTitle>
+          Added from{" "}
+          <Link to={`/app/playlist/${playlistId}`} title={playlistTitle}>
+            {playlistTitle}
+          </Link>
+        </PlaylistTitle>
       </StyledInfo>
     </StyledQueueItem>
   );

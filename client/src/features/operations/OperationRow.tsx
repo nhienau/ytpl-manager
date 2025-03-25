@@ -22,14 +22,25 @@ const Cell = styled.td`
 `;
 
 function OperationRow({ operation }) {
-  const { playlist = {}, video, status, action } = operation;
+  const { video, status, action } = operation;
 
   return (
     <tr>
       <Cell className="medium">
-        {action === "add" && <HiOutlinePlus title="Add" className="add" />}
-        {action === "delete" && <HiXMark title="Delete" className="delete" />}
-        <span title={playlist.title}>{playlist.title}</span>
+        {action === "add" && (
+          <>
+            <HiOutlinePlus title="Add" className="add" />
+            <span title={operation.playlist.title}>
+              {operation.playlist.title}
+            </span>
+          </>
+        )}
+        {action === "delete" && (
+          <>
+            <HiXMark title="Delete" className="delete" />
+            <span title={video.playlist.title}>{video.playlist.title}</span>
+          </>
+        )}
       </Cell>
       <td>
         <span title={video.title}>{video.title}</span>

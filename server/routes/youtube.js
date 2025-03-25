@@ -116,7 +116,15 @@ router.get("/playlist/:id", async (req, res) => {
     return;
   }
 
-  res.status(200).json({ ...infoResponse.value.data, ...itemsResponse.value });
+  // Include playlist info in all items
+  const items = itemsResponse.value.data.map((item) => ({
+    ...item,
+    playlist: infoResponse.value.data,
+  }));
+
+  res
+    .status(200)
+    .json({ ...infoResponse.value.data, ...itemsResponse.value, data: items });
 });
 
 router.post("/playlist/add", async (req, res) => {
