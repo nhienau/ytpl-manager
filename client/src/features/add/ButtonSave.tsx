@@ -6,6 +6,7 @@ import { useTopLevel } from "../../ui/TopLevel";
 import toast from "react-hot-toast";
 import { useWorker } from "../../context/WorkerContext";
 import { useQueue } from "../../context/QueueContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Box = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
   const { close } = useTopLevel();
   const worker = useWorker();
   const { remove } = useQueue();
+  const queryClient = useQueryClient();
 
   function handleSave() {
     if (checked.length === 0) return;
@@ -53,8 +55,24 @@ function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
     add([...items, ...itemsToDelete]);
 
     worker.onmessage = (e) => {
-      const { id, status } = e.data;
+      const { id, status, action, playlist, video } = e.data;
       update(id, { status });
+
+      if (action === "loading") return;
+
+      if (action === "add" && status === "success") {
+        const playlistId = playlist.id;
+        queryClient.invalidateQueries({
+          queryKey: ["playlist", playlistId],
+        });
+      }
+
+      if (action === "delete" && status === "success") {
+        const playlistId = video.playlist.id;
+        queryClient.invalidateQueries({
+          queryKey: ["playlist", playlistId],
+        });
+      }
     };
 
     worker.postMessage({

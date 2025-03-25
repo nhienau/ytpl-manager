@@ -59,6 +59,9 @@ export default () => {
       self.postMessage({
         id,
         status: "loading",
+        playlist: item.playlist,
+        video: item.video,
+        action,
       });
       let result;
       if (action === "add") {
@@ -69,6 +72,9 @@ export default () => {
       self.postMessage({
         id,
         status: result.success ? "success" : "failed",
+        playlist: item.playlist,
+        video: item.video,
+        action,
       });
     }
   });
