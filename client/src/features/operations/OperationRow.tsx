@@ -24,29 +24,43 @@ const Cell = styled.td`
 function OperationRow({ operation }) {
   const { video, status, action } = operation;
 
+  const playlist = action === "add" ? operation.playlist : video.playlist;
+
+  const icon = {
+    add: <HiOutlinePlus title="Add" className="add" />,
+    delete: <HiXMark title="Delete" className="delete" />,
+  };
+
+  const statusDisplay = {
+    loading: "In progress",
+    success: "Completed",
+    failed: "Failed",
+    pending: "Pending",
+  };
+
   return (
     <tr>
-      <Cell className="medium">
-        {action === "add" && (
-          <>
-            <HiOutlinePlus title="Add" className="add" />
-            <span title={operation.playlist.title}>
-              {operation.playlist.title}
-            </span>
-          </>
-        )}
-        {action === "delete" && (
-          <>
-            <HiXMark title="Delete" className="delete" />
-            <span title={video.playlist.title}>{video.playlist.title}</span>
-          </>
-        )}
-      </Cell>
       <td>
-        <span title={video.title}>{video.title}</span>
+        <a
+          href={`https://www.youtube.com/playlist?list=${playlist.id}`}
+          target="_blank"
+          title={playlist.title}
+        >
+          {playlist.title}
+        </a>
       </td>
+      <Cell className="medium">
+        {icon[action]}
+        <a
+          href={`https://youtu.be/${video.videoId}`}
+          target="_blank"
+          title={video.title}
+        >
+          {video.title}
+        </a>
+      </Cell>
       <td className="status">
-        <span>{status}</span>
+        <span>{statusDisplay[status]}</span>
       </td>
     </tr>
   );

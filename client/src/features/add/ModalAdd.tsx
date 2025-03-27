@@ -7,6 +7,7 @@ import AddToExistingPlaylistContent from "./AddToExistingPlaylistContent";
 import { TopLevel } from "../../ui/TopLevel";
 import Button from "../../ui/Button";
 import { HiOutlineXMark } from "react-icons/hi2";
+import AddToNewPlaylistContent from "./AddToNewPlaylistContent";
 
 const Box = styled.div`
   max-width: 30rem;
@@ -57,7 +58,7 @@ function ModalAdd() {
             <AddToExistingPlaylistContent playlistItems={playlistItems} />
           </Tabs.Content>
           <Tabs.Content value="new">
-            <div>Create a new playlist</div>
+            <AddToNewPlaylistContent playlistItems={playlistItems} />
           </Tabs.Content>
         </Tabs>
       </Box>

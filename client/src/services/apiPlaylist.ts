@@ -45,3 +45,38 @@ export async function getPlaylistItems(playlistId, pageToken) {
     handleApiException(e);
   }
 }
+
+export async function createPlaylist({ title, visibility }) {
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          snippet: {
+            title,
+          },
+          status: {
+            privacyStatus: visibility,
+          },
+        }),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      const error = new Error(
+        data.error?.message || data.message || "API error"
+      );
+      error.status = res.status;
+      error.data = data;
+      throw error;
+    }
+    return data;
+  } catch (e) {
+    handleApiException(e);
+  }
+}

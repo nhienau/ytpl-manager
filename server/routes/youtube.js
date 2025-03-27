@@ -226,4 +226,106 @@ router.delete("/playlist/delete", async (req, res) => {
   }
 });
 
+router.post("/playlist/create", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  if (!accessToken) {
+    res.status(401).json({
+      error: {
+        message: "Unauthorized",
+      },
+    });
+    return;
+  }
+
+  const requestBody = req.body;
+
+  if (!requestBody.snippet?.title) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Missing paramaters: snippet.title",
+      },
+    });
+    return;
+  }
+
+  if (!requestBody.status?.privacyStatus) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Missing paramaters: status.privacyStatus",
+      },
+    });
+    return;
+  }
+
+  const playlistTitle = requestBody.snippet.title;
+
+  if (!/^(?!\s+$).+/.test(playlistTitle)) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Invalid title",
+      },
+    });
+    return;
+  }
+
+  if (playlistTitle.trim().length > 150) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Title must be less than 150 characters",
+      },
+    });
+    return;
+  }
+
+  const params = {
+    part: "snippet,status",
+  };
+  const body = {
+    snippet: {
+      title: playlistTitle.trim(),
+    },
+    status: {
+      privacyStatus: requestBody.status.privacyStatus,
+    },
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlists?${queryString}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
+  const data = await response.json();
+
+  if (data?.error) {
+    res.status(data?.error?.code).json({
+      success: false,
+      error: data?.error,
+    });
+  } else {
+    const { id, snippet, status } = data;
+    const { publishedAt, title } = snippet;
+
+    res.status(200).json({
+      data: {
+        id,
+        publishedAt,
+        title,
+        status,
+      },
+      success: true,
+    });
+  }
+});
+
 module.exports = router;

@@ -45,6 +45,10 @@ const StyledOperationsTable = styled.table`
   & .medium {
     max-width: 30rem;
   }
+
+  & a:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Box = styled.div`
