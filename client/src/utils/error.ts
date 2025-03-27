@@ -3,7 +3,7 @@ export function handleQueryError(error, query) {
   // console.log(query.queryKey);
 }
 
-export function handleApiException(e) {
+export function handleApiException(e: Error) {
   // NetworkError
   if (e.name === "TypeError") {
     throw new Error(

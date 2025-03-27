@@ -53,6 +53,8 @@ function PlaylistList() {
     return <Navigate to="/test" />;
   }
 
+  if (!data) return null;
+
   if (data.length === 0) {
     return (
       <StyledNav>

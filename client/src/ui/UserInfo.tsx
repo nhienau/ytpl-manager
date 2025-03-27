@@ -33,8 +33,10 @@ function UserInfo({
   displayCustomUrl = true,
 }) {
   const { data: channel } = useChannelInfo();
+  if (!channel) return null;
   const { title: name, customUrl, thumbnails } = channel;
   const avatarUrl = thumbnails.default.url;
+
   return (
     <StyledUserInfo
       $channelNameSize={channelNameSize}

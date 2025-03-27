@@ -1,6 +1,11 @@
 import { PLAYLIST_SORT_CRITERIAS } from "./constants";
+import { Playlist } from "./types";
 
-export function filterAndSortPlaylists(playlists, query, sortCriteria) {
+export function filterAndSortPlaylists(
+  playlists: Playlist[],
+  query,
+  sortCriteria
+): Playlist[] {
   if (playlists.length === 0) return playlists;
 
   const filteredResults = playlists.filter((item) =>

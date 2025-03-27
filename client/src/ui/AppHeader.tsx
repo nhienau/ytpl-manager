@@ -79,6 +79,7 @@ function AppHeader() {
   const { logout, isPending: isLoggingOut } = useLogout();
 
   const { data: channel } = useChannelInfo();
+  if (!channel) return null;
   const avatarUrl = channel.thumbnails.default.url;
 
   return (

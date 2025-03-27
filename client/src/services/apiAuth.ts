@@ -1,6 +1,7 @@
 import { handleApiException } from "../utils/error";
+import { ChannelInfo } from "../utils/types";
 
-export async function getLoggedInChannelInfo() {
+export async function getLoggedInChannelInfo(): Promise<ChannelInfo | null> {
   try {
     const res = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/api/youtube/info`,
@@ -19,7 +20,8 @@ export async function getLoggedInChannelInfo() {
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
+    throw e;
   }
 }
 
@@ -37,6 +39,6 @@ export async function logout() {
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
   }
 }

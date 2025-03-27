@@ -7,6 +7,12 @@ export function usePlaylistItems() {
   const [searchParams] = useSearchParams();
   const pageToken = searchParams.get("pageToken") || "";
 
+  if (!playlistId) {
+    throw new Error(
+      "usePlaylistItems was used outside /app/playlist/:playlistId route"
+    );
+  }
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["playlist", playlistId, pageToken],
     queryFn: () => getPlaylistItems(playlistId, pageToken),

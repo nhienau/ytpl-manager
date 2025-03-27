@@ -1,6 +1,7 @@
 import { handleApiException } from "../utils/error";
+import { APIError, CreatePlaylistParams, Playlist } from "../utils/types";
 
-export async function getPlaylists() {
+export async function getPlaylists(): Promise<Playlist[]> {
   try {
     const res = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist`,
@@ -10,18 +11,19 @@ export async function getPlaylists() {
     );
     const data = await res.json();
     if (!res.ok) {
-      const error = new Error(data.error.message || "API error");
+      const error = new APIError(data.error?.message || "API error");
       error.status = res.status;
       error.data = data;
       throw error;
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
+    throw e;
   }
 }
 
-export async function getPlaylistItems(playlistId, pageToken) {
+export async function getPlaylistItems(playlistId: string, pageToken: string) {
   try {
     const res = await fetch(
       `${
@@ -33,7 +35,7 @@ export async function getPlaylistItems(playlistId, pageToken) {
     );
     const data = await res.json();
     if (!res.ok) {
-      const error = new Error(
+      const error = new APIError(
         data.error?.message || data.message || "API error"
       );
       error.status = res.status;
@@ -42,11 +44,15 @@ export async function getPlaylistItems(playlistId, pageToken) {
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
+    throw e;
   }
 }
 
-export async function createPlaylist({ title, visibility }) {
+export async function createPlaylist({
+  title,
+  visibility,
+}: CreatePlaylistParams) {
   try {
     const res = await fetch(
       `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist`,
@@ -68,7 +74,7 @@ export async function createPlaylist({ title, visibility }) {
     );
     const data = await res.json();
     if (!res.ok) {
-      const error = new Error(
+      const error = new APIError(
         data.error?.message || data.message || "API error"
       );
       error.status = res.status;
@@ -77,6 +83,7 @@ export async function createPlaylist({ title, visibility }) {
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
+    throw e;
   }
 }

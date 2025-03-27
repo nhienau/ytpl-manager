@@ -5,6 +5,7 @@ import {
 } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { Playlist } from "../../utils/types";
 
 const StyledPlaylistRow = styled(NavLink)`
   text-align: left;
@@ -27,7 +28,7 @@ const Title = styled.span`
   -webkit-line-clamp: 1;
 `;
 
-function PlaylistRow({ playlist }) {
+function PlaylistRow({ playlist }: { playlist: Playlist }) {
   const {
     id,
     title,
