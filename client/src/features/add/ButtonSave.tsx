@@ -6,7 +6,7 @@ import { useTopLevel } from "../../ui/TopLevel";
 import toast from "react-hot-toast";
 import { useWorker } from "../../context/WorkerContext";
 import { useQueue } from "../../context/QueueContext";
-import { useQueryClient } from "@tanstack/react-query";
+import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
 
 const Box = styled.div`
   display: flex;
@@ -20,7 +20,14 @@ function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
   const { close } = useTopLevel();
   const worker = useWorker();
   const { remove } = useQueue();
-  const queryClient = useQueryClient();
+
+  const { addVideosToPlaylist } = useAddVideosToPlaylist({
+    worker,
+    playlistItems,
+    onRemoveItems: remove,
+    onAddItems: add,
+    onUpdateItem: update,
+  });
 
   function handleSave() {
     if (checked.length === 0) return;
@@ -31,56 +38,7 @@ function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
       return;
     }
 
-    const items = checked.flatMap((playlist) =>
-      playlistItems.map((item) => ({
-        id: crypto.randomUUID(),
-        playlist,
-        video: item,
-        status: "pending",
-        action: "add",
-      }))
-    );
-    let itemsToDelete = [];
-    if (deleteFromInitialPlaylist) {
-      itemsToDelete = playlistItems.map((item) => ({
-        id: crypto.randomUUID(),
-        video: item,
-        status: "pending",
-        action: "delete",
-      }));
-
-      remove(playlistItems);
-    }
-
-    add([...items, ...itemsToDelete]);
-
-    worker.onmessage = (e) => {
-      const { id, status, action, playlist, video } = e.data;
-      update(id, { status });
-
-      if (action === "loading") return;
-
-      if (action === "add" && status === "success") {
-        const playlistId = playlist.id;
-        queryClient.invalidateQueries({
-          queryKey: ["playlist", playlistId],
-        });
-      }
-
-      if (action === "delete" && status === "success") {
-        const playlistId = video.playlist.id;
-        queryClient.invalidateQueries({
-          queryKey: ["playlist", playlistId],
-        });
-      }
-    };
-
-    worker.postMessage({
-      config: {
-        apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
-      },
-      items: [...items, ...itemsToDelete],
-    });
+    addVideosToPlaylist(checked, deleteFromInitialPlaylist);
 
     toast.success(
       `Adding ${playlistItems.length} video${

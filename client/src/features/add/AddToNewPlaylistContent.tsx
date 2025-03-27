@@ -7,7 +7,7 @@ import { useTopLevel } from "../../ui/TopLevel";
 import { useWorker } from "../../context/WorkerContext";
 import { useVideoOperations } from "../../context/VideoOperationsContext";
 import { useQueue } from "../../context/QueueContext";
-import { useQueryClient } from "@tanstack/react-query";
+import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
 
 const StyledAddToNewPlaylistContent = styled.form`
   display: flex;
@@ -82,12 +82,18 @@ function AddToNewPlaylistContent({ playlistItems }) {
   const worker = useWorker();
   const { add, update } = useVideoOperations();
   const { remove } = useQueue();
-  const queryClient = useQueryClient();
+
+  const { addVideosToPlaylist } = useAddVideosToPlaylist({
+    worker,
+    playlistItems,
+    onRemoveItems: remove,
+    onAddItems: add,
+    onUpdateItem: update,
+  });
 
   function onSubmit(data) {
     if (!worker) {
       toast.error("Failed to save");
-      console.error("Worker not initialized");
       return;
     }
 
@@ -99,54 +105,7 @@ function AddToNewPlaylistContent({ playlistItems }) {
       {
         onSuccess: (res) => {
           const { data: playlist } = res;
-          const items = playlistItems.map((item) => ({
-            id: crypto.randomUUID(),
-            playlist,
-            video: item,
-            status: "pending",
-            action: "add",
-          }));
-          let itemsToDelete = [];
-          if (deleteFromInitialPlaylist) {
-            itemsToDelete = playlistItems.map((item) => ({
-              id: crypto.randomUUID(),
-              video: item,
-              status: "pending",
-              action: "delete",
-            }));
-
-            remove(playlistItems);
-          }
-
-          add([...items, ...itemsToDelete]);
-
-          worker.onmessage = (e) => {
-            const { id, status, action, playlist, video } = e.data;
-            update(id, { status });
-
-            if (action === "loading") return;
-
-            if (action === "add" && status === "success") {
-              const playlistId = playlist.id;
-              queryClient.invalidateQueries({
-                queryKey: ["playlist", playlistId],
-              });
-            }
-
-            if (action === "delete" && status === "success") {
-              const playlistId = video.playlist.id;
-              queryClient.invalidateQueries({
-                queryKey: ["playlist", playlistId],
-              });
-            }
-          };
-
-          worker.postMessage({
-            config: {
-              apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
-            },
-            items: [...items, ...itemsToDelete],
-          });
+          addVideosToPlaylist([playlist], deleteFromInitialPlaylist);
 
           toast.success(
             `Successfully created playlist "${playlistTitle}". Adding ${

@@ -3,7 +3,7 @@ import { handleApiException } from "../utils/error";
 export async function getPlaylists() {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist/list`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist`,
       {
         credentials: "include",
       }
@@ -49,7 +49,7 @@ export async function getPlaylistItems(playlistId, pageToken) {
 export async function createPlaylist({ title, visibility }) {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist/create`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist`,
       {
         method: "POST",
         headers: {

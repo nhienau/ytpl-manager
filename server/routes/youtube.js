@@ -40,7 +40,7 @@ router.get("/info", async (req, res) => {
   res.status(200).json({ id, ...channel });
 });
 
-router.get("/playlist/list", async (req, res) => {
+router.get("/playlist", async (req, res) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
     res.status(401).json({
@@ -80,13 +80,12 @@ router.get("/playlist/list", async (req, res) => {
 
   results = results.map((playlist) => {
     const { id, snippet, status } = playlist;
-    const { publishedAt, title, thumbnails } = snippet;
+    const { publishedAt, title } = snippet;
     return {
       id,
       publishedAt,
       status,
       title,
-      thumbnails,
     };
   });
 
@@ -127,7 +126,7 @@ router.get("/playlist/:id", async (req, res) => {
     .json({ ...infoResponse.value.data, ...itemsResponse.value, data: items });
 });
 
-router.post("/playlist/add", async (req, res) => {
+router.post("/playlistItem", async (req, res) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
     res.status(401).json({
@@ -180,7 +179,7 @@ router.post("/playlist/add", async (req, res) => {
   }
 });
 
-router.delete("/playlist/delete", async (req, res) => {
+router.delete("/playlistItem", async (req, res) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
     res.status(401).json({
@@ -226,7 +225,7 @@ router.delete("/playlist/delete", async (req, res) => {
   }
 });
 
-router.post("/playlist/create", async (req, res) => {
+router.post("/playlist", async (req, res) => {
   const accessToken = req.cookies.access_token;
   if (!accessToken) {
     res.status(401).json({

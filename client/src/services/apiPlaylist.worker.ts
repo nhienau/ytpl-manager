@@ -1,11 +1,6 @@
 export default () => {
-  async function fakeTask(data) {
-    await new Promise((res) => setTimeout(res, 5000));
-    return { ...data, success: true };
-  }
-
   async function addToPlaylist(apiBaseUrl, playlistId, resourceId) {
-    const res = await fetch(`${apiBaseUrl}/api/youtube/playlist/add`, {
+    const res = await fetch(`${apiBaseUrl}/api/youtube/playlistItem`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +23,7 @@ export default () => {
     };
     const queryString = new URLSearchParams(params).toString();
     const res = await fetch(
-      `${apiBaseUrl}/api/youtube/playlist/delete?${queryString}`,
+      `${apiBaseUrl}/api/youtube/playlistItem?${queryString}`,
       {
         method: "DELETE",
         credentials: "include",
