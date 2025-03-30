@@ -1,5 +1,10 @@
 import { handleApiException } from "../utils/error";
-import { APIError, CreatePlaylistParams, Playlist } from "../utils/types";
+import {
+  APIError,
+  CreatePlaylistParams,
+  Playlist,
+  PlaylistDetail,
+} from "../utils/types";
 
 export async function getPlaylists(): Promise<Playlist[]> {
   try {
@@ -23,7 +28,10 @@ export async function getPlaylists(): Promise<Playlist[]> {
   }
 }
 
-export async function getPlaylistItems(playlistId: string, pageToken: string) {
+export async function getPlaylistItems(
+  playlistId: string,
+  pageToken: string
+): Promise<PlaylistDetail> {
   try {
     const res = await fetch(
       `${

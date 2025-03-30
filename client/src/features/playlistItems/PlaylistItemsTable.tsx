@@ -6,6 +6,7 @@ import PlaylistItemsContainer from "./PlaylistItemsContainer";
 import PlaylistItemsPagination from "./PlaylistItemsPagination";
 import Spinner from "../../ui/Spinner";
 import { usePlaylistItems } from "./usePlaylistItems";
+import { isGoogleAPIErrorResponse } from "../../utils/types";
 
 const Table = styled.div`
   display: flex;
@@ -24,12 +25,15 @@ const Box = styled.div`
 function PlaylistItemsTable() {
   const { isPending, data, isError, error } = usePlaylistItems();
 
-  if (isError) {
-    if (error.status === 401) {
+  if (isError && error) {
+    const { status, data: errorData } = error;
+
+    if (status === 401) {
       return <Navigate to="/test" />;
     } else if (
-      error.status === 404 &&
-      error.data?.errors[0]?.reason === "playlistNotFound"
+      status === 404 &&
+      isGoogleAPIErrorResponse(errorData) &&
+      errorData?.error.errors[0].reason === "playlistNotFound"
     ) {
       return (
         <Table>
@@ -39,7 +43,7 @@ function PlaylistItemsTable() {
         </Table>
       );
     } else {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   }
 

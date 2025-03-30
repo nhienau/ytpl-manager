@@ -23,20 +23,51 @@ export interface ChannelInfo {
   };
 }
 
-export type PrivacyStatus = "public" | "unlisted" | "private";
+export type PrivacyStatus =
+  | "public"
+  | "unlisted"
+  | "private"
+  | "privacyStatusUnspecified";
+
+export interface Status {
+  privacyStatus: PrivacyStatus;
+}
+
+export interface Resource {
+  kind: string;
+  videoId: string;
+}
 
 export interface Playlist {
   id: string;
   publishedAt: string;
-  status: {
-    privacyStatus: PrivacyStatus;
-  };
+  status: Status;
   title: string;
 }
 
 export interface CreatePlaylistParams {
   title: string;
   visibility: PrivacyStatus;
+}
+
+export interface PlaylistDetail extends Playlist {
+  data: PlaylistItem[];
+  prevPageToken?: string;
+  nextPageToken?: string;
+}
+
+export interface PlaylistItem {
+  id: string;
+  publishedAt: string;
+  status: Status;
+  title: string;
+  thumbnails: Thumbnails;
+  videoOwnerChannelTitle?: string;
+  videoOwnerChannelId?: string;
+  resourceId: Resource;
+  videoId: string;
+  videoPublishedAt?: string;
+  playlist?: Playlist;
 }
 
 export interface GoogleAPIError {
@@ -54,6 +85,21 @@ export interface GoogleAPIErrorResponse {
     errors: GoogleAPIError[];
     status?: string;
   };
+}
+
+export function isGoogleAPIErrorResponse(
+  obj: any
+): obj is GoogleAPIErrorResponse {
+  return (
+    obj &&
+    typeof obj === "object" &&
+    "error" in obj &&
+    typeof obj.error === "object" &&
+    "code" in obj.error &&
+    "message" in obj.error &&
+    "errors" in obj.error &&
+    Array.isArray(obj.error.errors)
+  );
 }
 
 export interface CustomError {

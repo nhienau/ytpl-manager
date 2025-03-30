@@ -111,7 +111,7 @@ router.get("/playlist/:id", async (req, res) => {
   ]);
 
   if (!itemsResponse.value.success) {
-    res.status(itemsResponse.value.code).json(itemsResponse.value);
+    res.status(itemsResponse.value.error.code).json(itemsResponse.value);
     return;
   }
 

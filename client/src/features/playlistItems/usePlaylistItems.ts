@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { getPlaylistItems } from "../../services/apiPlaylist";
+import { APIError, PlaylistDetail } from "../../utils/types";
 
 export function usePlaylistItems() {
   const { playlistId } = useParams();
@@ -13,7 +14,7 @@ export function usePlaylistItems() {
     );
   }
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, isError, data, error } = useQuery<PlaylistDetail, APIError>({
     queryKey: ["playlist", playlistId, pageToken],
     queryFn: () => getPlaylistItems(playlistId, pageToken),
     retry: false,

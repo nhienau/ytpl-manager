@@ -7,6 +7,7 @@ import {
   HiOutlineGlobeAlt,
 } from "react-icons/hi2";
 import { useQueue } from "../../context/QueueContext";
+import { PlaylistItem } from "../../utils/types";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -76,7 +77,7 @@ const Actions = styled.div`
   gap: 0.5rem;
 `;
 
-function PlaylistItemRow({ playlistItem }) {
+function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
   const {
     id,
     title,
@@ -97,6 +98,8 @@ function PlaylistItemRow({ playlistItem }) {
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
     unlisted: <HiOutlineEyeSlash title="Unlisted" />,
+    private: null,
+    privacyStatusUnspecified: null,
   };
 
   function handleChange(e) {
