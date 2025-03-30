@@ -3,6 +3,9 @@ import { createPortal } from "react-dom";
 import {
   cloneElement,
   createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
   useContext,
   useRef,
   useState,
@@ -28,9 +31,15 @@ const StyledOverlay = styled(Overlay)`
   }
 `;
 
-const TopLevelContext = createContext(null);
+interface TopLevelContextValue {
+  openName: string;
+  close: () => void;
+  open: Dispatch<SetStateAction<string>>;
+}
 
-function TopLevel({ children }) {
+const TopLevelContext = createContext<TopLevelContextValue | null>(null);
+
+function TopLevel({ children }: { children: ReactNode }) {
   const [openName, setOpenName] = useState("");
 
   const close = () => setOpenName("");
@@ -43,17 +52,35 @@ function TopLevel({ children }) {
   );
 }
 
-function Open({ children, opens: opensWindowName }) {
-  const { open } = useContext(TopLevelContext);
+function useTopLevel() {
+  const context = useContext(TopLevelContext);
+  if (context === null || context === undefined)
+    throw new Error("TopLevelContext was used outside of TopLevelProvider");
+  return context;
+}
+
+interface OpenProps {
+  children: ReactNode;
+  opens: string;
+}
+
+function Open({ children, opens: opensWindowName }: OpenProps) {
+  const { open } = useTopLevel();
 
   return cloneElement(children, {
     onClick: () => open(opensWindowName),
   });
 }
 
+interface WindowProps {
+  children: ReactNode;
+  name: string;
+  $viewport: "small" | "large" | "all";
+}
+
 // viewport: small, large, all
-function Window({ children, name, $viewport = "all" }) {
-  const { openName, close } = useContext(TopLevelContext);
+function Window({ children, name, $viewport = "all" }: WindowProps) {
+  const { openName, close } = useTopLevel();
   const ref = useRef();
   useOutsideClick(ref, close);
 
@@ -67,17 +94,10 @@ function Window({ children, name, $viewport = "all" }) {
   );
 }
 
-function Close({ children }) {
-  const { close } = useContext(TopLevelContext);
+function Close({ children }: { children: ReactNode }) {
+  const { close } = useTopLevel();
 
   return cloneElement(children, { onClick: close });
-}
-
-function useTopLevel() {
-  const context = useContext(TopLevelContext);
-  if (context === null || context === undefined)
-    throw new Error("TopLevelContext was used outside of TopLevelProvider");
-  return context;
 }
 
 TopLevel.Open = Open;

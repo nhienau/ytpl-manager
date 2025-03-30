@@ -1,5 +1,11 @@
+import { Operation, Resource, WorkerRequest } from "../utils/types";
+
 export default () => {
-  async function addToPlaylist(apiBaseUrl, playlistId, resourceId) {
+  async function addToPlaylist(
+    apiBaseUrl: string,
+    playlistId: string,
+    resourceId: Resource
+  ) {
     const res = await fetch(`${apiBaseUrl}/api/youtube/playlistItem`, {
       method: "POST",
       headers: {
@@ -17,7 +23,10 @@ export default () => {
     return data;
   }
 
-  async function deletePlaylistItem(apiBaseUrl, playlistItemId) {
+  async function deletePlaylistItem(
+    apiBaseUrl: string,
+    playlistItemId: string
+  ) {
     const params = {
       id: playlistItemId,
     };
@@ -43,26 +52,41 @@ export default () => {
     const {
       config: { apiBaseUrl },
       items,
-    } = e.data;
+    } = e.data as WorkerRequest;
     for (const item of items) {
-      const {
-        id,
-        playlist: { id: playlistId } = {},
-        video: { id: playlistItemId, resourceId },
-        action,
-      } = item;
+      const { id, playlist, video, action } = item;
       self.postMessage({
         id,
         status: "loading",
         playlist: item.playlist,
         video: item.video,
         action,
-      });
+      } as Operation);
       let result;
       if (action === "add") {
-        result = await addToPlaylist(apiBaseUrl, playlistId, resourceId);
+        if (!playlist || !video) {
+          self.postMessage({
+            id,
+            status: "failed",
+            playlist,
+            video,
+            action,
+          } as Operation);
+          continue;
+        }
+        result = await addToPlaylist(apiBaseUrl, playlist.id, video.resourceId);
       } else if (action === "delete") {
-        result = await deletePlaylistItem(apiBaseUrl, playlistItemId);
+        if (!video) {
+          self.postMessage({
+            id,
+            status: "failed",
+            playlist,
+            video,
+            action,
+          } as Operation);
+          continue;
+        }
+        result = await deletePlaylistItem(apiBaseUrl, video.id);
       }
       self.postMessage({
         id,
@@ -70,7 +94,7 @@ export default () => {
         playlist: item.playlist,
         video: item.video,
         action,
-      });
+      } as Operation);
     }
   });
 };

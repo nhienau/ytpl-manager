@@ -118,8 +118,15 @@ export class APIError extends Error {
   }
 }
 
+export type OperationStatus = "pending" | "loading" | "success" | "failed";
+export type OperationAction = "add" | "delete";
+
 export interface Operation {
   id: string;
+  status: OperationStatus;
+  action: OperationAction;
+  playlist?: Playlist;
+  video?: PlaylistItem;
 }
 
 export interface QueueItem {
@@ -129,4 +136,17 @@ export interface QueueItem {
 export interface SortCriteria {
   value: string;
   label: string;
+}
+
+export interface WorkerConfig {
+  apiBaseUrl: string;
+}
+
+export interface WorkerRequest {
+  items: Operation[];
+  config: WorkerConfig;
+}
+
+export interface NewPlaylistFormData extends CreatePlaylistParams {
+  deleteFromInitialPlaylist: boolean;
 }

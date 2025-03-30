@@ -8,6 +8,11 @@ import { useWorker } from "../../context/WorkerContext";
 import { useVideoOperations } from "../../context/VideoOperationsContext";
 import { useQueue } from "../../context/QueueContext";
 import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
+import {
+  NewPlaylistFormData,
+  PlaylistItem,
+  QueueItem,
+} from "../../utils/types";
 
 const StyledAddToNewPlaylistContent = styled.form`
   display: flex;
@@ -65,18 +70,16 @@ const ErrorMessage = styled.span`
   color: red;
 `;
 
-type Inputs = {
-  title: string;
-  visibility: string;
-  deleteFromInitialPlaylist: boolean;
-};
-
-function AddToNewPlaylistContent({ playlistItems }) {
+function AddToNewPlaylistContent({
+  playlistItems,
+}: {
+  playlistItems: PlaylistItem[];
+}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<NewPlaylistFormData>();
   const { mutate: createPlaylist, isPending } = useCreatePlaylist();
   const { close } = useTopLevel();
   const worker = useWorker();
@@ -91,7 +94,7 @@ function AddToNewPlaylistContent({ playlistItems }) {
     onUpdateItem: update,
   });
 
-  function onSubmit(data) {
+  function onSubmit(data: NewPlaylistFormData) {
     if (!worker) {
       toast.error("Failed to save");
       return;

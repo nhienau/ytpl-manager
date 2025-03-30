@@ -1,4 +1,19 @@
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  Operation,
+  Playlist,
+  PlaylistItem,
+  QueueItem,
+  WorkerRequest,
+} from "../../utils/types";
+
+interface UseAddVideosToPlaylistProps {
+  worker: Worker | null;
+  playlistItems: PlaylistItem[];
+  onRemoveItems: (items: QueueItem[]) => void;
+  onAddItems: (newItems: Operation[]) => void;
+  onUpdateItem: (id: string | number, newInfo: object) => void;
+}
 
 function useAddVideosToPlaylist({
   worker,
@@ -6,16 +21,19 @@ function useAddVideosToPlaylist({
   onRemoveItems,
   onAddItems,
   onUpdateItem,
-}) {
+}: UseAddVideosToPlaylistProps) {
   const queryClient = useQueryClient();
 
-  function addVideosToPlaylist(playlists, deleteFromInitialPlaylist: boolean) {
+  function addVideosToPlaylist(
+    playlists: Playlist[],
+    deleteFromInitialPlaylist: boolean
+  ) {
     if (!worker) {
       console.error("Worker not initialized");
       return false;
     }
 
-    const items = playlists.flatMap((playlist) =>
+    const items: Operation[] = playlists.flatMap((playlist) =>
       playlistItems.map((item) => ({
         id: crypto.randomUUID(),
         playlist,
@@ -25,7 +43,7 @@ function useAddVideosToPlaylist({
       }))
     );
 
-    let itemsToDelete = [];
+    let itemsToDelete: Operation[] = [];
     if (deleteFromInitialPlaylist) {
       itemsToDelete = playlistItems.map((item) => ({
         id: crypto.randomUUID(),
@@ -41,19 +59,19 @@ function useAddVideosToPlaylist({
     onAddItems?.(allItems);
 
     worker.onmessage = (e) => {
-      const { id, status, action, playlist, video } = e.data;
+      const { id, status, action, playlist, video } = e.data as Operation;
       onUpdateItem?.(id, { status });
 
-      if (action === "loading") return;
+      if (status === "loading") return;
 
-      if (action === "add" && status === "success") {
+      if (playlist && action === "add" && status === "success") {
         const playlistId = playlist.id;
         queryClient.invalidateQueries({
           queryKey: ["playlist", playlistId],
         });
       }
 
-      if (action === "delete" && status === "success") {
+      if (video?.playlist && action === "delete" && status === "success") {
         const playlistId = video.playlist.id;
         queryClient.invalidateQueries({
           queryKey: ["playlist", playlistId],
@@ -66,7 +84,7 @@ function useAddVideosToPlaylist({
         apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
       },
       items: allItems,
-    });
+    } as WorkerRequest);
 
     return true;
   }
