@@ -6,7 +6,7 @@ import PlaylistItemsContainer from "./PlaylistItemsContainer";
 import PlaylistItemsPagination from "./PlaylistItemsPagination";
 import Spinner from "../../ui/Spinner";
 import { usePlaylistItems } from "./usePlaylistItems";
-import { isGoogleAPIErrorResponse } from "../../utils/types";
+import { isGoogleAPIErrorResponse, PlaylistItem } from "../../utils/types";
 
 const Table = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ function PlaylistItemsTable() {
         </Box>
       )}
       {!isPending && !isError && (
-        <CheckboxesProvider
+        <CheckboxesProvider<PlaylistItem>
           allElements={data?.data.filter(
             (item) =>
               item.status.privacyStatus === "public" ||

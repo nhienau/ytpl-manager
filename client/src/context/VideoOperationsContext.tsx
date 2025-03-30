@@ -1,15 +1,31 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
+import { Operation } from "../utils/types";
 
-const VideoOperationsContext = createContext(null);
+interface VideoOperationsContextValue {
+  items: Operation[];
+  setItems: Dispatch<SetStateAction<Operation[]>>;
+  add: (newItems: Operation[]) => void;
+  update: (id: string | number, newInfo: object) => void;
+}
 
-function VideoOperationsProvider({ children }) {
-  const [items, setItems] = useState([]);
+const VideoOperationsContext =
+  createContext<VideoOperationsContextValue | null>(null);
 
-  function add(newItems) {
+function VideoOperationsProvider({ children }: { children: ReactNode }) {
+  const [items, setItems] = useState<Operation[]>([]);
+
+  function add(newItems: Operation[]) {
     setItems((i) => [...i, ...newItems]);
   }
 
-  function update(id, newInfo) {
+  function update(id: string | number, newInfo: object) {
     setItems((prevItems) => {
       return prevItems.map((item) => {
         if (item.id === id) {
@@ -29,7 +45,7 @@ function VideoOperationsProvider({ children }) {
 
 function useVideoOperations() {
   const context = useContext(VideoOperationsContext);
-  if (context === undefined)
+  if (context === null || context === undefined)
     throw new Error(
       "VideoOperationsContext was used outside of VideoOperationsProvider"
     );

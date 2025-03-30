@@ -2,6 +2,7 @@ import { HiOutlineCheck } from "react-icons/hi2";
 import styled, { css } from "styled-components";
 import { usePlaylistOperations } from "../context/PlaylistOperationsContext";
 import Menus from "./Menus";
+import { SortCriteria } from "../utils/types";
 
 const Button = styled(Menus.Button)`
   flex-direction: row-reverse;
@@ -17,7 +18,7 @@ const Button = styled(Menus.Button)`
   }
 `;
 
-function Criteria({ criteria }) {
+function Criteria({ criteria }: { criteria: SortCriteria }) {
   const { sortCriteria, setSortCriteria } = usePlaylistOperations();
 
   const isSelected = criteria.value === sortCriteria.value;

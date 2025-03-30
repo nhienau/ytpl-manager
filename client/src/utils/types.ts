@@ -117,3 +117,16 @@ export class APIError extends Error {
     this.name = "APIError";
   }
 }
+
+export interface Operation {
+  id: string;
+}
+
+export interface QueueItem {
+  id: string;
+}
+
+export interface SortCriteria {
+  value: string;
+  label: string;
+}

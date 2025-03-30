@@ -40,7 +40,7 @@ function WorkerProvider({ children }: { children: React.ReactNode }) {
 
 function useWorker() {
   const context = useContext(WorkerContext);
-  if (context === undefined) {
+  if (context === null || context === undefined) {
     throw new Error("WorkerContext was used outside of WorkerProvider");
   }
   return context.worker;

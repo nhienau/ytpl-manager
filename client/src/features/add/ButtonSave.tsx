@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { useWorker } from "../../context/WorkerContext";
 import { useQueue } from "../../context/QueueContext";
 import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
+import { Playlist } from "../../utils/types";
 
 const Box = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Box = styled.div`
 `;
 
 function ButtonSave({ playlistItems, deleteFromInitialPlaylist }) {
-  const { checked } = useCheckboxes();
+  const { checked } = useCheckboxes<Playlist>();
   const { add, update } = useVideoOperations();
   const { close } = useTopLevel();
   const worker = useWorker();

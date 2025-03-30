@@ -5,6 +5,7 @@ import PlaylistRow from "./PlaylistRow";
 import { CheckboxesProvider } from "../../context/CheckboxesContext";
 import ButtonSave from "./ButtonSave";
 import { useState } from "react";
+import { Playlist } from "../../utils/types";
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +55,7 @@ function AddToExistingPlaylistContent({ playlistItems }) {
 
   return (
     <Container>
-      <CheckboxesProvider allElements={data}>
+      <CheckboxesProvider<Playlist> allElements={data}>
         <Box>
           {data.map((playlist) => (
             <PlaylistRow key={playlist.id} playlist={playlist} />

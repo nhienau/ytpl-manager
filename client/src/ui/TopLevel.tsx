@@ -75,7 +75,7 @@ function Close({ children }) {
 
 function useTopLevel() {
   const context = useContext(TopLevelContext);
-  if (context === undefined)
+  if (context === null || context === undefined)
     throw new Error("TopLevelContext was used outside of TopLevelProvider");
   return context;
 }

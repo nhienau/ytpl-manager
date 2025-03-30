@@ -5,6 +5,7 @@ import {
 } from "react-icons/hi2";
 import styled from "styled-components";
 import { useCheckboxes } from "../../context/CheckboxesContext";
+import { Playlist } from "../../utils/types";
 
 const StyledPlaylistRow = styled.div`
   text-align: left;
@@ -28,8 +29,8 @@ const Title = styled.span`
   flex-grow: 1;
 `;
 
-function PlaylistRow({ playlist }) {
-  const { add, remove } = useCheckboxes();
+function PlaylistRow({ playlist }: { playlist: Playlist }) {
+  const { add, remove } = useCheckboxes<Playlist>();
   const {
     title,
     status: { privacyStatus },

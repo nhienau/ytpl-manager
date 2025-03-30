@@ -1,10 +1,10 @@
 import { PLAYLIST_SORT_CRITERIAS } from "./constants";
-import { Playlist } from "./types";
+import { Playlist, SortCriteria } from "./types";
 
 export function filterAndSortPlaylists(
   playlists: Playlist[],
-  query,
-  sortCriteria
+  query: string,
+  sortCriteria: SortCriteria
 ): Playlist[] {
   if (playlists.length === 0) return playlists;
 
@@ -24,7 +24,7 @@ export function filterAndSortPlaylists(
     );
   } else {
     sortedResults = filteredResults.toSorted(
-      (a, b) =>
+      (a: Playlist, b: Playlist) =>
         (new Date(a.publishedAt).getTime() -
           new Date(b.publishedAt).getTime()) *
         multiplier
