@@ -1,17 +1,36 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
-const CheckboxesContext = createContext(null);
+interface CheckboxesContextValue<T> {
+  checked: T[];
+  add: (item: T) => void;
+  clearAll: () => void;
+  selectAll: () => void;
+  remove: (item: T) => void;
+  numElements: number;
+}
 
-function CheckboxesProvider({ children, allElements }) {
-  const [checked, setChecked] = useState([]);
+interface CheckboxesProviderProps<T> {
+  children: ReactNode;
+  allElements: T[];
+}
+
+const CheckboxesContext = createContext<CheckboxesContextValue<unknown> | null>(
+  null
+);
+
+function CheckboxesProvider<T>({
+  children,
+  allElements,
+}: CheckboxesProviderProps<T>) {
+  const [checked, setChecked] = useState<T[]>([]);
 
   const numElements = allElements.length;
 
-  function add(item) {
+  function add(item: T) {
     setChecked((c) => [...c, item]);
   }
 
-  function remove(item) {
+  function remove(item: T) {
     setChecked((c) => c.filter((i) => i !== item));
   }
 
@@ -23,20 +42,27 @@ function CheckboxesProvider({ children, allElements }) {
     setChecked([]);
   }
 
+  const value = {
+    checked,
+    add,
+    clearAll,
+    selectAll,
+    remove,
+    numElements,
+  } as CheckboxesContextValue<unknown>;
+
   return (
-    <CheckboxesContext.Provider
-      value={{ checked, add, clearAll, selectAll, remove, numElements }}
-    >
+    <CheckboxesContext.Provider value={value}>
       {children}
     </CheckboxesContext.Provider>
   );
 }
 
-function useCheckboxes() {
+function useCheckboxes<T>() {
   const context = useContext(CheckboxesContext);
-  if (context === undefined)
+  if (context === null || context === undefined)
     throw new Error("CheckboxesContext was used outside of CheckboxesProvider");
-  return context;
+  return context as CheckboxesContextValue<T>;
 }
 
 export { CheckboxesProvider, useCheckboxes };

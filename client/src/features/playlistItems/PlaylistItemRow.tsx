@@ -7,6 +7,8 @@ import {
   HiOutlineGlobeAlt,
 } from "react-icons/hi2";
 import { useQueue } from "../../context/QueueContext";
+import { PlaylistItem } from "../../utils/types";
+import { ChangeEvent } from "react";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -76,7 +78,7 @@ const Actions = styled.div`
   gap: 0.5rem;
 `;
 
-function PlaylistItemRow({ playlistItem }) {
+function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
   const {
     id,
     title,
@@ -87,7 +89,7 @@ function PlaylistItemRow({ playlistItem }) {
     videoPublishedAt,
     status: { privacyStatus },
   } = playlistItem;
-  const { checked, add, remove } = useCheckboxes();
+  const { checked, add, remove } = useCheckboxes<PlaylistItem>();
   const { queue } = useQueue();
   const isInQueue = queue.some((item) => item.id === id);
 
@@ -97,9 +99,11 @@ function PlaylistItemRow({ playlistItem }) {
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
     unlisted: <HiOutlineEyeSlash title="Unlisted" />,
+    private: null,
+    privacyStatusUnspecified: null,
   };
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? add(playlistItem) : remove(playlistItem);
   }
@@ -108,7 +112,7 @@ function PlaylistItemRow({ playlistItem }) {
     <StyledPlaylistItemRow>
       <input
         type="checkbox"
-        checked={checked.findIndex((el) => el.id === id) !== -1}
+        checked={checked.findIndex((el: PlaylistItem) => el.id === id) !== -1}
         onChange={handleChange}
         disabled={!isWatchableVideo || isInQueue}
       />

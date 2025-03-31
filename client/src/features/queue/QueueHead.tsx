@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useCheckboxes } from "../../context/CheckboxesContext";
 import Button from "../../ui/Button";
 import { useQueue } from "../../context/QueueContext";
+import { ChangeEvent } from "react";
+import { PlaylistItem } from "../../utils/types";
 
 const StyledQueueHead = styled.div`
   padding: 1rem 0.75rem;
@@ -19,9 +21,9 @@ const Box = styled.div`
 
 function QueueHead() {
   const { remove } = useQueue();
-  const { selectAll, clearAll, checked } = useCheckboxes();
+  const { selectAll, clearAll, checked } = useCheckboxes<PlaylistItem>();
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? selectAll() : clearAll();
   }

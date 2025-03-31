@@ -1,27 +1,37 @@
 import { handleApiException } from "../utils/error";
+import {
+  APIError,
+  CreatePlaylistParams,
+  Playlist,
+  PlaylistDetail,
+} from "../utils/types";
 
-export async function getPlaylists() {
+export async function getPlaylists(): Promise<Playlist[]> {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist/list`,
+      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist`,
       {
         credentials: "include",
       }
     );
     const data = await res.json();
     if (!res.ok) {
-      const error = new Error(data.error.message || "API error");
+      const error = new APIError(data.error?.message || "API error");
       error.status = res.status;
       error.data = data;
       throw error;
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
+    throw e;
   }
 }
 
-export async function getPlaylistItems(playlistId, pageToken) {
+export async function getPlaylistItems(
+  playlistId: string,
+  pageToken: string
+): Promise<PlaylistDetail> {
   try {
     const res = await fetch(
       `${
@@ -33,7 +43,7 @@ export async function getPlaylistItems(playlistId, pageToken) {
     );
     const data = await res.json();
     if (!res.ok) {
-      const error = new Error(
+      const error = new APIError(
         data.error?.message || data.message || "API error"
       );
       error.status = res.status;
@@ -42,6 +52,46 @@ export async function getPlaylistItems(playlistId, pageToken) {
     }
     return data;
   } catch (e) {
-    handleApiException(e);
+    handleApiException(e as Error);
+    throw e;
+  }
+}
+
+export async function createPlaylist({
+  title,
+  visibility,
+}: CreatePlaylistParams) {
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/youtube/playlist`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          snippet: {
+            title,
+          },
+          status: {
+            privacyStatus: visibility,
+          },
+        }),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      const error = new APIError(
+        data.error?.message || data.message || "API error"
+      );
+      error.status = res.status;
+      error.data = data;
+      throw error;
+    }
+    return data;
+  } catch (e) {
+    handleApiException(e as Error);
+    throw e;
   }
 }

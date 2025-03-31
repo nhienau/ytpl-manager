@@ -3,12 +3,13 @@ import ButtonSidebar from "./ButtonSidebar";
 import SidebarHead from "./SidebarHead";
 import SidebarMain from "./SidebarMain";
 import SidebarFooter from "./SidebarFooter";
+import { TopLevel } from "./TopLevel";
 
 const StyledSidebarMobile = styled.aside`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--color-neutral-100);
+  background-color: var(--color-neutral-200);
   width: 256px;
   height: 100vh;
   display: flex;
@@ -19,11 +20,13 @@ const StyledSidebarMobile = styled.aside`
   }
 `;
 
-function SidebarMobile({ onClose }) {
+function SidebarMobile() {
   return (
     <StyledSidebarMobile data-dropdown-id="user">
       <SidebarHead>
-        <ButtonSidebar onClick={onClose} />
+        <TopLevel.Close>
+          <ButtonSidebar />
+        </TopLevel.Close>
       </SidebarHead>
       <SidebarMain />
       <SidebarFooter />

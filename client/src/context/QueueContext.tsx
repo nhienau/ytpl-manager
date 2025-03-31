@@ -1,11 +1,31 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
+import { PlaylistItem } from "../utils/types";
 
-const QueueContext = createContext(null);
+interface QueueContextValue {
+  queue: PlaylistItem[];
+  setQueue: Dispatch<SetStateAction<PlaylistItem[]>>;
+  add: (items: PlaylistItem[]) => void;
+  remove: (items: PlaylistItem[]) => void;
+  clearAll: () => void;
+}
 
-function QueueProvider({ children }) {
-  const [queue, setQueue] = useState([]);
+interface QueueProviderProps {
+  children: ReactNode;
+}
 
-  function add(items) {
+const QueueContext = createContext<QueueContextValue | null>(null);
+
+function QueueProvider({ children }: QueueProviderProps) {
+  const [queue, setQueue] = useState<PlaylistItem[]>([]);
+
+  function add(items: PlaylistItem[]) {
     setQueue((q) => {
       const uniqueItems = items.filter(
         (item) => !q.some((qItem) => qItem.id === item.id)
@@ -15,7 +35,7 @@ function QueueProvider({ children }) {
     });
   }
 
-  function remove(items) {
+  function remove(items: PlaylistItem[]) {
     const ids = items.map((i) => i.id);
     setQueue((q) => q.filter((item) => !ids.includes(item.id)));
   }
@@ -33,7 +53,7 @@ function QueueProvider({ children }) {
 
 function useQueue() {
   const context = useContext(QueueContext);
-  if (context === undefined)
+  if (context === null || context === undefined)
     throw new Error("QueueContext was used outside of QueueProvider");
   return context;
 }

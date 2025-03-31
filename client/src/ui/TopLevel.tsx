@@ -3,14 +3,22 @@ import { createPortal } from "react-dom";
 import {
   cloneElement,
   createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
   useContext,
   useRef,
   useState,
 } from "react";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import Overlay from "./Overlay";
+import { TopLevelWindowViewport } from "../utils/types";
 
-const StyledOverlay = styled(Overlay)`
+interface StyledOverlayProps {
+  $viewport?: TopLevelWindowViewport;
+}
+
+const StyledOverlay = styled(Overlay)<StyledOverlayProps>`
   @media (min-width: 50rem) {
     ${(props) =>
       props.$viewport === "small" &&
@@ -28,9 +36,15 @@ const StyledOverlay = styled(Overlay)`
   }
 `;
 
-const TopLevelContext = createContext(null);
+interface TopLevelContextValue {
+  openName: string;
+  close: () => void;
+  open: Dispatch<SetStateAction<string>>;
+}
 
-function TopLevel({ children }) {
+const TopLevelContext = createContext<TopLevelContextValue | null>(null);
+
+function TopLevel({ children }: { children: ReactNode }) {
   const [openName, setOpenName] = useState("");
 
   const close = () => setOpenName("");
@@ -43,31 +57,55 @@ function TopLevel({ children }) {
   );
 }
 
-function Open({ children, opens: opensWindowName }) {
-  const { open } = useContext(TopLevelContext);
+function useTopLevel() {
+  const context = useContext(TopLevelContext);
+  if (context === null || context === undefined)
+    throw new Error("TopLevelContext was used outside of TopLevelProvider");
+  return context;
+}
+
+interface OpenProps {
+  children: JSX.Element;
+  opens: string;
+}
+
+function Open({ children, opens: opensWindowName }: OpenProps) {
+  const { open } = useTopLevel();
 
   return cloneElement(children, {
     onClick: () => open(opensWindowName),
   });
 }
 
-// viewport: small, large, all
-function Window({ children, name, $viewport = "all" }) {
-  const { openName, close } = useContext(TopLevelContext);
-  const ref = useRef();
+interface WindowProps {
+  children: JSX.Element;
+  name: string;
+  $viewport?: TopLevelWindowViewport;
+}
+
+function Window({ children, name, $viewport = "all" }: WindowProps) {
+  const { openName, close } = useTopLevel();
+  const ref = useRef<HTMLDivElement>(null);
   useOutsideClick(ref, close);
 
   if (name !== openName) return null;
 
   return createPortal(
     <StyledOverlay $viewport={$viewport}>
-      <div ref={ref}>{cloneElement(children, { onClose: close })}</div>
+      <div ref={ref}>{children}</div>
     </StyledOverlay>,
     document.body
   );
 }
 
+function Close({ children }: { children: JSX.Element }) {
+  const { close } = useTopLevel();
+
+  return cloneElement(children, { onClick: close });
+}
+
 TopLevel.Open = Open;
 TopLevel.Window = Window;
+TopLevel.Close = Close;
 
-export default TopLevel;
+export { TopLevel, useTopLevel };

@@ -1,9 +1,24 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { PLAYLIST_SORT_CRITERIAS } from "../utils/constants";
+import { SortCriteria } from "../utils/types";
 
-const PlaylistContext = createContext(null);
+interface PlaylistContextValue {
+  sortCriteria: SortCriteria;
+  setSortCriteria: Dispatch<SetStateAction<SortCriteria>>;
+  query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
+}
 
-function PlaylistProvider({ children }) {
+const PlaylistContext = createContext<PlaylistContextValue | null>(null);
+
+function PlaylistProvider({ children }: { children: ReactNode }) {
   const [sortCriteria, setSortCriteria] = useState(PLAYLIST_SORT_CRITERIAS[0]);
   const [query, setQuery] = useState("");
 
@@ -18,7 +33,7 @@ function PlaylistProvider({ children }) {
 
 function usePlaylistOperations() {
   const context = useContext(PlaylistContext);
-  if (context === undefined)
+  if (context === null || context === undefined)
     throw new Error("PlaylistContext was used outside of PlaylistProvider");
   return context;
 }

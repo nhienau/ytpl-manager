@@ -1,8 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
-const SidebarContext = createContext(null);
+interface SidebarContextValue {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+}
 
-function SidebarProvider({ children }) {
+const SidebarContext = createContext<SidebarContextValue | null>(null);
+
+function SidebarProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
 
   function toggleSidebar() {
@@ -10,7 +15,12 @@ function SidebarProvider({ children }) {
   }
 
   return (
-    <SidebarContext.Provider value={{ isOpen, toggleSidebar }}>
+    <SidebarContext.Provider
+      value={{
+        isOpen,
+        toggleSidebar,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
   );
@@ -18,7 +28,7 @@ function SidebarProvider({ children }) {
 
 function useSidebar() {
   const context = useContext(SidebarContext);
-  if (context === undefined)
+  if (context === null || context === undefined)
     throw new Error("SidebarContext was used outside of SidebarProvider");
   return context;
 }

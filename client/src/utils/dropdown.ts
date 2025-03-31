@@ -1,14 +1,13 @@
-export interface DropdownPosition {
-  x: number;
-  y: number;
-  variation: string;
-  alignment: string;
-}
+import {
+  DropdownAlignment,
+  DropdownPosition,
+  DropdownVariation,
+} from "./types";
 
 export function getDropdownListPosition(
   rect: DOMRect,
-  variation: string,
-  alignment: string
+  variation: DropdownVariation,
+  alignment: DropdownAlignment
 ): DropdownPosition {
   const { x, right, top, bottom } = rect;
   let posX = 0,

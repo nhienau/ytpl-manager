@@ -5,7 +5,7 @@ import {
   HiOutlineArrowRightOnRectangle,
 } from "react-icons/hi2";
 import { useLogout } from "../features/authentication/useLogout";
-import TopLevel from "./TopLevel";
+import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
 import Menus from "./Menus";
 import Divider from "./Divider";
@@ -51,7 +51,7 @@ const UserInfoContainer = styled.div`
 `;
 
 function SidebarFooter() {
-  const { logout, isPending: isLoggingOut } = useLogout();
+  const { logout } = useLogout();
 
   return (
     <div>

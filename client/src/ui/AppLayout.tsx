@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { PlaylistProvider } from "../context/PlaylistOperationsContext";
 import Sidebar from "./Sidebar";
 import AppHeader from "./AppHeader";
+import { QueueProvider } from "../context/QueueContext";
+import { VideoOperationsProvider } from "../context/VideoOperationsContext";
+import { WorkerProvider } from "../context/WorkerContext";
 
 const StyledAppLayout = styled.div`
   height: 100vh;
@@ -17,7 +20,7 @@ const StyledMainContent = styled.div`
 `;
 
 const StyledMain = styled.main`
-  background-color: var(--color-neutral-200);
+  background-color: var(--color-neutral-100);
   padding: 2.5rem 4rem 3rem;
   overflow: auto;
   flex-grow: 1;
@@ -28,7 +31,7 @@ const Container = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 2rem;
   height: 100%;
   max-height: 70rem;
 
@@ -44,7 +47,13 @@ function AppLayout() {
           <AppHeader />
           <StyledMain>
             <Container>
-              <Outlet />
+              <WorkerProvider>
+                <VideoOperationsProvider>
+                  <QueueProvider>
+                    <Outlet />
+                  </QueueProvider>
+                </VideoOperationsProvider>
+              </WorkerProvider>
             </Container>
           </StyledMain>
         </StyledMainContent>

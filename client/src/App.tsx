@@ -1,8 +1,4 @@
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   createBrowserRouter,
@@ -21,9 +17,10 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import AuthLayout from "./ui/AuthLayout";
 import { SidebarProvider } from "./context/SidebarContext";
-import { handleQueryError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
+import Operations from "./pages/Operations";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -46,11 +43,21 @@ const router = createBrowserRouter(
         >
           <Route path="/app" element={<MainApp />} />
           <Route path="/app/playlist/:playlistId" element={<MainApp />} />
+          <Route path="/app/operations" element={<Operations />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Route>
     </>
-  )
+  ),
+  {
+    future: {
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_relativeSplatPath: true,
+      v7_skipActionErrorRevalidation: true,
+    },
+  }
 );
 
 const queryClient = new QueryClient({
@@ -59,9 +66,6 @@ const queryClient = new QueryClient({
       staleTime: 10 * 60 * 1000,
     },
   },
-  queryCache: new QueryCache({
-    onError: handleQueryError,
-  }),
 });
 
 function App() {
@@ -73,12 +77,18 @@ function App() {
         <RouterProvider
           router={router}
           future={{
-            v7_fetcherPersist: true,
-            v7_normalizeFormMethod: true,
-            v7_partialHydration: true,
-            v7_relativeSplatPath: true,
-            v7_skipActionErrorRevalidation: true,
             v7_startTransition: true,
+          }}
+        />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            success: {
+              duration: 5000,
+            },
+            error: {
+              duration: 5000,
+            },
           }}
         />
       </QueryClientProvider>

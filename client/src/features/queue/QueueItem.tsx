@@ -2,6 +2,9 @@ import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
 import { useCheckboxes } from "../../context/CheckboxesContext";
 import { HiOutlineEyeSlash, HiOutlineGlobeAlt } from "react-icons/hi2";
+import { Link } from "react-router-dom";
+import { PlaylistItem } from "../../utils/types";
+import { ChangeEvent } from "react";
 
 const StyledQueueItem = styled.div`
   display: flex;
@@ -63,7 +66,20 @@ const Metadata = styled.span`
   }
 `;
 
-function QueueItem({ playlistItem }) {
+const PlaylistTitle = styled.span`
+  font-size: 0.75rem;
+  color: var(--color-neutral-600);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+
+  & a:hover {
+    text-decoration: underline;
+  }
+`;
+
+function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
   const {
     id,
     title,
@@ -73,15 +89,18 @@ function QueueItem({ playlistItem }) {
     videoOwnerChannelId,
     videoPublishedAt,
     status: { privacyStatus },
+    playlist,
   } = playlistItem;
-  const { checked, add, remove } = useCheckboxes();
+  const { checked, add, remove } = useCheckboxes<PlaylistItem>();
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
     unlisted: <HiOutlineEyeSlash title="Unlisted" />,
+    private: null,
+    privacyStatusUnspecified: null,
   };
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? add(playlistItem) : remove(playlistItem);
   }
@@ -128,6 +147,14 @@ function QueueItem({ playlistItem }) {
             </>
           )}
         </Metadata>
+        {playlist && (
+          <PlaylistTitle>
+            Added from{" "}
+            <Link to={`/app/playlist/${playlist.id}`} title={playlist.title}>
+              {playlist.title}
+            </Link>
+          </PlaylistTitle>
+        )}
       </StyledInfo>
     </StyledQueueItem>
   );

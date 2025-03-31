@@ -6,12 +6,15 @@ import PlaylistItemsContainer from "./PlaylistItemsContainer";
 import PlaylistItemsPagination from "./PlaylistItemsPagination";
 import Spinner from "../../ui/Spinner";
 import { usePlaylistItems } from "./usePlaylistItems";
+import { isGoogleAPIErrorResponse, PlaylistItem } from "../../utils/types";
 
 const Table = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
   background-color: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 0.625rem;
 `;
 
 const Box = styled.div`
@@ -24,12 +27,25 @@ const Box = styled.div`
 function PlaylistItemsTable() {
   const { isPending, data, isError, error } = usePlaylistItems();
 
-  if (isError) {
-    if (error.status === 401) {
+  if (isPending) {
+    return (
+      <Table>
+        <Box>
+          <Spinner />
+        </Box>
+      </Table>
+    );
+  }
+
+  if (isError && error) {
+    const { status, data: errorData } = error;
+
+    if (status === 401) {
       return <Navigate to="/test" />;
     } else if (
-      error.status === 404 &&
-      error.data?.errors[0]?.reason === "playlistNotFound"
+      status === 404 &&
+      isGoogleAPIErrorResponse(errorData) &&
+      errorData?.error.errors[0].reason === "playlistNotFound"
     ) {
       return (
         <Table>
@@ -39,19 +55,14 @@ function PlaylistItemsTable() {
         </Table>
       );
     } else {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   }
 
   return (
     <Table>
-      {isPending && (
-        <Box>
-          <Spinner />
-        </Box>
-      )}
-      {!isPending && !isError && (
-        <CheckboxesProvider
+      {!isPending && !isError && data && (
+        <CheckboxesProvider<PlaylistItem>
           allElements={data?.data.filter(
             (item) =>
               item.status.privacyStatus === "public" ||

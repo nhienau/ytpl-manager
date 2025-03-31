@@ -18,8 +18,8 @@ async function getPlaylistInfo(playlistId, accessToken) {
   if (items.length === 0) {
     return {
       success: false,
-      code: 404,
       error: {
+        code: 404,
         message: "Playlist not found",
       },
     };
@@ -73,7 +73,7 @@ async function getPlaylistItems(playlistId, pageToken = "", accessToken) {
   }
 
   if (data?.error) {
-    return { success: false, ...data.error };
+    return { success: false, error: data.error };
   }
 
   const { items, prevPageToken, nextPageToken } = data;

@@ -13,12 +13,12 @@ const Box = styled.div`
   align-items: center;
 `;
 
-function ListOperation() {
+function ListOperation({ dropdownId }: { dropdownId: string }) {
   return (
     <StyledListOperation>
       <SearchPlaylist />
-      <Box data-dropdown-id="playlist-sort">
-        <PlaylistSort />
+      <Box data-dropdown-id={dropdownId}>
+        <PlaylistSort nodeId={dropdownId} />
       </Box>
     </StyledListOperation>
   );

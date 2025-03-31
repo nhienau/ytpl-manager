@@ -2,6 +2,7 @@ import styled from "styled-components";
 import FullPage from "./FullPage";
 import { HiOutlineArrowLeft } from "react-icons/hi2";
 import { PiWarningCircleLight } from "react-icons/pi";
+import { MouseEvent } from "react";
 
 const Icon = styled.div`
   & svg {
@@ -56,7 +57,13 @@ const StyledLink = styled.a`
   }
 `;
 
-function Error({ title, message, onClick }) {
+interface ErrorProps {
+  title?: string;
+  message?: string;
+  onClick?: (e: MouseEvent) => void;
+}
+
+function Error({ title, message, onClick }: ErrorProps) {
   return (
     <FullPage>
       <Box>

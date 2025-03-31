@@ -1,7 +1,8 @@
 import GlobalStyles from "../styles/GlobalStyles";
 import Error from "./Error";
+import { FallbackProps } from "react-error-boundary";
 
-function ErrorFallback({ error, resetErrorBoundary }) {
+function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <>
       <GlobalStyles />

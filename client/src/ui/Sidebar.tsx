@@ -19,8 +19,12 @@ const sidebarHidden = css`
   overflow: hidden;
 `;
 
-const StyledSidebar = styled.aside`
-  background-color: var(--color-neutral-100);
+interface StyledSidebarProps {
+  $isOpen: boolean;
+}
+
+const StyledSidebar = styled.aside<StyledSidebarProps>`
+  background-color: var(--color-neutral-200);
   flex-shrink: 0;
 
   ${sidebarHidden}

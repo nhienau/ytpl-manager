@@ -26,7 +26,7 @@ function PlaylistItemsPagination() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isPending, data, isError } = usePlaylistItems();
 
-  function handleClick(pageToken) {
+  function handleClick(pageToken: string) {
     searchParams.set("pageToken", pageToken);
     setSearchParams(searchParams);
   }
@@ -35,13 +35,13 @@ function PlaylistItemsPagination() {
     <StyledPlaylistItemsPagination>
       <PaginationButton
         disabled={isPending || isError || !data?.prevPageToken}
-        onClick={() => handleClick(data?.prevPageToken)}
+        onClick={() => handleClick(data?.prevPageToken || "")}
       >
         <span>Previous</span>
       </PaginationButton>
       <PaginationButton
         disabled={isPending || isError || !data?.nextPageToken}
-        onClick={() => handleClick(data?.nextPageToken)}
+        onClick={() => handleClick(data?.nextPageToken || "")}
       >
         <span>Next</span>
       </PaginationButton>

@@ -3,12 +3,16 @@ import QueueHead from "./QueueHead";
 import QueueList from "./QueueList";
 import { CheckboxesProvider } from "../../context/CheckboxesContext";
 import { useQueue } from "../../context/QueueContext";
+import QueueActions from "./QueueActions";
+import { PlaylistItem } from "../../utils/types";
 
 const StyledQueueTable = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
   background-color: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 0.625rem;
 `;
 
 const StyledEmptyQueue = styled.div`
@@ -17,7 +21,7 @@ const StyledEmptyQueue = styled.div`
   align-items: center;
   padding: 1rem;
   background-color: var(--color-neutral-200);
-  border: 1px solid var(--color-neutral-400);
+  border: 1px solid var(--color-neutral-300);
   border-radius: 0.625rem;
   height: 100%;
 `;
@@ -35,9 +39,10 @@ function QueueTable() {
 
   return (
     <StyledQueueTable>
-      <CheckboxesProvider allElements={queue}>
+      <CheckboxesProvider<PlaylistItem> allElements={queue}>
         <QueueHead />
         <QueueList />
+        <QueueActions />
       </CheckboxesProvider>
     </StyledQueueTable>
   );

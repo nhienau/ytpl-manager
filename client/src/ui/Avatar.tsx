@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-const Avatar = styled.img`
+interface AvatarProps {
+  $avatarSize?: number;
+}
+
+const Avatar = styled.img<AvatarProps>`
   display: block;
   width: ${(props) => props.$avatarSize || 2.25}rem;
   height: ${(props) => props.$avatarSize || 2.25}rem;
