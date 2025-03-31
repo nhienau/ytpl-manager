@@ -9,7 +9,7 @@ const StyledSidebarMobile = styled.aside`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--color-neutral-100);
+  background-color: var(--color-neutral-200);
   width: 256px;
   height: 100vh;
   display: flex;

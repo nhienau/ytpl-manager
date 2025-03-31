@@ -20,7 +20,7 @@ const StyledMainContent = styled.div`
 `;
 
 const StyledMain = styled.main`
-  background-color: var(--color-neutral-200);
+  background-color: var(--color-neutral-100);
   padding: 2.5rem 4rem 3rem;
   overflow: auto;
   flex-grow: 1;

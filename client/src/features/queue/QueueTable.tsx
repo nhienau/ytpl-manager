@@ -11,6 +11,8 @@ const StyledQueueTable = styled.div`
   flex-direction: column;
   overflow: auto;
   background-color: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 0.625rem;
 `;
 
 const StyledEmptyQueue = styled.div`
@@ -19,7 +21,7 @@ const StyledEmptyQueue = styled.div`
   align-items: center;
   padding: 1rem;
   background-color: var(--color-neutral-200);
-  border: 1px solid var(--color-neutral-400);
+  border: 1px solid var(--color-neutral-300);
   border-radius: 0.625rem;
   height: 100%;
 `;

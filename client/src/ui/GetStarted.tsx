@@ -6,7 +6,7 @@ const StyledGetStarted = styled.div`
   align-items: center;
   padding: 1rem;
   background-color: var(--color-neutral-200);
-  border: 1px solid var(--color-neutral-400);
+  border: 1px solid var(--color-neutral-300);
   border-radius: 0.625rem;
   height: 100%;
 `;

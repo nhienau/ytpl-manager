@@ -24,7 +24,7 @@ interface StyledSidebarProps {
 }
 
 const StyledSidebar = styled.aside<StyledSidebarProps>`
-  background-color: var(--color-neutral-100);
+  background-color: var(--color-neutral-200);
   flex-shrink: 0;
 
   ${sidebarHidden}

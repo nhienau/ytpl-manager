@@ -13,6 +13,8 @@ const Table = styled.div`
   flex-direction: column;
   overflow: auto;
   background-color: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 0.625rem;
 `;
 
 const Box = styled.div`
