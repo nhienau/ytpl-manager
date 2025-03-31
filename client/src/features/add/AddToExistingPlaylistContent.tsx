@@ -5,7 +5,7 @@ import PlaylistRow from "./PlaylistRow";
 import { CheckboxesProvider } from "../../context/CheckboxesContext";
 import ButtonSave from "./ButtonSave";
 import { useState } from "react";
-import { Playlist } from "../../utils/types";
+import { Playlist, PlaylistItem } from "../../utils/types";
 
 const Container = styled.div`
   display: flex;
@@ -32,7 +32,11 @@ const Option = styled.div`
   gap: 0.5rem;
 `;
 
-function AddToExistingPlaylistContent({ playlistItems }) {
+function AddToExistingPlaylistContent({
+  playlistItems,
+}: {
+  playlistItems: PlaylistItem[];
+}) {
   const { isPending, data } = usePlaylists();
   const [deleteFromInitialPlaylist, setDeleteFromInitialPlaylist] =
     useState(false);
@@ -64,7 +68,7 @@ function AddToExistingPlaylistContent({ playlistItems }) {
         <Option>
           <input
             type="checkbox"
-            value={deleteFromInitialPlaylist}
+            checked={deleteFromInitialPlaylist}
             onChange={(e) => setDeleteFromInitialPlaylist(e.target.checked)}
             id="delete"
             name="delete"

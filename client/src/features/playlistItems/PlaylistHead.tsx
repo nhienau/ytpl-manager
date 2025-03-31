@@ -4,6 +4,8 @@ import { useCheckboxes } from "../../context/CheckboxesContext";
 import { usePlaylistItems } from "./usePlaylistItems";
 import ButtonReloadPlaylist from "./ButtonReloadPlaylist";
 import { useQueue } from "../../context/QueueContext";
+import { PlaylistItem } from "../../utils/types";
+import { ChangeEvent } from "react";
 
 const StyledPlaylistHead = styled.div`
   padding: 1rem 0.75rem;
@@ -30,9 +32,9 @@ const Title = styled.span`
 function PlaylistHead() {
   const { data } = usePlaylistItems();
   const { add } = useQueue();
-  const { selectAll, clearAll, checked } = useCheckboxes();
+  const { selectAll, clearAll, checked } = useCheckboxes<PlaylistItem>();
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? selectAll() : clearAll();
   }

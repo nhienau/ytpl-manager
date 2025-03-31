@@ -8,11 +8,7 @@ import { useWorker } from "../../context/WorkerContext";
 import { useVideoOperations } from "../../context/VideoOperationsContext";
 import { useQueue } from "../../context/QueueContext";
 import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
-import {
-  NewPlaylistFormData,
-  PlaylistItem,
-  QueueItem,
-} from "../../utils/types";
+import { NewPlaylistFormData, PlaylistItem } from "../../utils/types";
 
 const StyledAddToNewPlaylistContent = styled.form`
   display: flex;

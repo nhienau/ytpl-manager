@@ -25,6 +25,16 @@ const Box = styled.div`
 function PlaylistItemsTable() {
   const { isPending, data, isError, error } = usePlaylistItems();
 
+  if (isPending) {
+    return (
+      <Table>
+        <Box>
+          <Spinner />
+        </Box>
+      </Table>
+    );
+  }
+
   if (isError && error) {
     const { status, data: errorData } = error;
 
@@ -49,12 +59,7 @@ function PlaylistItemsTable() {
 
   return (
     <Table>
-      {isPending && (
-        <Box>
-          <Spinner />
-        </Box>
-      )}
-      {!isPending && !isError && (
+      {!isPending && !isError && data && (
         <CheckboxesProvider<PlaylistItem>
           allElements={data?.data.filter(
             (item) =>

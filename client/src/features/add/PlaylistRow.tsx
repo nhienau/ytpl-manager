@@ -6,6 +6,7 @@ import {
 import styled from "styled-components";
 import { useCheckboxes } from "../../context/CheckboxesContext";
 import { Playlist } from "../../utils/types";
+import { ChangeEvent } from "react";
 
 const StyledPlaylistRow = styled.div`
   text-align: left;
@@ -36,7 +37,7 @@ function PlaylistRow({ playlist }: { playlist: Playlist }) {
     status: { privacyStatus },
   } = playlist;
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? add(playlist) : remove(playlist);
   }

@@ -10,10 +10,6 @@ const StyledQueueList = styled.div`
 function QueueList() {
   const { queue } = useQueue();
 
-  if (queue.length === 0) {
-    return <div>no items</div>;
-  }
-
   return (
     <StyledQueueList>
       {queue.map((item) => (

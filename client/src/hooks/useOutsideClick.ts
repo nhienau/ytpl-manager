@@ -1,9 +1,13 @@
-import { useEffect } from "react";
+import { MutableRefObject, useEffect } from "react";
 
-export function useOutsideClick(elementRef, handler, listenCapturing = true) {
+export function useOutsideClick(
+  elementRef: MutableRefObject<undefined>,
+  handler: () => void,
+  listenCapturing = true
+) {
   useEffect(
     function () {
-      function handleClick(e) {
+      function handleClick(e: MouseEvent) {
         if (elementRef.current && !elementRef.current.contains(e.target))
           handler();
       }

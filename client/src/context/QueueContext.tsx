@@ -6,13 +6,13 @@ import {
   useContext,
   useState,
 } from "react";
-import { QueueItem } from "../utils/types";
+import { PlaylistItem } from "../utils/types";
 
 interface QueueContextValue {
-  queue: QueueItem[];
-  setQueue: Dispatch<SetStateAction<QueueItem[]>>;
-  add: (items: QueueItem[]) => void;
-  remove: (items: QueueItem[]) => void;
+  queue: PlaylistItem[];
+  setQueue: Dispatch<SetStateAction<PlaylistItem[]>>;
+  add: (items: PlaylistItem[]) => void;
+  remove: (items: PlaylistItem[]) => void;
   clearAll: () => void;
 }
 
@@ -23,9 +23,9 @@ interface QueueProviderProps {
 const QueueContext = createContext<QueueContextValue | null>(null);
 
 function QueueProvider({ children }: QueueProviderProps) {
-  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [queue, setQueue] = useState<PlaylistItem[]>([]);
 
-  function add(items: QueueItem[]) {
+  function add(items: PlaylistItem[]) {
     setQueue((q) => {
       const uniqueItems = items.filter(
         (item) => !q.some((qItem) => qItem.id === item.id)
@@ -35,7 +35,7 @@ function QueueProvider({ children }: QueueProviderProps) {
     });
   }
 
-  function remove(items: QueueItem[]) {
+  function remove(items: PlaylistItem[]) {
     const ids = items.map((i) => i.id);
     setQueue((q) => q.filter((item) => !ids.includes(item.id)));
   }

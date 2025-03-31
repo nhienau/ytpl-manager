@@ -3,14 +3,13 @@ import {
   Operation,
   Playlist,
   PlaylistItem,
-  QueueItem,
   WorkerRequest,
 } from "../../utils/types";
 
 interface UseAddVideosToPlaylistProps {
   worker: Worker | null;
   playlistItems: PlaylistItem[];
-  onRemoveItems: (items: QueueItem[]) => void;
+  onRemoveItems: (items: PlaylistItem[]) => void;
   onAddItems: (newItems: Operation[]) => void;
   onUpdateItem: (id: string | number, newInfo: object) => void;
 }

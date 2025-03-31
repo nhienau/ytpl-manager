@@ -129,10 +129,6 @@ export interface Operation {
   video?: PlaylistItem;
 }
 
-export interface QueueItem {
-  id: string;
-}
-
 export interface SortCriteria {
   value: string;
   label: string;

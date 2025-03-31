@@ -8,6 +8,7 @@ import { TopLevel } from "../../ui/TopLevel";
 import Button from "../../ui/Button";
 import { HiOutlineXMark } from "react-icons/hi2";
 import AddToNewPlaylistContent from "./AddToNewPlaylistContent";
+import { PlaylistItem } from "../../utils/types";
 
 const Box = styled.div`
   max-width: 30rem;
@@ -26,7 +27,7 @@ const ButtonClose = styled(Button)`
 `;
 
 function ModalAdd() {
-  const { checked } = useCheckboxes();
+  const { checked } = useCheckboxes<PlaylistItem>();
   const { queue } = useQueue();
   const playlistItems = checked.length > 0 ? checked : queue;
   const numVideos = playlistItems.length;

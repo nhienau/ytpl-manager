@@ -75,7 +75,7 @@ function Open({ children, opens: opensWindowName }: OpenProps) {
 interface WindowProps {
   children: ReactNode;
   name: string;
-  $viewport: "small" | "large" | "all";
+  $viewport?: "small" | "large" | "all";
 }
 
 // viewport: small, large, all

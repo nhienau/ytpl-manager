@@ -1,5 +1,6 @@
 import { HiOutlinePlus, HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import { Operation } from "../../utils/types";
 
 const Cell = styled.td`
   display: flex;
@@ -21,10 +22,10 @@ const Cell = styled.td`
   }
 `;
 
-function OperationRow({ operation }) {
+function OperationRow({ operation }: { operation: Operation }) {
   const { video, status, action } = operation;
 
-  const playlist = action === "add" ? operation.playlist : video.playlist;
+  const playlist = action === "add" ? operation.playlist : video?.playlist;
 
   const icon = {
     add: <HiOutlinePlus title="Add" className="add" />,
@@ -41,23 +42,29 @@ function OperationRow({ operation }) {
   return (
     <tr>
       <td>
-        <a
-          href={`https://www.youtube.com/playlist?list=${playlist.id}`}
-          target="_blank"
-          title={playlist.title}
-        >
-          {playlist.title}
-        </a>
+        {playlist && (
+          <a
+            href={`https://www.youtube.com/playlist?list=${playlist.id}`}
+            target="_blank"
+            title={playlist.title}
+          >
+            {playlist.title}
+          </a>
+        )}
       </td>
       <Cell className="medium">
-        {icon[action]}
-        <a
-          href={`https://youtu.be/${video.videoId}`}
-          target="_blank"
-          title={video.title}
-        >
-          {video.title}
-        </a>
+        {video && (
+          <>
+            {icon[action]}
+            <a
+              href={`https://youtu.be/${video.videoId}`}
+              target="_blank"
+              title={video.title}
+            >
+              {video.title}
+            </a>
+          </>
+        )}
       </Cell>
       <td className="status">
         <span>{statusDisplay[status]}</span>

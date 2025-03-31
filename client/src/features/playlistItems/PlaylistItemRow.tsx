@@ -8,6 +8,7 @@ import {
 } from "react-icons/hi2";
 import { useQueue } from "../../context/QueueContext";
 import { PlaylistItem } from "../../utils/types";
+import { ChangeEvent } from "react";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -88,7 +89,7 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
     videoPublishedAt,
     status: { privacyStatus },
   } = playlistItem;
-  const { checked, add, remove } = useCheckboxes();
+  const { checked, add, remove } = useCheckboxes<PlaylistItem>();
   const { queue } = useQueue();
   const isInQueue = queue.some((item) => item.id === id);
 
@@ -102,7 +103,7 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
     privacyStatusUnspecified: null,
   };
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? add(playlistItem) : remove(playlistItem);
   }
@@ -111,7 +112,7 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
     <StyledPlaylistItemRow>
       <input
         type="checkbox"
-        checked={checked.findIndex((el) => el.id === id) !== -1}
+        checked={checked.findIndex((el: PlaylistItem) => el.id === id) !== -1}
         onChange={handleChange}
         disabled={!isWatchableVideo || isInQueue}
       />
