@@ -98,7 +98,7 @@ function Toggle({
 
 function List({ id, children, domNodeId, className }) {
   const { openId, position, close, eventTarget } = useContext(MenusContext);
-  const ref = useRef();
+  const ref = useRef<HTMLUListElement>(null);
   useOutsideClick(ref, close, false);
 
   const domNode = domNodeId

@@ -1,8 +1,4 @@
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   createBrowserRouter,
@@ -21,7 +17,6 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import AuthLayout from "./ui/AuthLayout";
 import { SidebarProvider } from "./context/SidebarContext";
-import { handleQueryError } from "./utils/error";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
 import Operations from "./pages/Operations";
@@ -62,9 +57,6 @@ const queryClient = new QueryClient({
       staleTime: 10 * 60 * 1000,
     },
   },
-  queryCache: new QueryCache({
-    onError: handleQueryError,
-  }),
 });
 
 function App() {

@@ -81,7 +81,7 @@ interface WindowProps {
 // viewport: small, large, all
 function Window({ children, name, $viewport = "all" }: WindowProps) {
   const { openName, close } = useTopLevel();
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
   useOutsideClick(ref, close);
 
   if (name !== openName) return null;

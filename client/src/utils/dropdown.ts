@@ -1,9 +1,4 @@
-export interface DropdownPosition {
-  x: number;
-  y: number;
-  variation: string;
-  alignment: string;
-}
+import { DropdownPosition } from "./types";
 
 export function getDropdownListPosition(
   rect: DOMRect,

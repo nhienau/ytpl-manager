@@ -146,3 +146,10 @@ export interface WorkerRequest {
 export interface NewPlaylistFormData extends CreatePlaylistParams {
   deleteFromInitialPlaylist: boolean;
 }
+
+export interface DropdownPosition {
+  x: number;
+  y: number;
+  variation: string;
+  alignment: string;
+}
