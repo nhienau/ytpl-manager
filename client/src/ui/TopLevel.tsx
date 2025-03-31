@@ -12,8 +12,13 @@ import {
 } from "react";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import Overlay from "./Overlay";
+import { TopLevelWindowViewport } from "../utils/types";
 
-const StyledOverlay = styled(Overlay)`
+interface StyledOverlayProps {
+  $viewport?: TopLevelWindowViewport;
+}
+
+const StyledOverlay = styled(Overlay)<StyledOverlayProps>`
   @media (min-width: 50rem) {
     ${(props) =>
       props.$viewport === "small" &&
@@ -60,7 +65,7 @@ function useTopLevel() {
 }
 
 interface OpenProps {
-  children: ReactNode;
+  children: JSX.Element;
   opens: string;
 }
 
@@ -73,12 +78,11 @@ function Open({ children, opens: opensWindowName }: OpenProps) {
 }
 
 interface WindowProps {
-  children: ReactNode;
+  children: JSX.Element;
   name: string;
-  $viewport?: "small" | "large" | "all";
+  $viewport?: TopLevelWindowViewport;
 }
 
-// viewport: small, large, all
 function Window({ children, name, $viewport = "all" }: WindowProps) {
   const { openName, close } = useTopLevel();
   const ref = useRef<HTMLDivElement>(null);
@@ -94,7 +98,7 @@ function Window({ children, name, $viewport = "all" }: WindowProps) {
   );
 }
 
-function Close({ children }: { children: ReactNode }) {
+function Close({ children }: { children: JSX.Element }) {
   const { close } = useTopLevel();
 
   return cloneElement(children, { onClick: close });

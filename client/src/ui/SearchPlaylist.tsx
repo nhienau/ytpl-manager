@@ -49,16 +49,24 @@ const Button = styled.button`
 
 function SearchPlaylist() {
   const { query, setQuery } = usePlaylistOperations();
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function handleClear() {
     setQuery("");
-    inputRef.current.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }
 
   return (
     <StyledSearchPlaylist>
-      <InputBox onClick={() => inputRef.current.focus()}>
+      <InputBox
+        onClick={() => {
+          if (inputRef.current) {
+            inputRef.current.focus();
+          }
+        }}
+      >
         <HiOutlineMagnifyingGlass />
         <Input
           type="text"

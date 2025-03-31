@@ -88,12 +88,13 @@ export interface GoogleAPIErrorResponse {
 }
 
 export function isGoogleAPIErrorResponse(
-  obj: any
+  obj: unknown
 ): obj is GoogleAPIErrorResponse {
   return (
-    obj &&
+    obj !== null &&
     typeof obj === "object" &&
     "error" in obj &&
+    obj.error !== null &&
     typeof obj.error === "object" &&
     "code" in obj.error &&
     "message" in obj.error &&
@@ -147,9 +148,14 @@ export interface NewPlaylistFormData extends CreatePlaylistParams {
   deleteFromInitialPlaylist: boolean;
 }
 
+export type DropdownVariation = "dropup" | "dropdown";
+export type DropdownAlignment = "left" | "right";
+
 export interface DropdownPosition {
   x: number;
   y: number;
-  variation: string;
-  alignment: string;
+  variation: DropdownVariation;
+  alignment: DropdownAlignment;
 }
+
+export type TopLevelWindowViewport = "small" | "large" | "all";

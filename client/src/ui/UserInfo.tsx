@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import Avatar from "./Avatar";
 
-const StyledUserInfo = styled.div`
+interface StyledUserInfoProps {
+  $channelNameSize?: number;
+  $customUrlSize?: number;
+}
+
+const StyledUserInfo = styled.div<StyledUserInfoProps>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -26,12 +31,19 @@ const StyledUserInfo = styled.div`
   }
 `;
 
+interface UserInfoProps {
+  avatarSize?: number;
+  channelNameSize?: number;
+  customUrlSize?: number;
+  displayCustomUrl?: boolean;
+}
+
 function UserInfo({
   avatarSize,
   channelNameSize = 1,
   customUrlSize = 1,
   displayCustomUrl = true,
-}) {
+}: UserInfoProps) {
   const { data: channel } = useChannelInfo();
   if (!channel) return null;
   const { title: name, customUrl, thumbnails } = channel;

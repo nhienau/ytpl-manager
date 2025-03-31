@@ -51,7 +51,7 @@ const UserInfoContainer = styled.div`
 `;
 
 function SidebarFooter() {
-  const { logout, isPending: isLoggingOut } = useLogout();
+  const { logout } = useLogout();
 
   return (
     <div>

@@ -14,7 +14,11 @@ const Container = styled.div`
   overflow: auto;
 `;
 
-const Box = styled.div`
+interface BoxProps {
+  $center?: boolean;
+}
+
+const Box = styled.div<BoxProps>`
   ${(props) =>
     props.$center
       ? css`
@@ -25,6 +29,10 @@ const Box = styled.div`
           overflow: auto;
         `}
 `;
+
+Box.defaultProps = {
+  $center: false,
+};
 
 const Option = styled.div`
   display: flex;

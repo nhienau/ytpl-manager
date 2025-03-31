@@ -1,37 +1,55 @@
-import { createContext, useContext, useRef, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  MouseEvent,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { getDropdownListPosition } from "../utils/dropdown";
 import Button from "./Button";
+import {
+  DropdownAlignment,
+  DropdownPosition,
+  DropdownVariation,
+} from "../utils/types";
+
+interface StyledListProps {
+  $position?: DropdownPosition | null;
+}
 
 const variations = {
-  dropup: css`
-    bottom: ${(props) => props.$position.y}px;
+  dropup: css<StyledListProps>`
+    bottom: ${(props) => props.$position?.y ?? 0}px;
     margin-bottom: 0.25rem;
   `,
-  dropdown: css`
-    top: ${(props) => props.$position.y}px;
+  dropdown: css<StyledListProps>`
+    top: ${(props) => props.$position?.y ?? 0}px;
     margin-top: 0.25rem;
   `,
 };
 
 const alignments = {
-  left: css`
-    left: ${(props) => props.$position.x}px;
+  left: css<StyledListProps>`
+    left: ${(props) => props.$position?.x ?? 0}px;
   `,
-  right: css`
-    right: ${(props) => props.$position.x}px;
+  right: css<StyledListProps>`
+    right: ${(props) => props.$position?.x ?? 0}px;
   `,
 };
 
 const Menu = styled.div``;
 
-const StyledList = styled.ul`
+const StyledList = styled.ul<StyledListProps>`
   position: fixed;
 
-  ${(props) => variations[props.$position.variation]}
-  ${(props) => alignments[props.$position.alignment]}
+  ${(props) => props.$position && variations[props.$position.variation]}
+  ${(props) => props.$position && alignments[props.$position.alignment]}
 
   z-index: 1001;
 `;
@@ -42,12 +60,22 @@ const StyledButton = styled(Button)`
   padding: 0.5rem;
 `;
 
-const MenusContext = createContext(null);
+interface MenusContextValue {
+  openId: string;
+  close: () => void;
+  open: Dispatch<SetStateAction<string>>;
+  position: DropdownPosition | null;
+  setPosition: Dispatch<SetStateAction<DropdownPosition | null>>;
+  eventTarget: HTMLElement | null;
+  setEventTarget: Dispatch<SetStateAction<HTMLElement | null>>;
+}
 
-function Menus({ children }) {
+const MenusContext = createContext<MenusContextValue | null>(null);
+
+function Menus({ children }: { children: ReactNode }) {
   const [openId, setOpenId] = useState("");
-  const [position, setPosition] = useState(null);
-  const [eventTarget, setEventTarget] = useState(null);
+  const [position, setPosition] = useState<DropdownPosition | null>(null);
+  const [eventTarget, setEventTarget] = useState<HTMLElement | null>(null);
 
   const close = () => setOpenId("");
   const open = setOpenId;
@@ -69,22 +97,39 @@ function Menus({ children }) {
   );
 }
 
+function useMenus() {
+  const context = useContext(MenusContext);
+  if (context === null || context === undefined)
+    throw new Error("MenusContext was used outside of MenusProvider (Menus)");
+  return context;
+}
+
+interface ToggleProps {
+  id: string;
+  className?: string | undefined;
+  children: ReactNode;
+  variation?: DropdownVariation;
+  alignment?: DropdownAlignment;
+}
+
 function Toggle({
   id,
   className,
   children,
   variation = "dropdown",
   alignment = "left",
-}) {
-  const { openId, close, open, setPosition, setEventTarget } =
-    useContext(MenusContext);
+}: ToggleProps) {
+  const { openId, close, open, setPosition, setEventTarget } = useMenus();
 
-  function handleClick(e) {
+  function handleClick(e: MouseEvent) {
     e.stopPropagation();
-    const rect = e.target.closest("button").getBoundingClientRect();
+    const button = (e.target as Element).closest("button");
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
     const dropdownPos = getDropdownListPosition(rect, variation, alignment);
     setPosition(dropdownPos);
-    setEventTarget(e.target.closest("button"));
+    setEventTarget(button);
 
     openId === "" || openId !== id ? open(id) : close();
   }
@@ -96,14 +141,21 @@ function Toggle({
   );
 }
 
-function List({ id, children, domNodeId, className }) {
-  const { openId, position, close, eventTarget } = useContext(MenusContext);
+interface ListProps {
+  id: string;
+  children: ReactNode;
+  domNodeId: string;
+  className?: string | undefined;
+}
+
+function List({ id, children, domNodeId, className }: ListProps) {
+  const { openId, position, close, eventTarget } = useMenus();
   const ref = useRef<HTMLUListElement>(null);
   useOutsideClick(ref, close, false);
 
-  const domNode = domNodeId
-    ? eventTarget?.closest(`[data-dropdown-id=${domNodeId}]`)
-    : document.body;
+  const dropdownNode = eventTarget?.closest(`[data-dropdown-id=${domNodeId}]`);
+
+  const domNode = domNodeId && dropdownNode ? dropdownNode : document.body;
 
   if (openId !== id) return null;
 
@@ -115,8 +167,15 @@ function List({ id, children, domNodeId, className }) {
   );
 }
 
-function MenuButton({ children, className, icon, onClick }) {
-  const { close } = useContext(MenusContext);
+interface MenuButtonProps {
+  children: ReactNode;
+  className?: string | undefined;
+  icon: JSX.Element | null;
+  onClick?: () => void;
+}
+
+function MenuButton({ children, className, icon, onClick }: MenuButtonProps) {
+  const { close } = useMenus();
 
   function handleClick() {
     onClick?.();
@@ -132,6 +191,8 @@ function MenuButton({ children, className, icon, onClick }) {
     </li>
   );
 }
+
+export { Toggle };
 
 Menus.Menu = Menu;
 Menus.Toggle = Toggle;

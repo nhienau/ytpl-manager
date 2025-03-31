@@ -31,11 +31,19 @@ const Input = styled.input`
   }
 `;
 
-const Field = styled.div`
+interface FieldProps {
+  $vertical?: boolean;
+}
+
+const Field = styled.div<FieldProps>`
   display: flex;
   flex-direction: ${(props) => (props.$vertical ? "column" : "row")};
   gap: 0.25rem;
 `;
+
+Field.defaultProps = {
+  $vertical: false,
+};
 
 const Select = styled.select`
   background: none;
@@ -160,7 +168,7 @@ function AddToNewPlaylistContent({
           <ErrorMessage>{errors.visibility.message}</ErrorMessage>
         )}
       </Field>
-      <Field $vertical={false}>
+      <Field>
         <Input
           type="checkbox"
           id="deleteFromInitialPlaylist"

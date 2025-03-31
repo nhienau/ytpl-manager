@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
 import styled from "styled-components";
 
@@ -21,7 +22,12 @@ const StyledButtonSidebar = styled.button`
   }
 `;
 
-function ButtonSidebar({ onClick, className }) {
+interface ButtonSidebarProps {
+  onClick?: (e: MouseEvent) => void;
+  className?: string | undefined;
+}
+
+function ButtonSidebar({ onClick, className }: ButtonSidebarProps) {
   return (
     <StyledButtonSidebar className={className} onClick={onClick}>
       <HiOutlineBars3BottomLeft />

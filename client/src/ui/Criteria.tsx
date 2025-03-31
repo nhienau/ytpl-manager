@@ -4,7 +4,11 @@ import { usePlaylistOperations } from "../context/PlaylistOperationsContext";
 import Menus from "./Menus";
 import { SortCriteria } from "../utils/types";
 
-const Button = styled(Menus.Button)`
+interface ButtonProps {
+  $isSelected: boolean;
+}
+
+const Button = styled(Menus.Button)<ButtonProps>`
   flex-direction: row-reverse;
   justify-content: flex-end;
   gap: 0.25rem;

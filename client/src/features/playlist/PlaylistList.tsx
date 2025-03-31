@@ -6,7 +6,11 @@ import { filterAndSortPlaylists } from "../../utils/playlist";
 import { Navigate } from "react-router-dom";
 import PlaylistRow from "./PlaylistRow";
 
-const StyledNav = styled.nav`
+interface StyledNavProps {
+  $isLoading?: boolean;
+}
+
+const StyledNav = styled.nav<StyledNavProps>`
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
 
   ${(props) =>
@@ -16,6 +20,10 @@ const StyledNav = styled.nav`
       justify-content: center;
     `}
 `;
+
+StyledNav.defaultProps = {
+  $isLoading: false,
+};
 
 const StyledList = styled.ul`
   display: flex;

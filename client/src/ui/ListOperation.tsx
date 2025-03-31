@@ -13,7 +13,7 @@ const Box = styled.div`
   align-items: center;
 `;
 
-function ListOperation({ dropdownId }) {
+function ListOperation({ dropdownId }: { dropdownId: string }) {
   return (
     <StyledListOperation>
       <SearchPlaylist />

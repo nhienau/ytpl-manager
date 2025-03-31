@@ -15,7 +15,11 @@ import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
 import Divider from "./Divider";
 
-const StyledHeader = styled.header`
+interface StyledHeaderProps {
+  $isOpen?: boolean;
+}
+
+const StyledHeader = styled.header<StyledHeaderProps>`
   background-color: var(--color-neutral-100);
   height: 4rem;
   position: sticky;
@@ -32,13 +36,25 @@ const StyledHeader = styled.header`
   }
 `;
 
-const StyledButtonSidebar = styled(ButtonSidebar)`
+StyledHeader.defaultProps = {
+  $isOpen: false,
+};
+
+interface StyledButtonSidebarProps {
+  $isOpen?: boolean;
+}
+
+const StyledButtonSidebar = styled(ButtonSidebar)<StyledButtonSidebarProps>`
   display: none;
 
   @media (min-width: 50rem) {
     display: ${(props) => (props.$isOpen ? "none" : "flex")};
   }
 `;
+
+StyledButtonSidebar.defaultProps = {
+  $isOpen: false,
+};
 
 const StyledButtonSidebarMobile = styled(ButtonSidebar)`
   @media (min-width: 50rem) {
@@ -76,7 +92,7 @@ const StyledList = styled(Menus.List)`
 
 function AppHeader() {
   const { isOpen, toggleSidebar } = useSidebar();
-  const { logout, isPending: isLoggingOut } = useLogout();
+  const { logout } = useLogout();
 
   const { data: channel } = useChannelInfo();
   if (!channel) return null;

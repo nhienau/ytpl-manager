@@ -52,7 +52,7 @@ const Span = styled.span`
   font-weight: 600;
 `;
 
-function PlaylistSort({ nodeId }) {
+function PlaylistSort({ nodeId }: { nodeId: string }) {
   const { sortCriteria } = usePlaylistOperations();
 
   return (

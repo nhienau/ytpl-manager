@@ -1,4 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import styled, { css } from "styled-components";
 import Button from "./Button";
 
@@ -12,7 +19,11 @@ const StyledTabsList = styled.div`
   padding: 0.25rem;
 `;
 
-const StyledTabsTrigger = styled(Button)`
+interface StyledTabsTriggerProps {
+  $isCurrentTab: boolean;
+}
+
+const StyledTabsTrigger = styled(Button)<StyledTabsTriggerProps>`
   font-size: 0.875rem;
   ${(props) =>
     props.$isCurrentTab &&
@@ -25,10 +36,22 @@ const StyledTabsTrigger = styled(Button)`
     `}
 `;
 
-const TabsContext = createContext(null);
+interface TabsContextValue {
+  currentTab: string | null;
+  setCurrentTab: Dispatch<SetStateAction<string | null>>;
+}
 
-function Tabs({ children, defaultValue }) {
-  const [currentTab, setCurrentTab] = useState(defaultValue || null);
+const TabsContext = createContext<TabsContextValue | null>(null);
+
+interface TabsProps {
+  children: ReactNode;
+  defaultValue?: string;
+}
+
+function Tabs({ children, defaultValue }: TabsProps) {
+  const [currentTab, setCurrentTab] = useState<string | null>(
+    defaultValue || null
+  );
 
   return (
     <TabsContext.Provider value={{ currentTab, setCurrentTab }}>
@@ -37,12 +60,24 @@ function Tabs({ children, defaultValue }) {
   );
 }
 
-function List({ children }) {
+function useTabs() {
+  const context = useContext(TabsContext);
+  if (context === null || context === undefined)
+    throw new Error("TabsContext was used outside of TabsProvider");
+  return context;
+}
+
+function List({ children }: { children: ReactNode }) {
   return <StyledTabsList>{children}</StyledTabsList>;
 }
 
-function Trigger({ children, value }) {
-  const { currentTab, setCurrentTab } = useContext(TabsContext);
+interface TriggerProps {
+  children: ReactNode;
+  value: string;
+}
+
+function Trigger({ children, value }: TriggerProps) {
+  const { currentTab, setCurrentTab } = useTabs();
 
   return (
     <StyledTabsTrigger
@@ -54,8 +89,13 @@ function Trigger({ children, value }) {
   );
 }
 
-function Content({ children, value }) {
-  const { currentTab } = useContext(TabsContext);
+interface ContentProps {
+  children: ReactNode;
+  value: string;
+}
+
+function Content({ children, value }: ContentProps) {
+  const { currentTab } = useTabs();
   if (currentTab !== value) return null;
   return children;
 }
