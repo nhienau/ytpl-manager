@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
 import { useCheckboxes } from "../../context/CheckboxesContext";
-import { HiOutlineEyeSlash, HiOutlineGlobeAlt } from "react-icons/hi2";
+import {
+  HiOutlineEyeSlash,
+  HiOutlineGlobeAlt,
+  HiOutlineLockClosed,
+} from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
@@ -96,7 +100,7 @@ function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
     unlisted: <HiOutlineEyeSlash title="Unlisted" />,
-    private: null,
+    private: <HiOutlineLockClosed title="Private" />,
     privacyStatusUnspecified: null,
   };
 
