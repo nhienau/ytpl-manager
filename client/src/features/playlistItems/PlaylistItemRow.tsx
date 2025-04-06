@@ -5,6 +5,7 @@ import {
   HiOutlineCheck,
   HiOutlineEyeSlash,
   HiOutlineGlobeAlt,
+  HiOutlineLockClosed,
 } from "react-icons/hi2";
 import { useQueue } from "../../context/QueueContext";
 import { PlaylistItem } from "../../utils/types";
@@ -93,13 +94,12 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
   const { queue } = useQueue();
   const isInQueue = queue.some((item) => item.id === id);
 
-  const isWatchableVideo =
-    privacyStatus === "public" || privacyStatus === "unlisted";
+  const isWatchableVideo = videoOwnerChannelTitle !== null;
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
     unlisted: <HiOutlineEyeSlash title="Unlisted" />,
-    private: null,
+    private: <HiOutlineLockClosed title="Private" />,
     privacyStatusUnspecified: null,
   };
 

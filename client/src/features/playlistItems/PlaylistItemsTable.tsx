@@ -63,11 +63,7 @@ function PlaylistItemsTable() {
     <Table>
       {!isPending && !isError && data && (
         <CheckboxesProvider<PlaylistItem>
-          allElements={data?.data.filter(
-            (item) =>
-              item.status.privacyStatus === "public" ||
-              item.status.privacyStatus === "unlisted"
-          )}
+          allElements={data?.data.filter((item) => item.videoOwnerChannelId)}
         >
           <PlaylistHead />
           <PlaylistItemsContainer />

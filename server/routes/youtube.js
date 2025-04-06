@@ -3,15 +3,8 @@ const { getPlaylistItems, getPlaylistInfo } = require("../services/playlist");
 const router = require("express").Router();
 
 router.get("/info", async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  if (!accessToken) {
-    res.status(401).json({
-      error: {
-        message: "Unauthorized",
-      },
-    });
-    return;
-  }
+  const accessToken = req.cookies.access_token || req.accessToken;
+
   const params = {
     part: "snippet",
     mine: true,
@@ -41,15 +34,8 @@ router.get("/info", async (req, res) => {
 });
 
 router.get("/playlist", async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  if (!accessToken) {
-    res.status(401).json({
-      error: {
-        message: "Unauthorized",
-      },
-    });
-    return;
-  }
+  const accessToken = req.cookies.access_token || req.accessToken;
+
   const params = {
     part: "snippet,status",
     mine: true,
@@ -93,15 +79,8 @@ router.get("/playlist", async (req, res) => {
 });
 
 router.get("/playlist/:id", async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  if (!accessToken) {
-    res.status(401).json({
-      error: {
-        message: "Unauthorized",
-      },
-    });
-    return;
-  }
+  const accessToken = req.cookies.access_token || req.accessToken;
+
   const playlistId = req.params.id;
   const { pageToken } = req.query;
 
@@ -127,15 +106,7 @@ router.get("/playlist/:id", async (req, res) => {
 });
 
 router.post("/playlistItem", async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  if (!accessToken) {
-    res.status(401).json({
-      error: {
-        message: "Unauthorized",
-      },
-    });
-    return;
-  }
+  const accessToken = req.cookies.access_token || req.accessToken;
 
   const params = {
     part: "snippet",
@@ -180,15 +151,7 @@ router.post("/playlistItem", async (req, res) => {
 });
 
 router.delete("/playlistItem", async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  if (!accessToken) {
-    res.status(401).json({
-      error: {
-        message: "Unauthorized",
-      },
-    });
-    return;
-  }
+  const accessToken = req.cookies.access_token || req.accessToken;
 
   if (!req.query.id) {
     res.status(400).json({
@@ -226,15 +189,7 @@ router.delete("/playlistItem", async (req, res) => {
 });
 
 router.post("/playlist", async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  if (!accessToken) {
-    res.status(401).json({
-      error: {
-        message: "Unauthorized",
-      },
-    });
-    return;
-  }
+  const accessToken = req.cookies.access_token || req.accessToken;
 
   const requestBody = req.body;
 
