@@ -1,4 +1,6 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+const dotenvExpand = require("dotenv-expand");
+dotenvExpand.expand(dotenv.config());
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -26,6 +28,6 @@ app.use(refreshTokenMiddleware);
 
 app.use("/api/youtube", youtubeRoute);
 
-app.listen("5000", () => {
-  console.log("Listening on port 5000");
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on port ${process.env.PORT}`);
 });
