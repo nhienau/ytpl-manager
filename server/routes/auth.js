@@ -1,14 +1,10 @@
 const router = require("express").Router();
-const getGoogleOAuthToken = require("../services/getGoogleOAuthToken");
-
-const accessTokenCookieOptions = {
-  maxAge: 3600000, // 60 * 60 * 1000
-  httpOnly: true,
-  domain: "localhost",
-  path: "/",
-  sameSite: "lax",
-  secure: false,
-};
+const {
+  getGoogleOAuthToken,
+  tokenCookieOptions,
+  ACCESS_TOKEN_EXPIRE_TIME,
+  REFRESH_TOKEN_EXPIRE_TIME,
+} = require("../services/token");
 
 router.get("/callback", async (req, res) => {
   const code = req.query.code;
@@ -16,10 +12,13 @@ router.get("/callback", async (req, res) => {
     const tokenResponse = await getGoogleOAuthToken(code);
     const { access_token, refresh_token } = tokenResponse;
 
-    res.cookie("access_token", access_token, accessTokenCookieOptions);
+    res.cookie("access_token", access_token, {
+      ...tokenCookieOptions,
+      maxAge: ACCESS_TOKEN_EXPIRE_TIME,
+    });
     res.cookie("refresh_token", refresh_token, {
-      ...accessTokenCookieOptions,
-      maxAge: 15552000000, // 6 months
+      ...tokenCookieOptions,
+      maxAge: REFRESH_TOKEN_EXPIRE_TIME,
     });
     res.redirect(`${process.env.CLIENT_URL}/login/redirect`);
   } catch (e) {

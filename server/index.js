@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 
 const authRoute = require("./routes/auth");
 const youtubeRoute = require("./routes/youtube");
+const { refreshTokenMiddleware } = require("./middleware/auth");
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
+
+app.use(refreshTokenMiddleware);
+
 app.use("/api/youtube", youtubeRoute);
 
 app.listen("5000", () => {
