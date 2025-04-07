@@ -21,10 +21,17 @@ const StyledPlaylistItemRow = styled.div`
   }
 `;
 
+const ThumbnailContainer = styled.a`
+  width: 12rem;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+`;
+
 const StyledThumbnail = styled.img`
   width: 12rem;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const StyledInfo = styled.div`
@@ -116,10 +123,23 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
         onChange={handleChange}
         disabled={!isWatchableVideo || isInQueue}
       />
-      <StyledThumbnail
-        src={thumbnails?.medium?.url || thumbnails?.default?.url}
-        alt={title}
-      />
+      {isWatchableVideo ? (
+        <ThumbnailContainer
+          href={`https://youtu.be/${videoId}`}
+          target="_blank"
+          title={title}
+        >
+          <StyledThumbnail
+            src={thumbnails?.medium?.url || thumbnails?.default?.url}
+            alt={title}
+          />
+        </ThumbnailContainer>
+      ) : (
+        <StyledThumbnail
+          src={thumbnails?.medium?.url || thumbnails?.default?.url}
+          alt={title}
+        />
+      )}
       <StyledInfo>
         <Title
           href={`https://youtu.be/${videoId}`}

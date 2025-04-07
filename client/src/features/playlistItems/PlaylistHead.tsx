@@ -6,6 +6,9 @@ import ButtonReloadPlaylist from "./ButtonReloadPlaylist";
 import { useQueue } from "../../context/QueueContext";
 import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
+import ButtonIcon from "../../ui/ButtonIcon";
+import { HiOutlineEllipsisVertical } from "react-icons/hi2";
 
 const StyledPlaylistHead = styled.div`
   padding: 1rem 0.75rem;
@@ -57,13 +60,17 @@ function PlaylistHead() {
             <span>
               {checked.length} video{checked.length === 1 ? "" : "s"} selected
             </span>
-            <Button onClick={handleAddToQueue}>Add to queue</Button>
+            <ButtonIcon onClick={handleAddToQueue} title="Add to queue">
+              <MdOutlinePlaylistAdd />
+            </ButtonIcon>
           </>
         ) : (
           <>
             <Title>{data?.title}</Title>
             <ButtonReloadPlaylist />
-            <Button>Show more</Button>
+            <ButtonIcon title="Show more">
+              <HiOutlineEllipsisVertical />
+            </ButtonIcon>
           </>
         )}
       </Box>

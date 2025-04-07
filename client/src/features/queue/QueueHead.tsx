@@ -4,6 +4,8 @@ import Button from "../../ui/Button";
 import { useQueue } from "../../context/QueueContext";
 import { ChangeEvent } from "react";
 import { PlaylistItem } from "../../utils/types";
+import { MdOutlinePlaylistRemove } from "react-icons/md";
+import ButtonIcon from "../../ui/ButtonIcon";
 
 const StyledQueueHead = styled.div`
   padding: 1rem 0.75rem;
@@ -46,7 +48,9 @@ function QueueHead() {
             <span>
               {checked.length} video{checked.length === 1 ? "" : "s"} selected
             </span>
-            <Button onClick={handleRemove}>Remove from queue</Button>
+            <ButtonIcon onClick={handleRemove} title="Remove from queue">
+              <MdOutlinePlaylistRemove />
+            </ButtonIcon>
           </>
         ) : (
           <span>Your queue</span>
