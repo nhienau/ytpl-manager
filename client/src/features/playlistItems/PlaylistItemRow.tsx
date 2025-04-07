@@ -94,7 +94,7 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
   const { queue } = useQueue();
   const isInQueue = queue.some((item) => item.id === id);
 
-  const isWatchableVideo = videoOwnerChannelTitle !== null;
+  const isWatchableVideo = Object.hasOwn(playlistItem, "videoOwnerChannelId");
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
