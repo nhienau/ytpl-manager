@@ -58,7 +58,6 @@ function PlaylistHead() {
               {checked.length} video{checked.length === 1 ? "" : "s"} selected
             </span>
             <Button onClick={handleAddToQueue}>Add to queue</Button>
-            <Button>Delete</Button>
           </>
         ) : (
           <>

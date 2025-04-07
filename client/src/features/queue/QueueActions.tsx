@@ -3,6 +3,7 @@ import Button from "../../ui/Button";
 import ModalAdd from "../add/ModalAdd";
 import { TopLevel } from "../../ui/TopLevel";
 import { useCheckboxes } from "../../context/CheckboxesContext";
+import ModalRemove from "../remove/ModalRemove";
 
 const StyledQueueActions = styled.div`
   padding: 1rem;
@@ -29,6 +30,18 @@ function QueueActions() {
   return (
     <StyledQueueActions>
       <TopLevel>
+        <TopLevel.Window name="remove">
+          <ModalRemove />
+        </TopLevel.Window>
+
+        <TopLevel.Open opens="remove">
+          {checked.length > 0 ? (
+            <ActionButton>Remove selected</ActionButton>
+          ) : (
+            <ActionButton>Remove all</ActionButton>
+          )}
+        </TopLevel.Open>
+
         <TopLevel.Window name="form">
           <ModalAdd />
         </TopLevel.Window>
