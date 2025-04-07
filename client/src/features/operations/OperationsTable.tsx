@@ -43,7 +43,7 @@ const StyledOperationsTable = styled.table`
   }
 
   & .medium {
-    max-width: 30rem;
+    max-width: 60rem;
   }
 
   & a:hover {

@@ -15,12 +15,16 @@ const StyledQueueActions = styled.div`
 const ActionButton = styled(Button)`
   background-color: var(--color-neutral-300);
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-neutral-400);
   }
+`;
 
-  &:disabled {
-    background-color: var(--color-neutral-300);
+const ButtonRemove = styled(ActionButton)`
+  background-color: var(--color-red-200);
+
+  &:not(:disabled):hover {
+    background-color: var(--color-red-300);
   }
 `;
 
@@ -36,9 +40,9 @@ function QueueActions() {
 
         <TopLevel.Open opens="remove">
           {checked.length > 0 ? (
-            <ActionButton>Remove selected</ActionButton>
+            <ButtonRemove>Remove selected</ButtonRemove>
           ) : (
-            <ActionButton>Remove all</ActionButton>
+            <ButtonRemove>Remove all</ButtonRemove>
           )}
         </TopLevel.Open>
 
