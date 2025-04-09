@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import { useCheckboxes } from "../../context/CheckboxesContext";
 import Button from "../../ui/Button";
 import { useQueue } from "../../context/QueueContext";
 import { ChangeEvent } from "react";
 import { PlaylistItem } from "../../utils/types";
+import { MdOutlinePlaylistRemove } from "react-icons/md";
+import ButtonIcon from "../../ui/ButtonIcon";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 
 const StyledQueueHead = styled.div`
   padding: 1rem 0.75rem;
@@ -21,7 +23,7 @@ const Box = styled.div`
 
 function QueueHead() {
   const { remove } = useQueue();
-  const { selectAll, clearAll, checked } = useCheckboxes<PlaylistItem>();
+  const { selectAll, clearAll, checked } = useQueueCheckboxes<PlaylistItem>();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
@@ -46,7 +48,9 @@ function QueueHead() {
             <span>
               {checked.length} video{checked.length === 1 ? "" : "s"} selected
             </span>
-            <Button onClick={handleRemove}>Remove from queue</Button>
+            <ButtonIcon onClick={handleRemove} title="Remove from queue">
+              <MdOutlinePlaylistRemove />
+            </ButtonIcon>
           </>
         ) : (
           <span>Your queue</span>

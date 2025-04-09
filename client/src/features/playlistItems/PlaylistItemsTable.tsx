@@ -7,6 +7,7 @@ import PlaylistItemsPagination from "./PlaylistItemsPagination";
 import Spinner from "../../ui/Spinner";
 import { usePlaylistItems } from "./usePlaylistItems";
 import { isGoogleAPIErrorResponse, PlaylistItem } from "../../utils/types";
+import Menus from "../../ui/Menus";
 
 const Table = styled.div`
   display: flex;
@@ -60,13 +61,15 @@ function PlaylistItemsTable() {
   }
 
   return (
-    <Table>
+    <Table data-dropdown-id="playlist-table">
       {!isPending && !isError && data && (
         <CheckboxesProvider<PlaylistItem>
           allElements={data?.data.filter((item) => item.videoOwnerChannelId)}
         >
-          <PlaylistHead />
-          <PlaylistItemsContainer />
+          <Menus>
+            <PlaylistHead />
+            <PlaylistItemsContainer />
+          </Menus>
         </CheckboxesProvider>
       )}
       <PlaylistItemsPagination />

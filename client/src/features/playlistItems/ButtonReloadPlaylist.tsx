@@ -1,14 +1,8 @@
-import styled from "styled-components";
 import { HiOutlineArrowPath } from "react-icons/hi2";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePlaylistItems } from "./usePlaylistItems";
-import Button from "../../ui/Button";
-
-const StyledButtonReloadPlaylist = styled(Button)`
-  gap: 0.5rem;
-  padding: 0.375rem;
-`;
+import ButtonIcon from "../../ui/ButtonIcon";
 
 function ButtonReloadPlaylist() {
   const { isPending } = usePlaylistItems();
@@ -22,9 +16,9 @@ function ButtonReloadPlaylist() {
   }
 
   return (
-    <StyledButtonReloadPlaylist onClick={handleReload} disabled={isPending}>
+    <ButtonIcon onClick={handleReload} disabled={isPending}>
       <HiOutlineArrowPath />
-    </StyledButtonReloadPlaylist>
+    </ButtonIcon>
   );
 }
 

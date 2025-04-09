@@ -13,12 +13,8 @@ const StyledPlaylistItemsPagination = styled.div`
 const PaginationButton = styled(Button)`
   background-color: var(--color-neutral-300);
 
-  &:hover {
+  &:not(:disabled):hover {
     background-color: var(--color-neutral-400);
-  }
-
-  &:disabled {
-    background-color: var(--color-neutral-300);
   }
 `;
 

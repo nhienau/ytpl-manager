@@ -18,8 +18,15 @@ const Cell = styled.td`
   }
 
   & svg.delete {
-    color: red;
+    color: var(--color-red-600);
   }
+`;
+
+const Title = styled.a`
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 `;
 
 function OperationRow({ operation }: { operation: Operation }) {
@@ -43,26 +50,26 @@ function OperationRow({ operation }: { operation: Operation }) {
     <tr>
       <td>
         {playlist && (
-          <a
+          <Title
             href={`https://www.youtube.com/playlist?list=${playlist.id}`}
             target="_blank"
             title={playlist.title}
           >
             {playlist.title}
-          </a>
+          </Title>
         )}
       </td>
       <Cell className="medium">
         {video && (
           <>
             {icon[action]}
-            <a
+            <Title
               href={`https://youtu.be/${video.videoId}`}
               target="_blank"
               title={video.title}
             >
               {video.title}
-            </a>
+            </Title>
           </>
         )}
       </Cell>

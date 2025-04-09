@@ -8,6 +8,7 @@ import { useWorker } from "../../context/WorkerContext";
 import { useQueue } from "../../context/QueueContext";
 import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
 import { Playlist, PlaylistItem } from "../../utils/types";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 
 const Box = styled.div`
   display: flex;
@@ -29,11 +30,19 @@ function ButtonSave({
   const { close } = useTopLevel();
   const worker = useWorker();
   const { remove } = useQueue();
+  const { checked: checkedQueueItems, clearAll } =
+    useQueueCheckboxes<PlaylistItem>();
 
   const { addVideosToPlaylist } = useAddVideosToPlaylist({
     worker,
     playlistItems,
-    onRemoveItems: remove,
+    onRemoveItems: (items: PlaylistItem[]) => {
+      remove(items);
+
+      if (checkedQueueItems.length > 0) {
+        clearAll();
+      }
+    },
     onAddItems: add,
     onUpdateItem: update,
   });

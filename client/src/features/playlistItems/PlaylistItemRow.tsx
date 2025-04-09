@@ -10,6 +10,7 @@ import {
 import { useQueue } from "../../context/QueueContext";
 import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
+import PlaylistItemOptions from "./PlaylistItemOptions";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -21,10 +22,17 @@ const StyledPlaylistItemRow = styled.div`
   }
 `;
 
+const ThumbnailContainer = styled.a`
+  width: 12rem;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+`;
+
 const StyledThumbnail = styled.img`
   width: 12rem;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const StyledInfo = styled.div`
@@ -94,7 +102,7 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
   const { queue } = useQueue();
   const isInQueue = queue.some((item) => item.id === id);
 
-  const isWatchableVideo = videoOwnerChannelTitle !== null;
+  const isWatchableVideo = Object.hasOwn(playlistItem, "videoOwnerChannelId");
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
@@ -116,10 +124,23 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
         onChange={handleChange}
         disabled={!isWatchableVideo || isInQueue}
       />
-      <StyledThumbnail
-        src={thumbnails?.medium?.url || thumbnails?.default?.url}
-        alt={title}
-      />
+      {isWatchableVideo ? (
+        <ThumbnailContainer
+          href={`https://youtu.be/${videoId}`}
+          target="_blank"
+          title={title}
+        >
+          <StyledThumbnail
+            src={thumbnails?.medium?.url || thumbnails?.default?.url}
+            alt={title}
+          />
+        </ThumbnailContainer>
+      ) : (
+        <StyledThumbnail
+          src={thumbnails?.medium?.url || thumbnails?.default?.url}
+          alt={title}
+        />
+      )}
       <StyledInfo>
         <Title
           href={`https://youtu.be/${videoId}`}
@@ -153,6 +174,11 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
         </Metadata>
       </StyledInfo>
       <Actions>
+        <PlaylistItemOptions
+          playlistItem={playlistItem}
+          isInQueue={isInQueue}
+          domNodeId="playlist-table"
+        />
         {isInQueue && <HiOutlineCheck title="Added to queue" />}
       </Actions>
     </StyledPlaylistItemRow>
