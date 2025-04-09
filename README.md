@@ -5,12 +5,12 @@ A web application that simplifies the process of managing and organizing YouTube
 ## Features (implemented)
 
 - Google Authentication
-- Add multiple playlist videos from different playlists to a new playlist/existing playlist(s)
-- Delete playlist videos from its initial playlist after adding to new playlists
+- Add multiple videos from different playlists to a new playlist/existing playlist(s); remove videos from its initial playlist after adding to new playlist(s)
+- Remove multiple videos from different playlists
+- Edit, delete playlist
 
 ## Features (planning)
 
-- Delete multiple playlist videos at once
 - Drag and drop playlist videos
 - Settings: revoke app access
 - Responsive design
@@ -18,9 +18,11 @@ A web application that simplifies the process of managing and organizing YouTube
 
 ## Limitations
 
-Most features in this application use [YouTube Data API v3](https://developers.google.com/youtube/v3). Each request made to an API has [quota cost](https://developers.google.com/youtube/v3/determine_quota_cost). If you intend to use this app to add or remove a large number of playlist videos in a day, this may exceed your daily quota allocated by the YouTube Data API. Therefore, use the app with caution, monitoring your quota cost in the Google Developer Console if necessary.
+1. Most features in this application use [YouTube Data API v3](https://developers.google.com/youtube/v3). Each request made to an API has [quota cost](https://developers.google.com/youtube/v3/determine_quota_cost). If you intend to use this app to add or remove a large number of playlist videos in a day, this may exceed your daily quota allocated by the YouTube Data API. Therefore, use the app with caution, monitoring your quota cost in the Google Developer Console if necessary.
+2. Items in **Watch later** playlists cannot be retrieved through the API ([more detail here](https://stackoverflow.com/a/47117301)).
+3. Playlist items: The [playlistItems.list](https://developers.google.com/youtube/v3/docs/playlistItems/list) API does not provide video duration and view count in each playlist item. These details require additional requests to [videos.list](https://developers.google.com/youtube/v3/docs/videos/list).
 
-## Installation
+## Installation (locally)
 
 1. Register OAuth application in Google Developers Console
 
@@ -53,7 +55,8 @@ npm install
 npm start
 
 # Client-side application
-npm run dev
+npm run build
+npm run preview
 ```
 
 ## Technologies
