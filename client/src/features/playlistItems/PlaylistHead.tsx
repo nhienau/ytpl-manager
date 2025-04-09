@@ -8,7 +8,7 @@ import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import ButtonIcon from "../../ui/ButtonIcon";
-import { HiOutlineEllipsisVertical } from "react-icons/hi2";
+import PlaylistOptions from "./PlaylistOptions";
 
 const StyledPlaylistHead = styled.div`
   padding: 1rem 0.75rem;
@@ -68,9 +68,7 @@ function PlaylistHead() {
           <>
             <Title>{data?.title}</Title>
             <ButtonReloadPlaylist />
-            <ButtonIcon title="Show more">
-              <HiOutlineEllipsisVertical />
-            </ButtonIcon>
+            <PlaylistOptions />
           </>
         )}
       </Box>

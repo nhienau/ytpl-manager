@@ -26,7 +26,7 @@ async function getPlaylistInfo(playlistId, accessToken) {
   }
 
   const { id, snippet, status } = items[0];
-  const { publishedAt, title } = snippet;
+  const { publishedAt, title, description } = snippet;
   return {
     success: true,
     data: {
@@ -34,6 +34,7 @@ async function getPlaylistInfo(playlistId, accessToken) {
       publishedAt,
       title,
       status,
+      description,
     },
   };
 }

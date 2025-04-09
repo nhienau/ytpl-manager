@@ -1,7 +1,9 @@
 import {
+  cloneElement,
   createContext,
   Dispatch,
   MouseEvent,
+  ReactElement,
   ReactNode,
   SetStateAction,
   useContext,
@@ -107,9 +109,10 @@ function useMenus() {
 interface ToggleProps {
   id: string;
   className?: string | undefined;
-  children: ReactNode;
+  children: ReactNode | ReactElement;
   variation?: DropdownVariation;
   alignment?: DropdownAlignment;
+  asChild?: boolean;
 }
 
 function Toggle({
@@ -118,6 +121,7 @@ function Toggle({
   children,
   variation = "dropdown",
   alignment = "left",
+  asChild = false,
 }: ToggleProps) {
   const { openId, close, open, setPosition, setEventTarget } = useMenus();
 
@@ -134,7 +138,12 @@ function Toggle({
     openId === "" || openId !== id ? open(id) : close();
   }
 
-  return (
+  return asChild ? (
+    cloneElement(children as ReactElement, {
+      className,
+      onClick: handleClick,
+    })
+  ) : (
     <button className={className} onClick={handleClick}>
       {children}
     </button>
@@ -172,9 +181,18 @@ interface MenuButtonProps {
   className?: string | undefined;
   icon: JSX.Element | null;
   onClick?: () => void;
+  as?: string;
+  [key: string]: unknown;
 }
 
-function MenuButton({ children, className, icon, onClick }: MenuButtonProps) {
+function MenuButton({
+  children,
+  className,
+  icon,
+  onClick,
+  as,
+  ...props
+}: MenuButtonProps) {
   const { close } = useMenus();
 
   function handleClick() {
@@ -184,7 +202,12 @@ function MenuButton({ children, className, icon, onClick }: MenuButtonProps) {
 
   return (
     <li>
-      <StyledButton onClick={handleClick} className={className}>
+      <StyledButton
+        onClick={handleClick}
+        className={className}
+        as={as || "button"}
+        {...props}
+      >
         {icon}
         <span>{children}</span>
       </StyledButton>

@@ -282,4 +282,188 @@ router.post("/playlist", async (req, res) => {
   }
 });
 
+router.put("/playlist", async (req, res) => {
+  const accessToken = req.cookies.access_token || req.accessToken;
+
+  const requestBody = req.body;
+
+  if (!requestBody.id) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Missing paramaters: snippet.id",
+      },
+    });
+    return;
+  }
+
+  if (!requestBody.snippet?.title) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Missing paramaters: snippet.title",
+      },
+    });
+    return;
+  }
+
+  if (!requestBody.status?.privacyStatus) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Missing paramaters: status.privacyStatus",
+      },
+    });
+    return;
+  }
+
+  const playlistTitle = requestBody.snippet.title;
+
+  if (!/^(?!\s+$).+/.test(playlistTitle)) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Invalid title",
+      },
+    });
+    return;
+  }
+
+  if (playlistTitle.trim().length > 150) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Title must be less than 150 characters",
+      },
+    });
+    return;
+  }
+
+  const description = requestBody.snippet.description || "";
+
+  if (description.length > 0 && !/^(?!\s+$).+/.test(description)) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Invalid description",
+      },
+    });
+    return;
+  }
+
+  if (description.trim().length > 5000) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message: "Description must be less than 5000 characters",
+      },
+    });
+    return;
+  }
+
+  const privacyStatus = requestBody.status.privacyStatus;
+
+  if (!["public", "unlisted", "private"].includes(privacyStatus)) {
+    res.status(400).json({
+      success: false,
+      error: {
+        message:
+          "Invalid argument: status.privacyStatus ('public'/'unlisted'/'private')",
+      },
+    });
+    return;
+  }
+
+  const params = {
+    part: "snippet,status",
+  };
+  const body = {
+    id: requestBody.id,
+    snippet: {
+      title: playlistTitle.trim(),
+      description: description.trim(),
+    },
+    status: {
+      privacyStatus: requestBody.status.privacyStatus,
+    },
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlists?${queryString}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
+  const data = await response.json();
+
+  if (data?.error) {
+    res.status(data?.error?.code).json({
+      success: false,
+      error: data?.error,
+    });
+  } else {
+    const { id, snippet, status } = data;
+    const { publishedAt, title } = snippet;
+
+    res.status(200).json({
+      data: {
+        id,
+        publishedAt,
+        title,
+        status,
+      },
+      success: true,
+    });
+  }
+});
+
+router.delete("/playlist", async (req, res) => {
+  const accessToken = req.cookies.access_token || req.accessToken;
+
+  if (!req.query.id) {
+    res.status(400).json({
+      error: {
+        message: "Missing parameter: id",
+      },
+    });
+    return;
+  }
+
+  const params = {
+    id: req.query.id,
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlists?${queryString}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const data = await response.json();
+    res.status(data?.error?.code).json({
+      success: false,
+      error: data?.error,
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      data: {
+        id: req.query.id,
+      },
+    });
+  }
+});
+
 module.exports = router;

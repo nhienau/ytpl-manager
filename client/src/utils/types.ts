@@ -43,10 +43,13 @@ export interface Playlist {
   publishedAt: string;
   status: Status;
   title: string;
+  description?: string;
 }
 
-export interface CreatePlaylistParams {
+export interface PlaylistInfoParams {
+  id?: string;
   title: string;
+  description?: string;
   visibility: PrivacyStatus;
 }
 
@@ -144,8 +147,12 @@ export interface WorkerRequest {
   config: WorkerConfig;
 }
 
-export interface NewPlaylistFormData extends CreatePlaylistParams {
-  deleteFromInitialPlaylist: boolean;
+export interface PlaylistFormData extends PlaylistInfoParams {
+  deleteFromInitialPlaylist?: boolean;
+}
+
+export interface UpdatePlaylistParams extends PlaylistInfoParams {
+  id: string;
 }
 
 export type DropdownVariation = "dropup" | "dropdown";
