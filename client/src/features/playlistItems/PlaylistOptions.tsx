@@ -32,35 +32,33 @@ function PlaylistOptions() {
         <DeletePlaylistModal />
       </TopLevel.Window>
 
-      <Menus data-dropdown-id="options">
-        <Menus.Menu>
-          <Menus.Toggle id="options" asChild>
-            <ButtonIcon title="Show more">
-              <HiOutlineEllipsisVertical />
-            </ButtonIcon>
-          </Menus.Toggle>
-          <StyledList id="options" domNodeId="options">
-            <Menus.Button
-              icon={<FaYoutube />}
-              as="a"
-              href={`https://www.youtube.com/playlist?list=${data?.id}`}
-              target="_blank"
-            >
-              View on YouTube
+      <Menus.Menu>
+        <Menus.Toggle id="playlist-table" asChild>
+          <ButtonIcon title="Show more">
+            <HiOutlineEllipsisVertical />
+          </ButtonIcon>
+        </Menus.Toggle>
+        <StyledList id="playlist-table" domNodeId="playlist-table">
+          <Menus.Button
+            icon={<FaYoutube />}
+            as="a"
+            href={`https://www.youtube.com/playlist?list=${data?.id}`}
+            target="_blank"
+          >
+            View on YouTube
+          </Menus.Button>
+          <TopLevel.Open opens="edit-playlist">
+            <Menus.Button icon={<HiOutlinePencil />}>
+              Edit playlist
             </Menus.Button>
-            <TopLevel.Open opens="edit-playlist">
-              <Menus.Button icon={<HiOutlinePencil />}>
-                Edit playlist
-              </Menus.Button>
-            </TopLevel.Open>
-            <TopLevel.Open opens="delete-playlist">
-              <Menus.Button icon={<HiOutlineTrash />}>
-                Delete playlist
-              </Menus.Button>
-            </TopLevel.Open>
-          </StyledList>
-        </Menus.Menu>
-      </Menus>
+          </TopLevel.Open>
+          <TopLevel.Open opens="delete-playlist">
+            <Menus.Button icon={<HiOutlineTrash />}>
+              Delete playlist
+            </Menus.Button>
+          </TopLevel.Open>
+        </StyledList>
+      </Menus.Menu>
     </TopLevel>
   );
 }

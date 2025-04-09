@@ -3,6 +3,9 @@ import styled from "styled-components";
 import GetStarted from "../ui/GetStarted";
 import PlaylistItemsTable from "../features/playlistItems/PlaylistItemsTable";
 import QueueTable from "../features/queue/QueueTable";
+import { useQueue } from "../context/QueueContext";
+import { QueueCheckboxesProvider } from "../context/QueueCheckboxesContext";
+import { PlaylistItem } from "../utils/types";
 
 const Container = styled.div`
   display: flex;
@@ -18,12 +21,15 @@ const Container = styled.div`
 
 function MainApp() {
   const { pathname } = useLocation();
+  const { queue } = useQueue();
   const hasPlaylist = pathname.toLowerCase().startsWith("/app/playlist");
 
   return (
     <Container>
-      {hasPlaylist ? <PlaylistItemsTable /> : <GetStarted />}
-      <QueueTable />
+      <QueueCheckboxesProvider<PlaylistItem> allElements={queue}>
+        {hasPlaylist ? <PlaylistItemsTable /> : <GetStarted />}
+        <QueueTable />
+      </QueueCheckboxesProvider>
     </Container>
   );
 }

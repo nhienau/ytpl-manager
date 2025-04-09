@@ -10,6 +10,7 @@ import {
 import { useQueue } from "../../context/QueueContext";
 import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
+import PlaylistItemOptions from "./PlaylistItemOptions";
 
 const StyledPlaylistItemRow = styled.div`
   display: flex;
@@ -173,6 +174,11 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
         </Metadata>
       </StyledInfo>
       <Actions>
+        <PlaylistItemOptions
+          playlistItem={playlistItem}
+          isInQueue={isInQueue}
+          domNodeId="playlist-table"
+        />
         {isInQueue && <HiOutlineCheck title="Added to queue" />}
       </Actions>
     </StyledPlaylistItemRow>

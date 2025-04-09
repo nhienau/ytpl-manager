@@ -7,6 +7,7 @@ import { useQueue } from "../../context/QueueContext";
 import { useAddVideosToPlaylist } from "./useAddVideosToPlaylist";
 import { PlaylistFormData, PlaylistItem } from "../../utils/types";
 import PlaylistInfoForm from "../../ui/PlaylistInfoForm";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 
 function AddToNewPlaylistContent({
   playlistItems,
@@ -18,11 +19,18 @@ function AddToNewPlaylistContent({
   const worker = useWorker();
   const { add, update } = useVideoOperations();
   const { remove } = useQueue();
+  const { checked, clearAll } = useQueueCheckboxes<PlaylistItem>();
 
   const { addVideosToPlaylist } = useAddVideosToPlaylist({
     worker,
     playlistItems,
-    onRemoveItems: remove,
+    onRemoveItems: (items: PlaylistItem[]) => {
+      remove(items);
+
+      if (checked.length > 0) {
+        clearAll();
+      }
+    },
     onAddItems: add,
     onUpdateItem: update,
   });

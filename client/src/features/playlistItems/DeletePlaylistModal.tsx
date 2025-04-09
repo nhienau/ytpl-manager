@@ -8,6 +8,8 @@ import Spinner from "../../ui/Spinner";
 import { useDeletePlaylist } from "./useDeletePlaylist";
 import { useNavigate } from "react-router-dom";
 import { useQueue } from "../../context/QueueContext";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
+import { PlaylistItem } from "../../utils/types";
 
 interface BoxProps {
   $center?: boolean;
@@ -78,13 +80,15 @@ function DeletePlaylistModal() {
   const { close } = useTopLevel();
   const navigate = useNavigate();
   const { queue, remove } = useQueue();
+  const { removeByPlaylistId } = useQueueCheckboxes<PlaylistItem>();
 
   function handleDelete(id: string) {
-    // Check and remove playlist items from queue before deletion
+    // Check and remove playlist items from queue and queue checkboxes before deletion
     const playlistItemsInQueue = queue.filter(
       (item) => item.playlist?.id === id
     );
     remove(playlistItemsInQueue);
+    removeByPlaylistId(id);
 
     deletePlaylist(id, {
       onSuccess: () => {

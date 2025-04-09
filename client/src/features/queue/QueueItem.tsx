@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { formatDate } from "../../utils/helper";
-import { useCheckboxes } from "../../context/CheckboxesContext";
 import {
   HiOutlineEyeSlash,
   HiOutlineGlobeAlt,
@@ -9,6 +8,8 @@ import {
 import { Link } from "react-router-dom";
 import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
+import PlaylistItemOptions from "../playlistItems/PlaylistItemOptions";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 
 const StyledQueueItem = styled.div`
   display: flex;
@@ -83,6 +84,14 @@ const PlaylistTitle = styled.span`
   }
 `;
 
+const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
 function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
   const {
     id,
@@ -95,7 +104,7 @@ function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
     status: { privacyStatus },
     playlist,
   } = playlistItem;
-  const { checked, add, remove } = useCheckboxes<PlaylistItem>();
+  const { checked, add, remove } = useQueueCheckboxes<PlaylistItem>();
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
@@ -160,6 +169,13 @@ function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
           </PlaylistTitle>
         )}
       </StyledInfo>
+      <Actions>
+        <PlaylistItemOptions
+          playlistItem={playlistItem}
+          isInQueue
+          domNodeId="queue-table"
+        />
+      </Actions>
     </StyledQueueItem>
   );
 }

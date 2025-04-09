@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useCheckboxes } from "../../context/CheckboxesContext";
 import { useQueue } from "../../context/QueueContext";
 import Modal from "../../ui/Modal";
 import { Operation, PlaylistItem, WorkerRequest } from "../../utils/types";
@@ -10,6 +9,7 @@ import { useWorker } from "../../context/WorkerContext";
 import toast from "react-hot-toast";
 import { useVideoOperations } from "../../context/VideoOperationsContext";
 import { useQueryClient } from "@tanstack/react-query";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 
 const Box = styled.div`
   max-width: 30rem;
@@ -52,7 +52,8 @@ const ButtonRemove = styled(StyledButton)`
 `;
 
 function ModalRemove() {
-  const { checked } = useCheckboxes<PlaylistItem>();
+  const { checked, removeById: removeFromQueueCheckboxes } =
+    useQueueCheckboxes<PlaylistItem>();
   const { queue, remove: removeFromQueue } = useQueue();
   const { close } = useTopLevel();
   const playlistItems = checked.length > 0 ? checked : queue;
@@ -79,6 +80,9 @@ function ModalRemove() {
     }));
 
     removeFromQueue(playlistItems);
+    if (checked.length > 0) {
+      removeFromQueueCheckboxes(playlistItems);
+    }
     addOperations(items);
 
     worker.onmessage = (e) => {

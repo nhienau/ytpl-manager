@@ -2,8 +2,8 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 import ModalAdd from "../add/ModalAdd";
 import { TopLevel } from "../../ui/TopLevel";
-import { useCheckboxes } from "../../context/CheckboxesContext";
 import ModalRemove from "../remove/ModalRemove";
+import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 
 const StyledQueueActions = styled.div`
   padding: 1rem;
@@ -29,7 +29,7 @@ const ButtonRemove = styled(ActionButton)`
 `;
 
 function QueueActions() {
-  const { checked } = useCheckboxes();
+  const { checked } = useQueueCheckboxes();
 
   return (
     <StyledQueueActions>
