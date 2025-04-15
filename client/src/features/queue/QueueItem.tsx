@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { formatDate } from "../../utils/helper";
 import {
   HiOutlineEyeSlash,
@@ -10,15 +10,31 @@ import { PlaylistItem } from "../../utils/types";
 import { ChangeEvent } from "react";
 import PlaylistItemOptions from "../playlistItems/PlaylistItemOptions";
 import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
+import DragHandle from "../../ui/DragHandle";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-const StyledQueueItem = styled.div`
+interface StyledQueueItemProps {
+  $isDragging?: boolean;
+}
+
+const StyledQueueItem = styled.div<StyledQueueItemProps>`
   display: flex;
   gap: 0.625rem;
   padding: 0.75rem;
+  transition: none;
 
-  &:hover {
-    background-color: var(--color-neutral-300);
-  }
+  ${(props) =>
+    props.$isDragging
+      ? css`
+          background-color: var(--color-neutral-300);
+        `
+      : css`
+          background-color: var(--color-neutral-100);
+          &:hover {
+            background-color: var(--color-neutral-300);
+          }
+        `}
 `;
 
 const StyledThumbnail = styled.img`
@@ -92,7 +108,17 @@ const Actions = styled.div`
   gap: 0.5rem;
 `;
 
-function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
+interface QueueItemProps {
+  playlistItem: PlaylistItem;
+  index: number;
+  $isDragging?: boolean;
+}
+
+function QueueItem({
+  playlistItem,
+  index,
+  $isDragging = false,
+}: QueueItemProps) {
   const {
     id,
     title,
@@ -105,6 +131,24 @@ function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
     playlist,
   } = playlistItem;
   const { checked, add, remove } = useQueueCheckboxes<PlaylistItem>();
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    isDragging,
+    transform,
+    transition,
+  } = useSortable({
+    id: index,
+  });
+
+  const style = {
+    opacity: isDragging ? 0.4 : 1,
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const statusIcon = {
     public: <HiOutlineGlobeAlt title="Public" />,
@@ -119,7 +163,7 @@ function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
   }
 
   return (
-    <StyledQueueItem>
+    <StyledQueueItem style={style} ref={setNodeRef} $isDragging={$isDragging}>
       <input
         type="checkbox"
         checked={checked.findIndex((el) => el.id === id) !== -1}
@@ -176,6 +220,12 @@ function QueueItem({ playlistItem }: { playlistItem: PlaylistItem }) {
           domNodeId="queue-table"
         />
       </Actions>
+      <DragHandle
+        ref={setActivatorNodeRef}
+        {...listeners}
+        {...attributes}
+        $isDragging={$isDragging}
+      />
     </StyledQueueItem>
   );
 }

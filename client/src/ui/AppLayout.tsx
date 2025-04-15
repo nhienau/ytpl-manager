@@ -6,6 +6,7 @@ import AppHeader from "./AppHeader";
 import { QueueProvider } from "../context/QueueContext";
 import { VideoOperationsProvider } from "../context/VideoOperationsContext";
 import { WorkerProvider } from "../context/WorkerContext";
+import { DndItemProvider } from "../context/DndItemContext";
 
 const StyledAppLayout = styled.div`
   height: 100vh;
@@ -50,7 +51,9 @@ function AppLayout() {
               <WorkerProvider>
                 <VideoOperationsProvider>
                   <QueueProvider>
-                    <Outlet />
+                    <DndItemProvider>
+                      <Outlet />
+                    </DndItemProvider>
                   </QueueProvider>
                 </VideoOperationsProvider>
               </WorkerProvider>

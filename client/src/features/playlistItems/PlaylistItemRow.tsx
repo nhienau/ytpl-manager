@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import { ChangeEvent } from "react";
+import styled, { css } from "styled-components";
+import { useDraggable } from "@dnd-kit/core";
 import { formatDate } from "../../utils/helper";
 import { useCheckboxes } from "../../context/CheckboxesContext";
 import {
@@ -8,18 +10,32 @@ import {
   HiOutlineLockClosed,
 } from "react-icons/hi2";
 import { useQueue } from "../../context/QueueContext";
-import { PlaylistItem } from "../../utils/types";
-import { ChangeEvent } from "react";
+import { DraggableData, PlaylistItem } from "../../utils/types";
 import PlaylistItemOptions from "./PlaylistItemOptions";
+import DragHandle from "../../ui/DragHandle";
 
-const StyledPlaylistItemRow = styled.div`
+interface StyledPlaylistItemRowProps {
+  $isDragging?: boolean;
+}
+
+const StyledPlaylistItemRow = styled.div<StyledPlaylistItemRowProps>`
   display: flex;
   gap: 0.625rem;
   padding: 0.75rem;
 
-  &:hover {
-    background-color: var(--color-neutral-300);
-  }
+  transition: none;
+
+  ${(props) =>
+    props.$isDragging
+      ? css`
+          background-color: var(--color-neutral-300);
+        `
+      : css`
+          background-color: var(--color-neutral-100);
+          &:hover {
+            background-color: var(--color-neutral-300);
+          }
+        `}
 `;
 
 const ThumbnailContainer = styled.a`
@@ -87,7 +103,15 @@ const Actions = styled.div`
   gap: 0.5rem;
 `;
 
-function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
+interface PlaylistItemRowProps {
+  playlistItem: PlaylistItem;
+  $isDragging?: boolean;
+}
+
+function PlaylistItemRow({
+  playlistItem,
+  $isDragging = false,
+}: PlaylistItemRowProps) {
   const {
     id,
     title,
@@ -111,13 +135,30 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
     privacyStatusUnspecified: null,
   };
 
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, isDragging } =
+    useDraggable({
+      id,
+      data: {
+        type: "playlist-item",
+        item: playlistItem,
+      } as DraggableData,
+    });
+
+  const style = {
+    opacity: isDragging ? 0.4 : 1,
+  };
+
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
     checked ? add(playlistItem) : remove(playlistItem);
   }
 
   return (
-    <StyledPlaylistItemRow>
+    <StyledPlaylistItemRow
+      ref={setNodeRef}
+      style={style}
+      $isDragging={$isDragging}
+    >
       <input
         type="checkbox"
         checked={checked.findIndex((el: PlaylistItem) => el.id === id) !== -1}
@@ -181,6 +222,12 @@ function PlaylistItemRow({ playlistItem }: { playlistItem: PlaylistItem }) {
         />
         {isInQueue && <HiOutlineCheck title="Added to queue" />}
       </Actions>
+      <DragHandle
+        ref={setActivatorNodeRef}
+        {...listeners}
+        {...attributes}
+        $isDragging={$isDragging}
+      />
     </StyledPlaylistItemRow>
   );
 }

@@ -166,3 +166,10 @@ export interface DropdownPosition {
 }
 
 export type TopLevelWindowViewport = "small" | "large" | "all";
+
+export type DndItemType = "playlist-item" | "queue-item" | "";
+
+export interface DraggableData {
+  type: DndItemType;
+  item: PlaylistItem;
+}
