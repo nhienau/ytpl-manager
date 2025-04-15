@@ -8,13 +8,14 @@ A web application that simplifies the process of managing and organizing YouTube
 - Add multiple videos from different playlists to a new playlist/existing playlist(s); remove videos from its initial playlist after adding to new playlist(s)
 - Remove multiple videos from different playlists
 - Edit, delete playlist
+- Drag and drop playlist videos
 
 ## Features (planning)
 
-- Drag and drop playlist videos
 - Settings: revoke app access
 - Responsive design
 - Dark Mode
+- Accessibility support
 
 ## Limitations
 
