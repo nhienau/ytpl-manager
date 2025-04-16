@@ -65,6 +65,10 @@ npm run preview
 - Server: Nodejs + Express
 - Client: React + TypeScript, TanStack Query, React Router, Styled Components, WebWorker
 
+## Screenshots
+
+App screenshots can be found [here](screenshots.md).
+
 ## License
 
 Distributed under the [MIT](https://choosealicense.com/licenses/mit/) License.
