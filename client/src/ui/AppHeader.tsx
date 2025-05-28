@@ -20,6 +20,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   height: 4rem;
   position: sticky;
   top: 0;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;

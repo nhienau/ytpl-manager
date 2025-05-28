@@ -32,7 +32,6 @@ const StyledList = styled.ul`
 `;
 
 const StyledListItem = styled.li`
-  padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
 
   &:hover,
