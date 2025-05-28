@@ -35,4 +35,41 @@ router.get("/logout", async (req, res) => {
   });
 });
 
+router.post("/revoke", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  if (!accessToken) {
+    res.status(401).json({
+      error: {
+        message: "Unauthorized",
+      },
+    });
+    return;
+  }
+
+  const params = { token: accessToken };
+  const queryString = new URLSearchParams(params).toString();
+  const response = await fetch(
+    `https://oauth2.googleapis.com/revoke?${queryString}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+  const data = await response.json();
+
+  if (response.status === 200) {
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token");
+    res.status(200).json({
+      success: true,
+    });
+  } else {
+    res.status(400).json({
+      error: data?.error || "Error revoking access",
+    });
+  }
+});
+
 module.exports = router;

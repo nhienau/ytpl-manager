@@ -1,15 +1,11 @@
 import styled from "styled-components";
-import {
-  HiOutlineArrowRightOnRectangle,
-  HiOutlineCog8Tooth,
-} from "react-icons/hi2";
+import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import { useLogout } from "../features/authentication/useLogout";
 import { useSidebar } from "../context/SidebarContext";
 import Avatar from "./Avatar";
 import ButtonSidebar from "./ButtonSidebar";
 import Menus from "./Menus";
-import Modal from "./Modal";
 import SidebarMobile from "./SidebarMobile";
 import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
@@ -110,9 +106,6 @@ function AppHeader() {
           <SidebarMobile />
         </TopLevel.Window>
 
-        <TopLevel.Window name="settings">
-          <Modal />
-        </TopLevel.Window>
         <Menus>
           <StyledButtonUserContainer data-dropdown-id="profile">
             <StyledButtonUser id="profile" alignment="right">
@@ -123,15 +116,7 @@ function AppHeader() {
               <UserInfoContainer>
                 <UserInfo avatarSize={2.625} />
               </UserInfoContainer>
-
               <Divider />
-
-              <TopLevel.Open opens="settings">
-                <Menus.Button icon={<HiOutlineCog8Tooth />}>
-                  Settings
-                </Menus.Button>
-              </TopLevel.Open>
-
               <Menus.Button
                 icon={<HiOutlineArrowRightOnRectangle />}
                 onClick={logout}

@@ -20,6 +20,7 @@ import { SidebarProvider } from "./context/SidebarContext";
 import RouteFallback from "./ui/RouteFallback";
 import PageNotFound from "./pages/PageNotFound";
 import Operations from "./pages/Operations";
+import Settings from "./pages/Settings";
 import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
           <Route path="/app" element={<MainApp />} />
           <Route path="/app/playlist/:playlistId" element={<MainApp />} />
           <Route path="/app/operations" element={<Operations />} />
+          <Route path="/app/settings" element={<Settings />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Route>

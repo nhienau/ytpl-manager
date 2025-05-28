@@ -1,4 +1,8 @@
-import { HiOutlineArrowsUpDown, HiOutlineHome } from "react-icons/hi2";
+import {
+  HiOutlineArrowsUpDown,
+  HiOutlineCog8Tooth,
+  HiOutlineHome,
+} from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -41,6 +45,10 @@ function AppNavigation() {
       <Link to="/app/operations" title="Operations" end>
         <HiOutlineArrowsUpDown />
         <span>Operations</span>
+      </Link>
+      <Link to="/app/settings" title="Settings" end>
+        <HiOutlineCog8Tooth />
+        <span>Settings</span>
       </Link>
     </StyledAppNavigation>
   );
