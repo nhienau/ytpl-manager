@@ -22,6 +22,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Operations from "./pages/Operations";
 import Settings from "./pages/Settings";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -72,29 +73,31 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <SidebarProvider>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
-        <RouterProvider
-          router={router}
-          future={{
-            v7_startTransition: true,
-          }}
-        />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            success: {
-              duration: 5000,
-            },
-            error: {
-              duration: 5000,
-            },
-          }}
-        />
-      </QueryClientProvider>
-    </SidebarProvider>
+    <ThemeProvider>
+      <SidebarProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <GlobalStyles />
+          <RouterProvider
+            router={router}
+            future={{
+              v7_startTransition: true,
+            }}
+          />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              success: {
+                duration: 5000,
+              },
+              error: {
+                duration: 5000,
+              },
+            }}
+          />
+        </QueryClientProvider>
+      </SidebarProvider>
+    </ThemeProvider>
   );
 }
 

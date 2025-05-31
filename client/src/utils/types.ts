@@ -173,3 +173,5 @@ export interface DraggableData {
   type: DndItemType;
   item: PlaylistItem;
 }
+
+export type Theme = "system" | "light" | "dark";

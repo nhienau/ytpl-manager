@@ -4,7 +4,6 @@ import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import SpinnerMini from "./SpinnerMini";
 
 const StyledListItem = styled.li`
-  padding: 0.5rem;
   display: flex;
   align-items: center;
 `;

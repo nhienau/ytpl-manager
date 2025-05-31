@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import RevokeAccess from "../features/revoke/RevokeAccess";
+import Menus from "../ui/Menus";
+import ThemeSettings from "../ui/ThemeSettings";
 
 const StyledSettings = styled.div`
   max-width: 45rem;
@@ -14,7 +16,7 @@ const Heading = styled.h2`
   font-size: 2rem;
 `;
 
-const Main = styled.div`
+const Group = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -22,11 +24,16 @@ const Main = styled.div`
 
 function Settings() {
   return (
-    <StyledSettings>
+    <StyledSettings data-dropdown-id="settings">
       <Heading>Settings</Heading>
-      <Main>
-        <RevokeAccess />
-      </Main>
+      <Menus>
+        <Group>
+          <ThemeSettings />
+        </Group>
+        <Group>
+          <RevokeAccess />
+        </Group>
+      </Menus>
     </StyledSettings>
   );
 }
