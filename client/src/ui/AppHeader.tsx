@@ -27,7 +27,7 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   padding: 0.5rem;
   flex-shrink: 0;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     justify-content: ${(props) =>
       props.$isOpen ? "flex-end" : "space-between"};
   }
@@ -44,7 +44,7 @@ interface StyledButtonSidebarProps {
 const StyledButtonSidebar = styled(ButtonSidebar)<StyledButtonSidebarProps>`
   display: none;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: ${(props) => (props.$isOpen ? "none" : "flex")};
   }
 `;
@@ -54,7 +54,7 @@ StyledButtonSidebar.defaultProps = {
 };
 
 const StyledButtonSidebarMobile = styled(ButtonSidebar)`
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: none;
   }
 `;
@@ -69,7 +69,7 @@ const StyledButtonUser = styled(Menus.Toggle)`
   border: none;
   display: none;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: inline-block;
   }
 `;

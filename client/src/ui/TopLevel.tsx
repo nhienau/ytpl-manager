@@ -19,7 +19,7 @@ interface StyledOverlayProps {
 }
 
 const StyledOverlay = styled(Overlay)<StyledOverlayProps>`
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     ${(props) =>
       props.$viewport === "small" &&
       css`

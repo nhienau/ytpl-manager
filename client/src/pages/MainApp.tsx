@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   DndContext,
   KeyboardSensor,
@@ -15,16 +15,63 @@ import { useQueue } from "../context/QueueContext";
 import { QueueCheckboxesProvider } from "../context/QueueCheckboxesContext";
 import { PlaylistItem } from "../utils/types";
 import { useDnd } from "../hooks/useDnd";
+import { useState } from "react";
+import Button from "../ui/Button";
 
-const Container = styled.div`
+const StyledMainApp = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
   height: 100%;
+`;
+
+const Tabs = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  @container (min-width: 50rem) {
+    display: none;
+  }
+`;
+
+interface TabProps {
+  $isCurrentTab: boolean;
+}
+
+const Tab = styled(Button)<TabProps>`
+  width: 100%;
+  justify-content: center;
+
+  ${(props) =>
+    props.$isCurrentTab &&
+    css`
+      background-color: var(--color-neutral-300);
+    `}
+`;
+
+const Container = styled.div`
+  height: 100%;
+  overflow: auto;
 
   @container (min-width: 50rem) {
     display: grid;
+    gap: 1.5rem;
     grid-template-columns: 1fr 1fr;
+  }
+`;
+
+const Box = styled.div<TabProps>`
+  height: 100%;
+  overflow: auto;
+
+  ${(props) =>
+    props.$isCurrentTab === false &&
+    css`
+      display: none;
+    `}
+
+  @container (min-width: 50rem) {
+    display: inline;
   }
 `;
 
@@ -39,6 +86,7 @@ function MainApp() {
   const { pathname } = useLocation();
   const { queue } = useQueue();
   const hasPlaylist = pathname.toLowerCase().startsWith("/app/playlist");
+  const [currentTab, setCurrentTab] = useState("playlist");
 
   return (
     <DndContext
@@ -47,12 +95,32 @@ function MainApp() {
       onDragEnd={onDragEnd}
       onDragCancel={onDragCancel}
     >
-      <Container>
-        <QueueCheckboxesProvider<PlaylistItem> allElements={queue}>
-          {hasPlaylist ? <PlaylistItemsTable /> : <GetStarted />}
-          <QueueTable />
-        </QueueCheckboxesProvider>
-      </Container>
+      <StyledMainApp>
+        <Tabs>
+          <Tab
+            $isCurrentTab={currentTab === "playlist"}
+            onClick={() => setCurrentTab("playlist")}
+          >
+            Playlist
+          </Tab>
+          <Tab
+            $isCurrentTab={currentTab === "queue"}
+            onClick={() => setCurrentTab("queue")}
+          >
+            Queue
+          </Tab>
+        </Tabs>
+        <Container>
+          <QueueCheckboxesProvider<PlaylistItem> allElements={queue}>
+            <Box $isCurrentTab={currentTab === "playlist"}>
+              {hasPlaylist ? <PlaylistItemsTable /> : <GetStarted />}
+            </Box>
+            <Box $isCurrentTab={currentTab === "queue"}>
+              <QueueTable />
+            </Box>
+          </QueueCheckboxesProvider>
+        </Container>
+      </StyledMainApp>
     </DndContext>
   );
 }

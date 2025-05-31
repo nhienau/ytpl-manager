@@ -15,7 +15,7 @@ const StyledSidebarMobile = styled.aside`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: none;
   }
 `;

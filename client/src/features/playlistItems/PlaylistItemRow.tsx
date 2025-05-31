@@ -64,6 +64,7 @@ const Title = styled.a`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  word-break: break-word;
 
   &:hover {
     text-decoration: underline;
@@ -101,6 +102,14 @@ const Actions = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+`;
+
+const PlaylistItemDragHandle = styled(DragHandle)`
+  display: none;
+
+  @container (min-width: 50rem) {
+    display: flex;
+  }
 `;
 
 interface PlaylistItemRowProps {
@@ -214,19 +223,23 @@ function PlaylistItemRow({
           )}
         </Metadata>
       </StyledInfo>
-      <Actions>
-        <PlaylistItemOptions
-          playlistItem={playlistItem}
-          isInQueue={isInQueue}
-          domNodeId="playlist-table"
-        />
-        {isInQueue && <HiOutlineCheck title="Added to queue" />}
-      </Actions>
-      <DragHandle
+      {isWatchableVideo && (
+        <Actions>
+          <PlaylistItemOptions
+            playlistItem={playlistItem}
+            isInQueue={isInQueue}
+            domNodeId="playlist-table"
+          />
+          {isInQueue && <HiOutlineCheck title="Added to queue" />}
+        </Actions>
+      )}
+
+      <PlaylistItemDragHandle
         ref={setActivatorNodeRef}
         {...listeners}
         {...attributes}
         $isDragging={$isDragging}
+        disabled={!isWatchableVideo}
       />
     </StyledPlaylistItemRow>
   );

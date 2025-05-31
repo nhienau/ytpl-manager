@@ -29,7 +29,7 @@ const StyledSidebar = styled.aside<StyledSidebarProps>`
 
   ${sidebarHidden}
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     ${(props) => (props.$isOpen ? sidebar : sidebarHidden)}
   }
 `;

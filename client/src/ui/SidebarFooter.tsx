@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import {
   HiEllipsisVertical,
-  HiOutlineCog8Tooth,
   HiOutlineArrowRightOnRectangle,
 } from "react-icons/hi2";
 import { useLogout } from "../features/authentication/useLogout";
-import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
 import Menus from "./Menus";
 import Divider from "./Divider";
@@ -68,12 +66,6 @@ function SidebarFooter() {
             </UserInfoContainer>
 
             <Divider />
-
-            <TopLevel.Open opens="settings">
-              <Menus.Button icon={<HiOutlineCog8Tooth />}>
-                Settings
-              </Menus.Button>
-            </TopLevel.Open>
 
             <Menus.Button
               icon={<HiOutlineArrowRightOnRectangle />}
