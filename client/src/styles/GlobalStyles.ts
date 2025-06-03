@@ -16,7 +16,6 @@ const GlobalStyles = createGlobalStyle`
     --color-neutral-900: #171717;
     --color-neutral-950: #0a0a0a;
 
-    /* red, yellow, green, blue */
     --color-red-50: #fef2f2;
     --color-red-100: #fee2e2;
     --color-red-200: #fecaca;
@@ -28,6 +27,8 @@ const GlobalStyles = createGlobalStyle`
     --color-red-800: #991b1b;
     --color-red-900: #7f1d1d;
     --color-red-950: #450a0a;
+
+    --color-green-600: #00a63e;
 
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -61,6 +62,8 @@ const GlobalStyles = createGlobalStyle`
     --color-red-800: #fecaca;
     --color-red-900: #fee2e2;
     --color-red-950: #fef2f2;
+
+    --color-green-600: #05df72;
     
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
@@ -99,6 +102,8 @@ const GlobalStyles = createGlobalStyle`
       --color-red-800: #fecaca;
       --color-red-900: #fee2e2;
       --color-red-950: #fef2f2;
+
+      --color-green-600: #05df72;
       
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
@@ -121,7 +126,6 @@ const GlobalStyles = createGlobalStyle`
       --color-neutral-900: #171717;
       --color-neutral-950: #0a0a0a;
 
-      /* red, yellow, green, blue */
       --color-red-50: #fef2f2;
       --color-red-100: #fee2e2;
       --color-red-200: #fecaca;
@@ -133,6 +137,8 @@ const GlobalStyles = createGlobalStyle`
       --color-red-800: #991b1b;
       --color-red-900: #7f1d1d;
       --color-red-950: #450a0a;
+
+      --color-green-600: #00a63e;
 
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);

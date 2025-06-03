@@ -14,7 +14,7 @@ const Cell = styled.td`
   }
 
   & svg.add {
-    color: green;
+    color: var(--color-green-600);
   }
 
   & svg.delete {

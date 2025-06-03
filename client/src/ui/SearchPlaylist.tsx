@@ -33,6 +33,7 @@ const Input = styled.input`
   background: none;
   width: 100%;
   flex-grow: 1;
+  color: var(--color-neutral-800);
 
   &:focus {
     outline: none;
@@ -45,6 +46,7 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--color-neutral-800);
 `;
 
 function SearchPlaylist() {

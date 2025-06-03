@@ -29,11 +29,6 @@ const ThemeButton = styled(Button)`
 `;
 
 const StyledList = styled(Menus.List)`
-  padding: 0.25rem;
-  background-color: var(--color-neutral-200);
-  box-shadow: var(--shadow-lg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-neutral-300);
   width: 10rem;
 `;
 

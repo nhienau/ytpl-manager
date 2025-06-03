@@ -7,6 +7,7 @@ const FormInput = styled.input`
   border: 1px solid var(--color-neutral-400);
   padding: 0.375rem;
   transition: none;
+  color: var(--color-neutral-800);
 
   &:focus {
     outline: none;

@@ -81,10 +81,6 @@ const UserInfoContainer = styled.div`
 const StyledList = styled(Menus.List)`
   width: 17rem;
   padding: 0.375rem;
-  background-color: #fff;
-  box-shadow: var(--shadow-lg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-neutral-300);
 `;
 
 function AppHeader() {

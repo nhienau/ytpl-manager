@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Button from "../../ui/Button";
 import { TopLevel } from "../../ui/TopLevel";
 import ConfirmRevoke from "./ConfirmRevoke";
+import ButtonDanger from "../../ui/ButtonDanger";
 
 const Box = styled.div`
   display: flex;
@@ -9,13 +9,8 @@ const Box = styled.div`
   align-items: center;
 `;
 
-const ButtonRevoke = styled(Button)`
+const ButtonRevoke = styled(ButtonDanger)`
   padding: 0.375rem 1.5rem;
-  background-color: var(--color-red-200);
-
-  &:not(:disabled):hover {
-    background-color: var(--color-red-300);
-  }
 `;
 
 const Description = styled.p`

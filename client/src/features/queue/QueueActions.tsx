@@ -24,7 +24,7 @@ const ButtonRemove = styled(ActionButton)`
   background-color: var(--color-red-200);
 
   &:not(:disabled):hover {
-    background-color: var(--color-red-300);
+    background-color: var(--color-red-400);
   }
 `;
 

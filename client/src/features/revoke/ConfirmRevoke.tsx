@@ -4,6 +4,7 @@ import { TopLevel, useTopLevel } from "../../ui/TopLevel";
 import styled from "styled-components";
 import Button from "../../ui/Button";
 import { useRevoke } from "./useRevoke";
+import ButtonDanger from "../../ui/ButtonDanger";
 
 const Box = styled.div`
   max-width: 30rem;
@@ -40,13 +41,11 @@ const Heading = styled.h2`
   font-size: 1.5rem;
 `;
 
-const ButtonRevoke = styled(StyledButton)`
-  color: var(--color-neutral-50);
-  background-color: var(--color-red-500);
-
-  &:not(:disabled):hover {
-    background-color: var(--color-red-700);
-  }
+const ButtonRevoke = styled(ButtonDanger)`
+  padding: 0.375rem 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 function ConfirmRevoke() {

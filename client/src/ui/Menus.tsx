@@ -54,6 +54,11 @@ const StyledList = styled.ul<StyledListProps>`
   ${(props) => props.$position && alignments[props.$position.alignment]}
 
   z-index: 1001;
+  padding: 0.25rem;
+  background-color: var(--color-neutral-200);
+  box-shadow: var(--shadow-lg);
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-neutral-300);
 `;
 
 const StyledButton = styled(Button)`
