@@ -175,3 +175,8 @@ export interface DraggableData {
 }
 
 export type Theme = "system" | "light" | "dark";
+
+export function isValidThemeStr(str: string): str is Theme {
+  const themes = ["system", "light", "dark"];
+  return themes.includes(str);
+}

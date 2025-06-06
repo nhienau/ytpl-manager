@@ -7,20 +7,26 @@ import Menus from "./Menus";
 import { useTheme } from "../context/ThemeContext";
 
 function ThemeChooser() {
-  const { setTheme } = useTheme();
+  const { changeTheme } = useTheme();
 
   return (
     <>
       <Menus.Button
         icon={<HiMiniComputerDesktop />}
-        onClick={() => setTheme("system")}
+        onClick={() => changeTheme("system")}
       >
         System
       </Menus.Button>
-      <Menus.Button icon={<HiOutlineSun />} onClick={() => setTheme("light")}>
+      <Menus.Button
+        icon={<HiOutlineSun />}
+        onClick={() => changeTheme("light")}
+      >
         Light
       </Menus.Button>
-      <Menus.Button icon={<HiOutlineMoon />} onClick={() => setTheme("dark")}>
+      <Menus.Button
+        icon={<HiOutlineMoon />}
+        onClick={() => changeTheme("dark")}
+      >
         Dark
       </Menus.Button>
     </>

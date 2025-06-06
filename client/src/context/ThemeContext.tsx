@@ -1,23 +1,32 @@
 import {
   createContext,
-  Dispatch,
   ReactNode,
-  SetStateAction,
   useContext,
   useEffect,
+  useState,
 } from "react";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
-import { Theme } from "../utils/types";
+import { isValidThemeStr, Theme } from "../utils/types";
 
 interface ThemeContextValue {
   theme: Theme;
-  setTheme: Dispatch<SetStateAction<Theme>>;
+  changeTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useLocalStorageState("system", "ytpl-theme");
+  const [storedTheme, setStoredTheme] = useLocalStorageState(
+    "system",
+    "ytpl-theme"
+  );
+  const themeValue = isValidThemeStr(storedTheme) ? storedTheme : "system";
+  const [theme, setTheme] = useState<Theme>(themeValue);
+
+  function changeTheme(theme: Theme) {
+    setTheme(theme);
+    setStoredTheme(theme);
+  }
 
   useEffect(
     function () {
@@ -36,7 +45,7 @@ function ThemeProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, changeTheme }}>
       {children}
     </ThemeContext.Provider>
   );
