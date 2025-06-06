@@ -3,7 +3,20 @@ import { useState, useEffect } from "react";
 export function useLocalStorageState(initialState: unknown, key: string) {
   const [value, setValue] = useState(function () {
     const storedValue = localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : initialState;
+    if (storedValue) {
+      try {
+        const parsedValue = JSON.parse(storedValue);
+        return parsedValue;
+      } catch (e) {
+        console.warn(
+          `Unable to parse '${key}', using initial state instead.`,
+          e
+        );
+        return initialState;
+      }
+    } else {
+      return initialState;
+    }
   });
 
   useEffect(
