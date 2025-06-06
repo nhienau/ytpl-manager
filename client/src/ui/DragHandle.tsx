@@ -5,6 +5,7 @@ import { ForwardedRef, forwardRef } from "react";
 
 interface DragHandleProps {
   $isDragging?: boolean;
+  disabled?: boolean;
 }
 const StyledDragHandle = styled(ButtonIcon)<DragHandleProps>`
   cursor: grab;

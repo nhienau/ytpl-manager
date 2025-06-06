@@ -9,6 +9,7 @@ const StyledGetStarted = styled.div`
   border: 1px solid var(--color-neutral-300);
   border-radius: 0.625rem;
   height: 100%;
+  text-align: center;
 `;
 
 function GetStarted() {

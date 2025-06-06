@@ -17,9 +17,10 @@ const Select = styled.select`
   border: none;
   border: 1px solid var(--color-neutral-400);
   border-radius: 0.375rem;
-  padding: 0.25rem 0.375rem;
+  padding: 0.375rem;
   transition: none;
   background-color: var(--color-neutral-100);
+  color: var(--color-neutral-800);
 
   &:focus {
     outline: none;

@@ -1,21 +1,12 @@
 import { HiOutlineEllipsisVertical, HiOutlineLink } from "react-icons/hi2";
 import ButtonIcon from "../../ui/ButtonIcon";
 import Menus from "../../ui/Menus";
-import styled from "styled-components";
 import { FaYoutube } from "react-icons/fa";
 import { PlaylistItem } from "../../utils/types";
 import { MdOutlinePlaylistAdd, MdOutlinePlaylistRemove } from "react-icons/md";
 import toast from "react-hot-toast";
 import { useQueue } from "../../context/QueueContext";
 import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
-
-const StyledList = styled(Menus.List)`
-  padding: 0.25rem;
-  background-color: #fff;
-  box-shadow: var(--shadow-lg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-neutral-300);
-`;
 
 interface PlaylistItemOptionsProps {
   playlistItem: PlaylistItem;
@@ -57,7 +48,7 @@ function PlaylistItemOptions({
           <HiOutlineEllipsisVertical />
         </ButtonIcon>
       </Menus.Toggle>
-      <StyledList id={id} domNodeId={domNodeId}>
+      <Menus.List id={id} domNodeId={domNodeId}>
         <Menus.Button
           icon={<FaYoutube />}
           as="a"
@@ -91,7 +82,7 @@ function PlaylistItemOptions({
             Add to queue
           </Menus.Button>
         )}
-      </StyledList>
+      </Menus.List>
     </Menus.Menu>
   );
 }

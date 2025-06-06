@@ -42,3 +42,20 @@ export async function logout() {
     handleApiException(e as Error);
   }
 }
+
+export async function revokeAppAccess() {
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/auth/revoke`,
+      {
+        method: "POST",
+        credentials: "include",
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    handleApiException(e as Error);
+    throw e;
+  }
+}

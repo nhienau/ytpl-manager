@@ -1,15 +1,11 @@
 import styled from "styled-components";
-import {
-  HiOutlineArrowRightOnRectangle,
-  HiOutlineCog8Tooth,
-} from "react-icons/hi2";
+import { HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import { useChannelInfo } from "../features/authentication/useChannelInfo";
 import { useLogout } from "../features/authentication/useLogout";
 import { useSidebar } from "../context/SidebarContext";
 import Avatar from "./Avatar";
 import ButtonSidebar from "./ButtonSidebar";
 import Menus from "./Menus";
-import Modal from "./Modal";
 import SidebarMobile from "./SidebarMobile";
 import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
@@ -24,13 +20,14 @@ const StyledHeader = styled.header<StyledHeaderProps>`
   height: 4rem;
   position: sticky;
   top: 0;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
   flex-shrink: 0;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     justify-content: ${(props) =>
       props.$isOpen ? "flex-end" : "space-between"};
   }
@@ -47,7 +44,7 @@ interface StyledButtonSidebarProps {
 const StyledButtonSidebar = styled(ButtonSidebar)<StyledButtonSidebarProps>`
   display: none;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: ${(props) => (props.$isOpen ? "none" : "flex")};
   }
 `;
@@ -57,7 +54,7 @@ StyledButtonSidebar.defaultProps = {
 };
 
 const StyledButtonSidebarMobile = styled(ButtonSidebar)`
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: none;
   }
 `;
@@ -72,7 +69,7 @@ const StyledButtonUser = styled(Menus.Toggle)`
   border: none;
   display: none;
 
-  @media (min-width: 50rem) {
+  @media (min-width: 80rem) {
     display: inline-block;
   }
 `;
@@ -84,10 +81,6 @@ const UserInfoContainer = styled.div`
 const StyledList = styled(Menus.List)`
   width: 17rem;
   padding: 0.375rem;
-  background-color: #fff;
-  box-shadow: var(--shadow-lg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-neutral-300);
 `;
 
 function AppHeader() {
@@ -110,9 +103,6 @@ function AppHeader() {
           <SidebarMobile />
         </TopLevel.Window>
 
-        <TopLevel.Window name="settings">
-          <Modal />
-        </TopLevel.Window>
         <Menus>
           <StyledButtonUserContainer data-dropdown-id="profile">
             <StyledButtonUser id="profile" alignment="right">
@@ -123,15 +113,7 @@ function AppHeader() {
               <UserInfoContainer>
                 <UserInfo avatarSize={2.625} />
               </UserInfoContainer>
-
               <Divider />
-
-              <TopLevel.Open opens="settings">
-                <Menus.Button icon={<HiOutlineCog8Tooth />}>
-                  Settings
-                </Menus.Button>
-              </TopLevel.Open>
-
               <Menus.Button
                 icon={<HiOutlineArrowRightOnRectangle />}
                 onClick={logout}

@@ -12,6 +12,7 @@ import Menus from "../../ui/Menus";
 const Table = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
   overflow: auto;
   background-color: var(--color-neutral-100);
   border: 1px solid var(--color-neutral-300);

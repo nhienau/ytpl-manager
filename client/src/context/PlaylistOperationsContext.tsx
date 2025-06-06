@@ -8,23 +8,43 @@ import {
 } from "react";
 import { PLAYLIST_SORT_CRITERIAS } from "../utils/constants";
 import { SortCriteria } from "../utils/types";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
 interface PlaylistContextValue {
   sortCriteria: SortCriteria;
-  setSortCriteria: Dispatch<SetStateAction<SortCriteria>>;
   query: string;
   setQuery: Dispatch<SetStateAction<string>>;
+  handleChangeSortCriteria: (criteria: SortCriteria) => void;
 }
 
 const PlaylistContext = createContext<PlaylistContextValue | null>(null);
 
 function PlaylistProvider({ children }: { children: ReactNode }) {
-  const [sortCriteria, setSortCriteria] = useState(PLAYLIST_SORT_CRITERIAS[0]);
+  const [storedCriteria, setStoredCriteria] = useLocalStorageState(
+    PLAYLIST_SORT_CRITERIAS[0].value,
+    "ytpl-sortCriteria"
+  );
+
+  const criteria =
+    PLAYLIST_SORT_CRITERIAS.find((c) => c.value === storedCriteria) ??
+    PLAYLIST_SORT_CRITERIAS[0];
+
+  const [sortCriteria, setSortCriteria] = useState(criteria);
   const [query, setQuery] = useState("");
+
+  function handleChangeSortCriteria(criteria: SortCriteria) {
+    setSortCriteria(criteria);
+    setStoredCriteria(criteria.value);
+  }
 
   return (
     <PlaylistContext.Provider
-      value={{ sortCriteria, setSortCriteria, query, setQuery }}
+      value={{
+        sortCriteria,
+        handleChangeSortCriteria,
+        query,
+        setQuery,
+      }}
     >
       {children}
     </PlaylistContext.Provider>

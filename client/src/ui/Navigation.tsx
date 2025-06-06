@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import ButtonLogin from "./ButtonLogin";
+import NavThemeButton from "./NavThemeButton";
 
 const StyledNav = styled.nav`
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
 `;
 
 const StyledList = styled.ul`
@@ -14,12 +15,11 @@ const StyledList = styled.ul`
 
 const StyledButtonGroup = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   align-items: center;
 `;
 
 const StyledListItem = styled.li`
-  padding: 0.5rem;
   display: flex;
   align-items: center;
 `;
@@ -36,14 +36,14 @@ const StyledNavLink = styled(NavLink)`
 
 function Navigation() {
   return (
-    <StyledNav>
+    <StyledNav data-dropdown-id="nav-theme">
       <StyledList>
         <StyledListItem>
           <StyledNavLink to="/">Home</StyledNavLink>
         </StyledListItem>
         <StyledButtonGroup>
           <StyledListItem>
-            <button>Dark mode</button>
+            <NavThemeButton />
           </StyledListItem>
           <ButtonLogin />
         </StyledButtonGroup>

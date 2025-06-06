@@ -15,7 +15,7 @@ export const PLAYLIST_SORT_CRITERIAS: SortCriteria[] = [
   },
   {
     value: "date-asc",
-    label: "Date published (earlier first)",
+    label: "Date published (earliest first)",
   },
   {
     value: "name-asc",

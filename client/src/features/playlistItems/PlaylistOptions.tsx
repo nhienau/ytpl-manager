@@ -5,20 +5,11 @@ import {
 } from "react-icons/hi2";
 import ButtonIcon from "../../ui/ButtonIcon";
 import Menus from "../../ui/Menus";
-import styled from "styled-components";
 import { usePlaylistItems } from "./usePlaylistItems";
 import { FaYoutube } from "react-icons/fa";
 import { TopLevel } from "../../ui/TopLevel";
 import EditPlaylistInfo from "./EditPlaylistInfo";
 import DeletePlaylistModal from "./DeletePlaylistModal";
-
-const StyledList = styled(Menus.List)`
-  padding: 0.25rem;
-  background-color: #fff;
-  box-shadow: var(--shadow-lg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-neutral-300);
-`;
 
 function PlaylistOptions() {
   const { data } = usePlaylistItems();
@@ -38,7 +29,7 @@ function PlaylistOptions() {
             <HiOutlineEllipsisVertical />
           </ButtonIcon>
         </Menus.Toggle>
-        <StyledList id="playlist-table" domNodeId="playlist-table">
+        <Menus.List id="playlist-table" domNodeId="playlist-table">
           <Menus.Button
             icon={<FaYoutube />}
             as="a"
@@ -57,7 +48,7 @@ function PlaylistOptions() {
               Delete playlist
             </Menus.Button>
           </TopLevel.Open>
-        </StyledList>
+        </Menus.List>
       </Menus.Menu>
     </TopLevel>
   );

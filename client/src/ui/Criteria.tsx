@@ -23,13 +23,13 @@ const Button = styled(Menus.Button)<ButtonProps>`
 `;
 
 function Criteria({ criteria }: { criteria: SortCriteria }) {
-  const { sortCriteria, setSortCriteria } = usePlaylistOperations();
+  const { sortCriteria, handleChangeSortCriteria } = usePlaylistOperations();
 
   const isSelected = criteria.value === sortCriteria.value;
 
   return (
     <Button
-      onClick={() => setSortCriteria(criteria)}
+      onClick={() => handleChangeSortCriteria(criteria)}
       icon={isSelected ? <HiOutlineCheck /> : null}
       $isSelected={isSelected}
     >

@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import {
   HiEllipsisVertical,
-  HiOutlineCog8Tooth,
   HiOutlineArrowRightOnRectangle,
 } from "react-icons/hi2";
 import { useLogout } from "../features/authentication/useLogout";
-import { TopLevel } from "./TopLevel";
 import UserInfo from "./UserInfo";
 import Menus from "./Menus";
 import Divider from "./Divider";
@@ -40,10 +38,6 @@ const StyledToggle = styled(Menus.Toggle)`
 const StyledList = styled(Menus.List)`
   width: 17rem;
   padding: 0.375rem;
-  background-color: #fff;
-  box-shadow: var(--shadow-lg);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-neutral-300);
 `;
 
 const UserInfoContainer = styled.div`
@@ -68,12 +62,6 @@ function SidebarFooter() {
             </UserInfoContainer>
 
             <Divider />
-
-            <TopLevel.Open opens="settings">
-              <Menus.Button icon={<HiOutlineCog8Tooth />}>
-                Settings
-              </Menus.Button>
-            </TopLevel.Open>
 
             <Menus.Button
               icon={<HiOutlineArrowRightOnRectangle />}

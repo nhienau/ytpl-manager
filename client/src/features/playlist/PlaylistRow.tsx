@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { Playlist } from "../../utils/types";
 
 const StyledPlaylistRow = styled(NavLink)`
+  padding: 0.25rem 0.5rem;
   text-align: left;
   width: 100%;
   display: flex;

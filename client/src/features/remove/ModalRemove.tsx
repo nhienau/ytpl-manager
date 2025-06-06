@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useVideoOperations } from "../../context/VideoOperationsContext";
 import { useQueryClient } from "@tanstack/react-query";
 import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
+import ButtonDanger from "../../ui/ButtonDanger";
 
 const Box = styled.div`
   max-width: 30rem;
@@ -42,13 +43,11 @@ const StyledButton = styled(Button)`
   background-color: var(--color-neutral-200);
 `;
 
-const ButtonRemove = styled(StyledButton)`
-  color: var(--color-neutral-50);
-  background-color: var(--color-red-500);
-
-  &:not(:disabled):hover {
-    background-color: var(--color-red-700);
-  }
+const ButtonRemove = styled(ButtonDanger)`
+  padding: 0.375rem 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 function ModalRemove() {

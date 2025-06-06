@@ -22,9 +22,13 @@ const StyledMainContent = styled.div`
 
 const StyledMain = styled.main`
   background-color: var(--color-neutral-100);
-  padding: 2.5rem 4rem 3rem;
+  padding: 0.5rem;
   overflow: auto;
   flex-grow: 1;
+
+  @media (min-width: 100rem) {
+    padding: 2.5rem 3rem 3rem;
+  }
 `;
 
 const Container = styled.div`

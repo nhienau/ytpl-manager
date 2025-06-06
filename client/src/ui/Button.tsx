@@ -10,6 +10,7 @@ const Button = styled.button`
   gap: 0.375rem;
   padding: 0.375rem 0.5rem;
   border-radius: 0.5rem;
+  color: var(--color-neutral-800);
 
   & span {
     font-size: 0.875rem;

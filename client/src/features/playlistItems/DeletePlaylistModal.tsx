@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useQueue } from "../../context/QueueContext";
 import { useQueueCheckboxes } from "../../context/QueueCheckboxesContext";
 import { PlaylistItem } from "../../utils/types";
+import ButtonDanger from "../../ui/ButtonDanger";
 
 interface BoxProps {
   $center?: boolean;
@@ -65,13 +66,11 @@ const StyledButton = styled(Button)`
   background-color: var(--color-neutral-200);
 `;
 
-const ButtonRemove = styled(StyledButton)`
-  color: var(--color-neutral-50);
-  background-color: var(--color-red-500);
-
-  &:not(:disabled):hover {
-    background-color: var(--color-red-700);
-  }
+const ButtonRemove = styled(ButtonDanger)`
+  padding: 0.375rem 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 function DeletePlaylistModal() {
