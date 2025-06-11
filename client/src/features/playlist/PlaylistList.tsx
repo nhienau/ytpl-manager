@@ -57,7 +57,7 @@ function PlaylistList() {
   }
 
   if (isError && error?.status === 401) {
-    return <Navigate to="/test" />;
+    return <Navigate to="/login" />;
   }
 
   if (!data) return null;

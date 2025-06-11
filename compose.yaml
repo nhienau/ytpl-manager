@@ -1,0 +1,16 @@
+services:
+  server:
+    build: ./server
+    env_file: "./server/.env"
+    container_name: ytpl-server
+    ports:
+      - 5000:5000
+    environment:
+      - PORT=5000
+      - CLIENT_URL=http://localhost:5001
+  client:
+    build: ./client
+    env_file: "./client/.env"
+    container_name: ytpl-client
+    ports:
+      - 5001:5001

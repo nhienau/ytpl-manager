@@ -1,4 +1,4 @@
-# YouTube Playlist Manager (in development)
+# YouTube Playlist Manager
 
 A web application that simplifies the process of managing and organizing YouTube playlists. Built with React & Nodejs.
 
@@ -17,7 +17,7 @@ A web application that simplifies the process of managing and organizing YouTube
 2. Items in **Watch later** playlists cannot be retrieved through the API ([more detail here](https://stackoverflow.com/a/47117301)).
 3. Playlist items: The [playlistItems.list](https://developers.google.com/youtube/v3/docs/playlistItems/list) API does not provide video duration and view count in each playlist item. These details require additional requests to [videos.list](https://developers.google.com/youtube/v3/docs/videos/list).
 
-## Installation (locally)
+## Installation
 
 1. Register OAuth application in Google Developers Console
 
@@ -33,26 +33,19 @@ Once created, you will receive a client ID and client secret. Create a `.env` fi
 
 - Setup OAuth consent screen
 
-2. Install dependencies for both client-side and server-side applications
+2. Build and run the containers. You will need to install Docker.
 
 ```bash
-cd client
-npm install
-
-cd ../server
-npm install
+docker compose build
+docker compose up -d
 ```
 
-3. Start applications
+If you need to change the port, modify the following files:
 
-```bash
-# Server-side application
-npm start
+- Change server port: `compose.yaml`, `server/Dockerfile`, `client/.env`
+- Change client port: `compose.yaml`, `client/Dockerfile`, `client/nginx.conf`
 
-# Client-side application
-npm run build
-npm run preview
-```
+and build the containers again.
 
 ## Technologies
 

@@ -43,7 +43,7 @@ function PlaylistItemsTable() {
     const { status, data: errorData } = error;
 
     if (status === 401) {
-      return <Navigate to="/test" />;
+      return <Navigate to="/login" />;
     } else if (
       status === 404 &&
       isGoogleAPIErrorResponse(errorData) &&
